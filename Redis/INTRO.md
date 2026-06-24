@@ -67,3 +67,41 @@ Redis Key -> [
 - **HKEYS key**: returns all the field names
 - **HLEN key**: returns the length of the key
 - **HMGET key [field_name...]**: Returns values of multiple fields
+
+---
+
+### Redis Lists
+
+It is lists of strings **sorted by their insertion order**. A list would have **head on the top** and **tail on the bottom**.
+
+
+```
+      Redis Key
+          |
+-----------------------
+|value: redis list    |
+|                     |
+| HEAD <-> Value 1    |
+|  ----------|        |
+|  |                  |
+| Value 2 <-> Value 3 |
+|  --------------|    |
+|  |                  |
+| Value 4 <-> TAIL    |
+|----------------------
+```
+
+- **LPUSH key [value...]**: Create a list of numbers
+- **LPOP key**: Remove the last element from the top of list
+- **LRANGE key from to**: used to retrieve list data using indices
+- **RPUSH key value**: Will push into the end of the list (or tail)
+- **RPOP key**: Remove the last element from the tail of the list
+- **LINDEX index**: Returns the value in the index
+- **LLEN key**: return the length of the value
+- **LSET key index new_value**: set value by using index
+- **LPUSHX key value**: used to set the key value if key not exists
+- **LINSERT num BEFORE|AFTER pivot value**: Insert new value before or after the pivot element
+
+---
+
+<!-- https://www.youtube.com/watch?v=88TbU8eTl2g&list=PLS1QulWo1RIYZZxQdap7Sd0ARKFI-XVsd&index=9 -->
