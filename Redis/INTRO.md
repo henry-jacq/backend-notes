@@ -104,4 +104,27 @@ It is lists of strings **sorted by their insertion order**. A list would have **
 
 ---
 
-<!-- https://www.youtube.com/watch?v=88TbU8eTl2g&list=PLS1QulWo1RIYZZxQdap7Sd0ARKFI-XVsd&index=9 -->
+don't fill with words generalized
+
+### Redis Sets
+
+```
+Redis Key -> Redis Set (Multiple values)
+```
+
+The values in redis set are unique
+And also it is unordered list
+
+- **SADD key [values...]**: To create a set with key and values
+- **SMEMBERS key**: To see the members of the set
+- **SCARD key**: To see the count of members in the set
+- **SDIFF set1 set2**: return the difference of two set values
+- **SDIFFSTORE new_set set1 set2**: Stores the difference of two set values in new set
+- **SUNION set1 set2**: Returns the combination of unique values from two sets
+- **SUNIONSTORE new_set set1 set2**: Stores the combination of unique values from two sets
+- **SREM set_name value**: removes the value from the set
+- **SPOP key count**: removes random values based on given count
+- **SINTER set1 set2**: returns unique combinations of intersecting values in both sets
+- **SINTERSTORE set1 set2**: Stores unique combinations of intersecting values in both sets
+- **SMOVE source_set dest_set value**: Move the value from one set to another
+
