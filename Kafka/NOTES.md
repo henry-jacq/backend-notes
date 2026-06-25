@@ -1,19 +1,11 @@
-Kafka internally breaks it into several queue files:
-These queues are partitions.
+# Kafka Notes
 
-Then Kafka places those queues onto available servers:
+This folder contains Kafka documentation split into focused files.
 
-A broker is just a server.
-
-A partition is just one queue/log file.
-
-The sequence exists inside each queue, not across all queues.
-
-That's why Kafka gets both:
-
-Ordering (within a partition)
-Massive scalability (many partitions on many brokers)
-
-The "aha" moment is realizing that Kafka sacrifices global ordering to achieve high throughput. One giant ordered queue doesn't scale; many smaller ordered queues do.
+- `INTRO.md`: high-level overview of Kafka.
+- `BASICS.md`: core Kafka concepts and terminology.
+- `CONCEPTS.md`: detailed explanations of Kafka concepts from the prompt.
+- `internals.md`: architecture details, partitions, brokers, and storage model.
+- `prompt.md`: an interactive learning prompt for Kafka concepts.
 
 
