@@ -2,6 +2,8 @@
 
 The Saga pattern is a way to manage a distributed transaction when multiple services must complete work together, but you do not want to rely on a single global transaction.
 
+A distributed transaction is a logical operation that needs to span multiple independent databases or services, where all the steps must either succeed together or be cleaned up when something goes wrong.
+
 ## Why it exists
 
 In a monolithic application, one database transaction can roll back everything if something fails. In a distributed system, each service often has its own database. A failure in one service can leave other services already updated.
@@ -36,6 +38,16 @@ Instead of "all or nothing", a saga follows "do as much as possible, then compen
 
 This makes the system more resilient in distributed environments.
 
+## Distributed transactions and 2-phase commit
+
+Before Saga, many systems tried to use two-phase commit for distributed transactions.
+
+In two-phase commit, there is a new component called a coordinator. The coordinator makes sure that all the participants in a transaction agree on the outcome before any of them make their changes permanent.
+
+The problem is that two-phase commit is difficult to scale and can become a bottleneck. It also assumes strong coordination and availability, which is hard in large distributed systems.
+
+This is one reason why Saga became popular: it avoids the rigidity of a global transaction manager and uses local transactions plus compensation instead.
+
 ## Types of saga
 
 ### 1. Choreography-based saga
@@ -65,6 +77,8 @@ Flow:
 - Orchestrator waits for result
 - Orchestrator tells Service B to continue
 - If a step fails, the orchestrator runs compensating actions
+
+This is how saga orchestration works: the orchestrator acts like a workflow manager that knows the current state of the business process and decides what should happen next.
 
 Pros:
 - easier to monitor and control
@@ -133,7 +147,15 @@ Long-running workflows need clear timeout rules and recovery behavior.
 
 You need visibility into which step failed and which compensation already ran.
 
-### 5. Consistency model
+### 5. Transactional outbox
+
+A transactional outbox is a pattern used to make sure that a business action and the event that announces it are stored safely together. This helps avoid losing events when a database transaction commits but the message send fails.
+
+### 6. Idempotent operations
+
+Idempotent operations are operations that can be retried many times without causing duplicate effects. This is very important in saga systems because retries are common. A good example is refunding a payment: even if the operation is retried multiple times, the user should receive only one refund.
+
+### 7. Consistency model
 
 Saga-based systems usually use eventual consistency. That means the system may be temporarily inconsistent while compensation or retries occur.
 
