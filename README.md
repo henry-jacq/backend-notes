@@ -38,3 +38,11 @@ This repository is also intended to support broader backend engineering learning
 - caching and storage tradeoffs
 - pub/sub and event-driven design
 - reliability and availability patterns
+
+
+## References
+
+https://github.com/MohamedAEmara/Fundamentals-of-Backend-Engineering-Course-Notes
+
+https://github.com/xoraus/BackendBytes-ZeroToOne
+
