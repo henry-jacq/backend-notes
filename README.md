@@ -46,3 +46,4 @@ https://github.com/MohamedAEmara/Fundamentals-of-Backend-Engineering-Course-Note
 
 https://github.com/xoraus/BackendBytes-ZeroToOne
 
+https://github.com/djeada/Backend-Engineers-Guide
