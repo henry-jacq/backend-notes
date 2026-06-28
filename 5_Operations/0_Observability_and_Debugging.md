@@ -1,0 +1,462 @@
+# Observability and Debugging
+
+This document explains how to understand production systems when they misbehave, build intuition about failures, and debug systematically.
+
+## Why observability matters
+
+Production systems fail in ways you cannot predict.
+
+- A database connection pool fills up (why? investigate)
+- Response latency spikes at 3 AM (why? investigate)
+- Error rate jumps from 0.1% to 5% (why? investigate)
+- Memory grows constantly (why? investigate)
+- A service becomes slow but CPU is not high (why? investigate)
+
+Without observability (metrics, logs, traces), you are blind. You debug by guessing.
+
+With observability, you see the state of the system and identify root cause.
+
+## Levels of observability
+
+### 1. Metrics
+
+Quantitative measurements: numbers over time.
+
+Examples:
+- Requests per second
+- Response latency (p50, p95, p99)
+- CPU usage (%)
+- Memory usage (%)
+- Disk I/O (operations/sec)
+- Network bandwidth (MB/sec)
+- Error rate (%)
+- Cache hit rate (%)
+- Database query latency (ms)
+
+**What metrics show:**
+- Where is the problem (CPU high? Memory high? Disk slow?)
+- How big is the problem (error rate 0.1% or 5%?)
+- When did it start (3 AM spike or gradual?)
+- How it correlates (error rate spike with latency spike?)
+
+**Metrics limitations:**
+- Show what is happening, not why
+- Aggregated (p95 latency hides individual slow requests)
+- Historical (show past, not current state)
+
+### 2. Logs
+
+Discrete events: what happened?
+
+Examples:
+- Application started
+- User logged in
+- Order created
+- Payment failed
+- Connection timeout
+- Database error
+
+**What logs show:**
+- Timeline of events
+- Error messages (why something failed)
+- Context (which user, which transaction)
+
+**Log limitations:**
+- Verbose (millions of log lines)
+- Requires searching to find relevant events
+- Difficult to correlate across services
+- Historical (cannot see current processing)
+
+### 3. Traces
+
+Request path: where did the time go?
+
+Examples:
+```
+Request GET /product/123
+  |
+  ├── Authentication (5ms)
+  ├── Database query (200ms)
+  ├── Cache lookup (2ms)
+  ├── Serialize response (3ms)
+  |
+  Total: 210ms
+```
+
+**What traces show:**
+- Which component is slow
+- How much time each step takes
+- Dependencies between steps
+
+**Trace limitations:**
+- Overhead to collect
+- Large volume (millions of traces)
+- Requires setup
+
+## Building intuition: common failure patterns
+
+### Pattern 1: Database is slow
+
+**Metrics indicate:**
+- Response latency increasing
+- Database CPU at 100%
+- Database connection pool filling
+- Disk I/O high
+
+**Logs show:**
+- Slow query warnings
+- Lock wait messages
+- Connection timeout errors
+
+**Investigation:**
+1. Check slow query log (which queries are slow?)
+2. Check query execution plan (full scan or index?)
+3. Check for lock contention (other transactions blocking?)
+4. Check data volume (table too large?)
+
+**Example root causes:**
+- Missing index (full table scan)
+- N+1 queries (application fetching one-by-one)
+- Hot row (many transactions on same row)
+- Query change (new slow query deployed)
+
+### Pattern 2: Memory leak or growth
+
+**Metrics indicate:**
+- Memory usage growing over time
+- Garbage collection pauses increasing
+- Eventually out-of-memory
+
+**Logs show:**
+- OutOfMemory error
+- Garbage collection logs
+
+**Investigation:**
+1. Heap dump (where is memory used?)
+2. Object allocation profiler (what is creating objects?)
+3. Reference count (what is holding references?)
+
+**Example root causes:**
+- Objects never released (circular references)
+- Cache growing unbounded (no eviction)
+- Accidental string concatenation (creating copies)
+- Static references keeping objects alive
+
+### Pattern 3: Request timeout
+
+**Metrics indicate:**
+- Latency p99 increased
+- Timeout error rate increased
+- Thread count high (threads waiting)
+
+**Logs show:**
+- Timeout messages
+- Incomplete traces (request started but never finished)
+
+**Investigation:**
+1. Thread dump (what are threads doing?)
+2. Lock traces (are threads waiting for locks?)
+3. Trace analysis (where did request get stuck?)
+
+**Example root causes:**
+- Downstream service slow (waiting for response)
+- Database connection pool exhausted
+- Lock contention
+- Garbage collection pause
+
+### Pattern 4: Error rate spike
+
+**Metrics indicate:**
+- Error rate from 0.1% to 5%
+- Specific error type (timeout, database error, etc.)
+
+**Logs show:**
+- Error messages
+- Stack traces
+- Correlation with other events
+
+**Investigation:**
+1. Check what error type increased
+2. Check when it started (correlation with deployment? traffic change?)
+3. Check if it affects all users or specific ones
+
+**Example root causes:**
+- Dependency went down (database, cache, external API)
+- Traffic spike (system overloaded)
+- New code deployed with bug
+- Cascading failure (one service failure triggers others)
+
+### Pattern 5: Cascading failure
+
+**Symptom:**
+```
+Service A slow or down
+  |
+  -> Service B (depends on A) times out
+    |
+    -> Service C (depends on B) times out
+      |
+      -> Service D (depends on C) times out
+```
+
+Each service failure cascades.
+
+**Metrics indicate:**
+- Multiple services showing errors
+- Errors growing over time (not stabilizing)
+- Latency increasing across services
+
+**Investigation:**
+1. Find the root service (which service failed first?)
+2. Determine cause of root failure
+3. Fix root, others recover
+
+**Example root causes:**
+- One service down, others depend on it
+- Resource exhaustion (thread pool full, connection pool full)
+- Retry storms (service retries too aggressively, overwhelming system)
+
+## Key metrics for different components
+
+### Application metrics
+
+- Request rate (requests/sec)
+- Request latency (p50, p95, p99)
+- Error rate (%)
+- Throughput (operations/sec)
+- Resource usage (CPU, memory, disk)
+
+### Database metrics
+
+- Query rate (queries/sec)
+- Query latency (ms)
+- Slow query count
+- Connection count (active/max)
+- Lock wait time
+- Replication lag (if replicated)
+
+### Cache metrics
+
+- Hit rate (%)
+- Eviction rate
+- Memory usage
+- Command latency
+
+### Queue metrics
+
+- Queue depth (jobs waiting)
+- Processing rate (jobs/sec)
+- Job failure rate
+- Job duration
+
+### Network metrics
+
+- Bandwidth usage (MB/sec)
+- Packet loss (%)
+- Latency (ms)
+
+## Alerting strategy
+
+Metrics are only useful if you alert on them.
+
+**Alert on:**
+- Latency threshold exceeded (p95 > 200ms)
+- Error rate threshold exceeded (> 1%)
+- Resource exhaustion (CPU > 90%, memory > 85%)
+- Specific error conditions (database connection failed)
+
+**Do not alert on:**
+- Metrics that are normal (CPU 50% is fine)
+- Metrics you cannot act on
+- Metrics that always fire (alert fatigue)
+
+**Good alerts:**
+- Have clear threshold
+- Relate to SLA (latency threshold based on SLA)
+- Actionable (alert implies action)
+- Have low false positive rate
+
+**Bad alerts:**
+- Too many (alert fatigue, ignored)
+- Unclear threshold
+- Not correlated to actual problem
+
+## Debugging strategy: systematic approach
+
+**When a problem occurs:**
+
+### 1. Define the problem precisely
+
+Not "it's slow."
+
+Instead: "latency p99 increased from 200ms to 500ms at 3:05 AM."
+
+**Questions:**
+- What metric changed?
+- How much did it change?
+- When did it start?
+- Is it still happening?
+- Does it affect all users or some?
+
+### 2. Check metrics
+
+Look at all relevant metrics:
+
+```
+Latency: increased (p99 500ms)
+Error rate: unchanged (0.1%)
+CPU: 80%
+Memory: 50%
+Disk I/O: high
+Database CPU: 100%
+```
+
+**Hypothesis:** database is slow.
+
+### 3. Check logs
+
+Search logs for errors or warnings around the time problem occurred.
+
+```
+3:05 AM: query timeout
+3:05 AM: slow query detected
+3:05 AM: lock wait timeout
+```
+
+**Hypothesis:** database query is waiting for lock.
+
+### 4. Check traces
+
+If using distributed tracing, look at slow requests.
+
+```
+Request GET /product/123
+  |
+  ├── Auth (5ms)
+  ├── DB query (450ms)  <- THIS IS SLOW
+  └── Serialize (3ms)
+```
+
+**Hypothesis:** specific database query is slow.
+
+### 5. Investigate database
+
+Check slow query log:
+
+```
+Query: SELECT * FROM products WHERE id = 123
+Execution time: 450ms
+Rows examined: 1,000,000
+Rows returned: 1
+Query plan: Full table scan (no index)
+```
+
+**Root cause:** missing index on `id` column.
+
+### 6. Verify fix
+
+Add index, monitor metrics, latency returns to normal.
+
+```
+Before: p99 latency 500ms
+After: p99 latency 150ms
+Query time: 5ms
+```
+
+## Common debugging mistakes
+
+### 1. Guessing at root cause
+
+**Mistake:** "it's probably the cache," make changes without data
+
+**Result:**
+- Wrong component fixed
+- Problem persists
+- Time wasted
+
+**Better:** use metrics and logs to identify actual bottleneck.
+
+### 2. Changing multiple things at once
+
+**Mistake:** add caching, increase connection pool, upgrade database all at once
+
+**Result:**
+- Problem goes away but don't know which fix helped
+- If something breaks, don't know which change caused it
+
+**Better:** change one thing, measure impact, then change next.
+
+### 3. Not correlating metrics
+
+**Mistake:** see latency spike, check only latency metric
+
+**Result:**
+- Miss context (was CPU also high? Error rate?))
+- Wrong hypothesis
+
+**Better:** check all relevant metrics together.
+
+### 4. Ignoring historical context
+
+**Mistake:** problem occurred at 3 AM, don't check what deployed yesterday
+
+**Result:**
+- Obvious cause missed (new code deployed)
+
+**Better:** always check what changed recently (code, config, traffic).
+
+### 5. Not reproducing the problem
+
+**Mistake:** problem reported as "sometimes slow," don't try to reproduce
+
+**Result:**
+- Cannot verify root cause
+- Cannot verify fix works
+
+**Better:** always try to reproduce (even if hard).
+
+## Observability checklist
+
+**For every production system:**
+
+- [ ] Metrics for request latency (p50, p95, p99)
+- [ ] Metrics for error rate
+- [ ] Metrics for throughput (requests/sec)
+- [ ] Metrics for resource usage (CPU, memory, disk)
+- [ ] Dependency-specific metrics (database latency, cache hit rate)
+- [ ] Logs with context (which request, which user)
+- [ ] Traces showing request path
+- [ ] Alerts on latency threshold
+- [ ] Alerts on error rate threshold
+- [ ] Alerts on resource exhaustion
+- [ ] Runbook for common failures
+- [ ] On-call rotation with access to logs, metrics, traces
+
+Without these, debugging is guesswork.
+
+## Questions to think about
+
+- If latency spike happens but error rate is unchanged, where is the problem?
+- If database CPU is 90% and application CPU is 10%, what is the bottleneck?
+- If an alert fires but the metric is actually fine (false positive), what does that mean?
+- How would you debug a problem that happens randomly, not reproducibly?
+- If you add more caching and latency still increases, what else could be slow?
+- Why is memory growing constantly a problem even if system is working fine?
+- What would you check first if error rate spikes to 50%?
+- If removing one service from load balancer makes everything fast, what does that tell you?
+
+## Summary
+
+Observability is the ability to understand your system from its external outputs.
+
+Metrics show what is happening (latency up, CPU high).
+Logs show why (query timeout, lock wait).
+Traces show where (database query took 450ms).
+
+Together, they enable debugging without guessing.
+
+The best engineers build observability from the start, not after problems occur.
+
+Common failures have patterns. Learning to recognize them (database slow, cascade failure, memory leak) helps you debug faster.
+
+Systematic debugging (define problem → check metrics → check logs → check traces → investigate) beats random guessing every time.
