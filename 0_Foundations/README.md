@@ -4,22 +4,31 @@ This section establishes the mental models you need to understand why backend sy
 
 ## Learning path
 
-**0_System_Evolution_and_Scalability.md** — Why systems evolve
+**[0_System_Evolution.md](file:///d:/Playground/Backend%20Notes/0_Foundations/0_System_Evolution.md)** — Core System Evolution
 - Single server limits
-- Horizontal scaling concepts
-- When systems need to evolve
+- Vertical vs Horizontal scaling concepts
+- Database and caching scaling bottlenecks
+- Replication and sharding introductory concepts
+
+**[1_Asynchronous_Processing.md](file:///d:/Playground/Backend%20Notes/0_Foundations/1_Asynchronous_Processing.md)** — Event-driven and Queue Scaling
+- Asynchronous work queues
+- Event streaming and distributed messaging
 - Breaking points and metrics
+- Common scaling mistakes
 
-Start here. Understand why we even need databases, caches, message queues. They exist because single servers cannot handle real-world load.
-
-**1_Performance_Engineering.md** — How to identify and fix bottlenecks
+**[2_Performance_Engineering_Basics.md](file:///d:/Playground/Backend%20Notes/0_Foundations/2_Performance_Engineering_Basics.md)** — Performance Engineering Fundamentals
 - Performance vs scalability distinction
-- How to measure correctly (baselines matter)
-- Finding the actual bottleneck (profilers, monitoring, traces)
-- Common bottlenecks (CPU, memory, I/O, locks)
-- Amdahl's Law (why some optimizations don't help)
+- How to define performance requirements
+- Establishing current baselines
+- Profiling and finding the actual bottleneck
 
-Read this to learn how NOT to waste time optimizing the wrong thing. Most engineers optimize randomly. This teaches systematic debugging.
+**[3_Common_Bottlenecks_and_Testing.md](file:///d:/Playground/Backend%20Notes/0_Foundations/3_Common_Bottlenecks_and_Testing.md)** — Common Bottlenecks and Testing
+- Common bottlenecks (CPU, Memory, locks, Network, Disk)
+- Amdahl's Law (diminishing returns)
+- Caching decisions and premature optimization traps
+- Types of performance testing (Load, Stress, Soak, Spike) and monitoring
+
+Read these in order. They build a systematic thinking framework for building and operating production systems.
 
 ## Key concepts you'll learn
 
@@ -40,4 +49,5 @@ After foundations, you'll study specific technologies and patterns:
 
 ## Reading strategy
 
-Read both documents in order. Foundation is a prerequisite for everything else. You cannot understand why Kafka exists or why sharding is necessary without understanding system evolution and performance engineering.
+Read all four documents in order. Foundation is a prerequisite for everything else. You cannot understand why Kafka exists or why sharding is necessary without understanding system evolution and performance engineering.
+
