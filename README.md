@@ -21,30 +21,27 @@ This knowledge base answers those questions.
 
 ### Start here if you're beginning
 
-1. **Read Foundations** (0_System_Evolution_and_Scalability → 1_Performance_Engineering)
-   - Understand why systems evolve and how to measure performance
+1. **Read Foundations** (0_System_Evolution → 1_Asynchronous_Processing → 2_Performance_Engineering_Basics → 3_Common_Bottlenecks_and_Testing)
+   - Understand why systems evolve, how async queues fit in, and how to measure/test performance baselines
    - This is prerequisite for everything else
 
-2. **Read Data Storage** (Database_Design_for_Scale → CRUD_Operations → Redis)
+2. **Read Data Storage** (0_Database_Bottlenecks_and_Replication → 1_Database_Sharding_and_Strategies → 2_CRUD_Operations_and_Performance → 3_CRUD_Patterns_at_Scale → Redis)
    - Databases are the original bottleneck
-   - Learn why, how to scale them, and when caching helps
+   - Learn database design for scale, sharding strategies, CRUD performance, and caching with Redis
 
-3. **Read Async and Events** (Messaging_Patterns → Kafka → Distributed_Transactions)
-   - How to handle asynchronous work
-   - Why Kafka is different from simple queues
-   - How to coordinate work across services
+3. **Read Async and Events** (0_Messaging_Patterns → 1_Message_Semantics_and_Mistakes → Kafka → Distributed_Transactions → Saga_Pattern)
+   - How to handle asynchronous work, event streaming with Kafka
+   - How to coordinate eventual consistency across services using Saga Patterns
 
-4. **Read Reliability** (Reliability_Patterns → Availability_and_Fault_Tolerance)
+4. **Read Reliability** (0_Reliability_Patterns → 1_Resource_Isolation_and_Fault_Tolerance → 2_Availability_and_Replication → 3_Failover_and_Multi_Region)
    - How to make systems continue working despite failures
-   - Replication, failover, multi-region deployment
+   - Exponential backoffs, circuit breakers, resource isolating bulkheads, failovers, and multi-region deployment
 
-5. **Read Infrastructure** (Under_the_Hood → Web_Server_Overview)
-   - Understand the physical layer
-   - HTTP, TCP, web servers
+5. **Read Infrastructure** (0_Under_the_Hood → 1_Web_Server_Overview)
+   - Understand the physical layer (HTTP, TCP, web servers, and database connectivity)
 
-6. **Read Operations** (Observability_and_Debugging)
-   - How to debug production issues
-   - Monitoring, metrics, traces
+6. **Read Operations** (0_Observability_Fundamentals → 1_Systematic_Debugging_and_Failure_Patterns)
+   - How to debug production issues using metrics, logs, and traces systematically
 
 
 ## Key Insights

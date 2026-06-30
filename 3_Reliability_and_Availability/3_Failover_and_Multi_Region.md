@@ -1,95 +1,6 @@
-# Availability and Fault Tolerance
+# Failover and Multi-Region Deployment
 
-This document explains how to design systems that remain operational despite component failures. Availability is about uptime. Fault tolerance is about continuing despite failures.
-
-## The availability problem
-
-A single server is a single point of failure.
-
-```
-Request -> Server -> Database
-
-Server crashes:
-  No response
-  System unavailable
-  Users affected
-```
-
-To be always available (or close to it), you need redundancy.
-
-## Measuring availability
-
-Availability is expressed as uptime percentage.
-
-| Availability | Downtime per year | Downtime per month |
-|--------------|-------------------|-------------------|
-| 99% (two nines) | 3.65 days | 7.2 hours |
-| 99.9% (three nines) | 8.76 hours | 43 minutes |
-| 99.99% (four nines) | 52 minutes | 4.3 minutes |
-| 99.999% (five nines) | 5.26 minutes | 26 seconds |
-
-**Reality check:**
-- 99% (two nines) is achievable with basic redundancy
-- 99.9% (three nines) requires solid engineering
-- 99.99% (four nines) is very difficult
-- 99.999% (five nines) is exceptionally rare
-
-Most critical systems target 99.9% (three nines).
-
-## Replication: the foundation
-
-Replication copies data to multiple servers.
-
-```
-Master: handles reads and writes
-Replica 1: copy of master (reads only)
-Replica 2: copy of master (reads only)
-```
-
-**Benefits:**
-- Read distribution (scale read throughput)
-- High availability (if master fails, replica takes over)
-- Data durability (multiple copies)
-
-**Types of replication:**
-
-### 1. Synchronous replication
-
-```
-Write to master:
-  1. Master receives write
-  2. Master applies write
-  3. Master waits for replicas to acknowledge
-  4. Master confirms write to client
-
-All replicas have the write before acknowledging.
-Consistent but slower.
-```
-
-**Pros:** strong consistency (all servers have same data)
-**Cons:** slower (wait for slowest replica), if any replica down, writes block
-
-### 2. Asynchronous replication
-
-```
-Write to master:
-  1. Master receives write
-  2. Master applies write
-  3. Master confirms write to client
-  4. Master sends write to replicas (in background)
-
-Master doesn't wait for replicas.
-Fast but replication delay.
-```
-
-**Pros:** fast writes
-**Cons:** replicas lag (may not have latest data), if master fails before replicating, data is lost
-
-**Trade-off:**
-Synchronous = consistency, slower.
-Asynchronous = performance, eventual consistency.
-
-Most systems use asynchronous with monitoring (alert if lag too high).
+This document covers database failover handling, split-brain mitigation, multi-region deployments, active-passive vs active-active patterns, and availability monitoring.
 
 ## Failover: handling master failure
 
@@ -232,7 +143,6 @@ Both replicate to each other (bidirectional).
 ```
 
 **Pros:** no single point of failure, survivable disaster
-
 **Cons:** conflict resolution required (both masters modify same data)
 
 ### 2. Active-passive
@@ -248,7 +158,6 @@ Master fails:
 ```
 
 **Pros:** no conflicts, simpler
-
 **Cons:** passive replica wasted (only reads during normal operation)
 
 ### 3. Read replicas (no failover)
@@ -362,7 +271,7 @@ System slow despite replica available
 
 **Better:** distribute failover load, gradually add capacity.
 
-### 4. No way to manually intervene
+### 4. No manual override options
 
 **Mistake:** automatic failover but no way to revert or adjust
 
@@ -420,7 +329,7 @@ Check:
 
 ## Questions to think about
 
-- Why is 99.9% availability so much harder than 99%?
+- Why is 99.9% availability so much harder than 99?
 - If a replica lags 10 seconds, what happens if master fails?
 - Why is split-brain dangerous?
 - How often should you test failover?
@@ -436,9 +345,7 @@ Check:
 Availability requires redundancy. A single server cannot be always available.
 
 Replication copies data. Failover switches to replica when master fails.
-
 Multi-region deployment protects against regional disasters.
 
 The cost is complexity (managing multiple servers, handling consistency), operational overhead (monitoring, testing), and eventual consistency during failures.
-
 The best systems balance availability needs with operational reality. Most don't need five nines. Three nines is hard enough.

@@ -6,54 +6,53 @@ This section covers how to handle work asynchronously, decouple services, and pr
 
 ### 0_Messaging/
 
-**0_Messaging_Patterns.md** — Request-reply, Pub/Sub, Event Streaming
+**[0_Messaging_Patterns.md](file:///d:/Playground/Backend%20Notes/2_Async_and_Events/0_Messaging/0_Messaging_Patterns.md)** — Core Messaging Patterns
 - Why messaging exists (decoupling producers and consumers)
-- Message queue concept (buffer between producer and consumer)
+- Message queue concepts and buffers
 - Three patterns: request-reply, publish-subscribe, event streaming
-- Delivery semantics (at-most-once, at-least-once, exactly-once)
-- Ordering and idempotency
-- Common mistakes (losing messages, duplicates, backpressure)
+
+**[1_Message_Semantics_and_Mistakes.md](file:///d:/Playground/Backend%20Notes/2_Async_and_Events/0_Messaging/1_Message_Semantics_and_Mistakes.md)** — Message Semantics & Failure Modes
+- Delivery guarantees (at-most-once, at-least-once, exactly-once)
+- Ordering constraints and idempotency
+- Fanout pattern details
+- Common messaging mistakes (losing messages, duplicate handling, backpressure)
 
 Start here to understand what messaging solves conceptually.
 
 ### 1_Event_Streaming/Kafka/
 
-**0_INTRO.md** through **4_SYSTEMS_PERSPECTIVE.md**
+**0_INTRO.md** through **5_KAFKA_DESIGN_AND_MISTAKES.md**
 
 Kafka is the implementation of event streaming at scale:
 - What Kafka is (distributed event log)
 - Core concepts (topics, partitions, consumer groups)
 - Why Kafka exists (multiple independent consumers, replay capability)
-- When Kafka is necessary
-- How to investigate Kafka issues
-
-This progression shows:
-- What problem messaging solves (abstract)
-- How Kafka solves it specifically (concrete)
-- Why Kafka is different from simple message queues
+- Internal mechanisms and partition replication (in **[3_INTERNALS.md](file:///d:/Playground/Backend%20Notes/2_Async_and_Events/1_Event_Streaming/Kafka/3_INTERNALS.md)**)
+- Kafka design choices (partitions, consumer groups, replication, retention)
+- When Kafka is necessary and common mistakes to avoid
 
 ### 2_Distributed_Transactions/
 
-**0_Distributed_Transactions.md** — Why coordinating across services is hard
+**[0_Distributed_Transactions.md](file:///d:/Playground/Backend%20Notes/2_Async_and_Events/2_Distributed_Transactions/0_Distributed_Transactions.md)** — Distributed Coordination
+- Why transactions across independent systems fail at scale
+- Two-Phase Commit (2PC) design and why it fails in distributed networks
+- Why 2PC works for databases but not services
 
-Why transactions across independent systems are fundamentally different from database transactions:
-- Why 2PC (two-phase commit) fails at scale
-- Saga pattern (distributed transactions with eventual consistency)
-- Choreography vs Orchestration
-- Compensation logic (reverting failed operations)
+**[1_Saga_Pattern_Overview.md](file:///d:/Playground/Backend%20Notes/2_Async_and_Events/2_Distributed_Transactions/1_Saga_Pattern_Overview.md)** — Saga Pattern Overview
+- Shorter introduction to Saga patterns, orchestration, choreography, and compensating actions
 
-**1_Saga_Pattern.md** — The practical pattern for distributed work
-
-Detailed exploration of Saga pattern:
-- How Saga works
-- When to use Saga vs 2PC
-- Common mistakes (not idempotent, stuck compensations)
+**[2_Saga_Pattern_Deep_Dive.md](file:///d:/Playground/Backend%20Notes/2_Async_and_Events/2_Distributed_Transactions/2_Saga_Pattern_Deep_Dive.md)** — Saga Pattern Details & Mistakes
+- Choreography vs Orchestration details
+- Saga trade-offs vs 2PC
+- Eventual consistency boundaries
+- Compensation logic challenges (partial updates, non-reversible operations)
+- Common saga mistakes and investigation strategy
 
 ## How these connect
 
-1. **Messaging_Patterns** explains conceptual problems messaging solves
-2. **Kafka** shows how Kafka solves those problems at scale
-3. **Distributed_Transactions** explains why coordinating work across systems is hard
+1. **Messaging_Patterns** & **Message_Semantics_and_Mistakes** explain conceptual problems messaging solves and delivery semantics.
+2. **Kafka** shows how Kafka implements event streaming at scale.
+3. **Distributed_Transactions** & **Saga_Pattern_Deep_Dive** explain how to coordinate work across independent systems safely.
 
 Understanding all three teaches you:
 - When to use async/events (reduce database writes)

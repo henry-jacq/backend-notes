@@ -6,17 +6,19 @@ This section covers how to operate backend systems in production: monitoring, de
 
 ### Observability and Debugging
 
-**0_Observability_and_Debugging.md** — Metrics, logs, traces
-
-How to understand what's happening in production:
-- Why observability matters (systems fail in unpredictable ways)
+**[0_Observability_Fundamentals.md](file:///d:/Playground/Backend%20Notes/5_Operations/0_Observability_Fundamentals.md)** — Observability Pillars & Alerting
+- Why observability matters (unpredictable failures in production)
 - Three pillars of observability (metrics, logs, traces)
-- Building debugging intuition
-- Common failure patterns
-- Systematic debugging strategy
-- Key metrics for different components
+- Key metrics for different architectural components (app, database, cache, queue)
+- Designing actionable alerts and avoiding alert fatigue
 
-This document teaches you how to debug production issues systematically instead of guessing randomly.
+**[1_Systematic_Debugging_and_Failure_Patterns.md](file:///d:/Playground/Backend%20Notes/5_Operations/1_Systematic_Debugging_and_Failure_Patterns.md)** — Debugging & Failure Patterns
+- Core failure patterns (slow database, memory leaks, timeouts, error spikes, cascading failures)
+- Step-by-step systematic debugging strategy
+- Checklist for production readiness
+- Common debugging mistakes to avoid
+
+These documents teach you how to debug production issues systematically instead of guessing randomly.
 
 ## Key concepts
 

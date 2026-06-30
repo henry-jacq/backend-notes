@@ -6,27 +6,30 @@ This section covers how to make systems resilient to failures and keep them runn
 
 ### Reliability Patterns
 
-**0_Reliability_Patterns.md** — Retries, circuit breakers, bulkheads
+**[0_Reliability_Patterns.md](file:///d:/Playground/Backend%20Notes/3_Reliability_and_Availability/0_Reliability_Patterns.md)** — Retries & Circuit Breakers
+- The failure premise in distributed systems
+- Retries (handling transient failures, exponential backoff, jitter, idempotency)
+- Circuit breakers (preventing cascading failures, states, and transitions)
 
-How to handle component failures automatically:
-- Retries (handling transient failures)
-- Circuit breakers (preventing cascading failures)
-- Bulkheads (resource isolation)
-- Combining patterns effectively
+**[1_Resource_Isolation_and_Fault_Tolerance.md](file:///d:/Playground/Backend%20Notes/3_Reliability_and_Availability/1_Resource_Isolation_and_Fault_Tolerance.md)** — Bulkheads & Fault Isolation
+- Bulkheads (resource pools and isolation by request type or customer)
+- Combining patterns (retries + circuit breakers + bulkheads)
+- Common reliability mistakes and investigation strategy
 
 These patterns are "defensive programming" for distributed systems. Failures will happen. These patterns make systems respond gracefully.
 
 ### Availability and Fault Tolerance
 
-**1_Availability_and_Fault_Tolerance.md** — Replication, failover, multi-region
+**[2_Availability_and_Replication.md](file:///d:/Playground/Backend%20Notes/3_Reliability_and_Availability/2_Availability_and_Replication.md)** — Measuring Availability & Replication
+- Measuring availability (target uptime percentage and downtime calculations)
+- Data replication (synchronous vs asynchronous replication, trade-offs)
 
-How to keep systems running when components fail:
-- Measuring availability (99.9% vs 99.99%)
-- Replication (copies of data)
-- Failover (switching to replica on failure)
-- Multi-region deployment
-- Active-active vs active-passive
-- Health checks
+**[3_Failover_and_Multi_Region.md](file:///d:/Playground/Backend%20Notes/3_Reliability_and_Availability/3_Failover_and_Multi_Region.md)** — Failover & Multi-Region
+- Automatic failover handling and split-brain mitigation
+- Multi-region deployment challenges (latency, consistency)
+- Availability strategies (active-active vs active-passive)
+- Health checks and graceful degradation
+- Common availability mistakes and investigation strategy
 
 These are "architectural" approaches to resilience. They prevent failures from becoming outages.
 

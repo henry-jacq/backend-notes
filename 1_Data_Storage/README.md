@@ -9,40 +9,49 @@ Start here if you're new to databases or need a refresher on fundamental concept
 
 ### 1_Relational_Databases/ (SQL Databases)
 
-**0_Database_Design_for_Scale.md** — Why databases fail and how to fix it
-- Single database bottlenecks (write bottleneck, read bottleneck, memory limits)
-- Replication (solves read scaling, not write scaling)
-- Sharding (solves write scaling, introduces complexity)
-- Hot shard problem and load imbalance
-- When each approach is necessary
+**[0_Database_Bottlenecks_and_Replication.md](file:///d:/Playground/Backend%20Notes/1_Data_Storage/1_Relational_Databases/0_Database_Bottlenecks_and_Replication.md)** — Single Database Bottlenecks
+- Limits of a single database (CPU, memory, disk I/O, network, connection limits)
+- Write bottleneck symptoms and read bottlenecks
+- Replication concepts and its limits for write workloads
 
-**1_CRUD_Operations.md** — Create, Read, Update, Delete operations
-- How each operation works at the database level
-- Indexes (what they solve, what they cost)
-- Common patterns (bulk insert, JOIN optimization)
-- N+1 query problem
-- Locking and contention
-- Investigation and optimization
+**[1_Database_Sharding_and_Strategies.md](file:///d:/Playground/Backend%20Notes/1_Data_Storage/1_Relational_Databases/1_Database_Sharding_and_Strategies.md)** — Database Sharding
+- Sharding as a read/write scaling solution
+- Hash-based, range-based, and directory-based sharding strategies
+- Hot shard problem and load imbalances
+- Investigation and common scaling mistakes
 
-Read these in order. First understand the limits of single databases, then understand how operations interact with those limits.
+**[2_CRUD_Operations_and_Performance.md](file:///d:/Playground/Backend%20Notes/1_Data_Storage/1_Relational_Databases/2_CRUD_Operations_and_Performance.md)** — Core CRUD Performance
+- Execution costs of single vs bulk INSERTs
+- Full table scans vs index scans under SELECT
+- UPDATE/DELETE costs and database row-level locking
+
+**[3_CRUD_Patterns_at_Scale.md](file:///d:/Playground/Backend%20Notes/1_Data_Storage/1_Relational_Databases/3_CRUD_Patterns_at_Scale.md)** — CRUD at Scale
+- INSERT-heavy, SELECT-heavy, UPDATE-heavy, and DELETE-heavy scenarios
+- Common CRUD mistakes (N+1 query problem, duplicate indexes, unbatched deletes)
+- Systematic CRUD performance diagnosis and investigation
+
+Read these in order. First understand the limits of single databases, then understand sharding, and then understand how CRUD operations interact with those limits.
 
 ### 2_In_Memory_Caching/Redis/
 
-**0_INTRO.md** through **5_SYSTEMS_PERSPECTIVE.md**
+**0_INTRO.md** through **6_REDIS_DESIGN_AND_MISTAKES.md**
 
 Redis is the solution to repeated expensive queries. This progression explains:
 - Why Redis exists (database bottleneck solution)
 - How Redis works (data structures, commands)
 - When Redis helps (cache hit rate matters)
 - When Redis hurts (memory limitations, stale data)
+- Redis design trade-offs (single-threading, eviction, persistence, Pub/Sub)
+- Common caching mistakes
 
 ## How these connect
 
-1. **Database_Design_for_Scale** explains why databases fail at scale
-2. **CRUD_Operations** explains how operations interact with databases
-3. **Redis** explains how to cache to reduce database load
+1. **Database_Bottlenecks_and_Replication** explains single database limits and replication limits.
+2. **Database_Sharding_and_Strategies** explains horizontal partitioning to scale writes.
+3. **CRUD_Operations_and_Performance** & **CRUD_Patterns_at_Scale** explain how operations interact with databases.
+4. **Redis** explains how to cache to reduce database load.
 
-Understanding all three gives you the mental model: databases are the original bottleneck, CRUD operations interact with scaling limits, caching helps but introduces new problems.
+Understanding these gives you the mental model: databases are the original bottleneck, CRUD operations interact with scaling limits, caching and sharding help but introduce new challenges.
 
 ## Key concepts
 
