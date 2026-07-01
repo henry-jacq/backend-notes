@@ -1,72 +1,33 @@
 # Backend Notes: Systems Engineering
 
-This is a structured knowledge base for building backend systems. It teaches engineering judgment, not just technologies.
+This repository contains structured systems engineering notes compiled into a single book-style PDF.
 
-## Philosophy
+## PDF Compilation Setup
 
-This repository exists to transform developers who can build REST APIs into engineers who can design and operate production systems.
+### 1. Install Python Dependencies
+```bash
+pip install -r requirements.txt
+```
 
-The best backend engineers understand:
-- **Why** systems are designed the way they are
-- **When** each technology becomes necessary
-- **What trade-offs** exist for every decision
-- **How** to debug production issues systematically
+### 2. Install GTK & Pango Dependencies (Windows)
+WeasyPrint requires GTK3 and Pango for document rendering. Install these using MSYS2:
 
-This knowledge base answers those questions.
+1. Download and run the installer from the [MSYS2 website](https://www.msys2.org/).
+2. Launch the **MSYS2 UCRT64** terminal from your Start Menu.
+3. Update the package database:
+   ```bash
+   pacman -Syu
+   ```
+4. Install the required GTK3 and Pango packages:
+   ```bash
+   pacman -S mingw-w64-ucrt-x86_64-gtk3 mingw-w64-ucrt-x86_64-pango
+   ```
 
-**Key principle:** Every section explains what problem a technology solves, when that problem becomes real, and what trade-offs exist. Technologies exist for reasons. Understanding those reasons is what separates good engineers from great engineers.
+The compile script automatically loads these DLLs from `C:\msys64\ucrt64\bin`.
 
-
-## How to Use This Repository
-
-### Start here if you're beginning
-
-1. **Read Foundations** (0_System_Evolution → 1_Asynchronous_Processing → 2_Performance_Engineering_Basics → 3_Common_Bottlenecks_and_Testing)
-   - Understand why systems evolve, how async queues fit in, and how to measure/test performance baselines
-   - This is prerequisite for everything else
-
-2. **Read Data Storage** (0_Database_Bottlenecks_and_Replication → 1_Database_Sharding_and_Strategies → 2_CRUD_Operations_and_Performance → 3_CRUD_Patterns_at_Scale → Redis)
-   - Databases are the original bottleneck
-   - Learn database design for scale, sharding strategies, CRUD performance, and caching with Redis
-
-3. **Read Async and Events** (0_Messaging_Patterns → 1_Message_Semantics_and_Mistakes → Kafka → Distributed_Transactions → Saga_Pattern)
-   - How to handle asynchronous work, event streaming with Kafka
-   - How to coordinate eventual consistency across services using Saga Patterns
-
-4. **Read Reliability** (0_Reliability_Patterns → 1_Resource_Isolation_and_Fault_Tolerance → 2_Availability_and_Replication → 3_Failover_and_Multi_Region)
-   - How to make systems continue working despite failures
-   - Exponential backoffs, circuit breakers, resource isolating bulkheads, failovers, and multi-region deployment
-
-5. **Read Infrastructure** (0_Under_the_Hood → 1_Web_Server_Overview)
-   - Understand the physical layer (HTTP, TCP, web servers, and database connectivity)
-
-6. **Read API Design** (0_API_Communication_Protocols → 1_REST → 2_GraphQL → 3_gRPC → 4_State → 5_Versioning → 6_Auth → 7_Security → 8_Gateway)
-   - How to design, secure, and evolve API contracts
-   - Communication protocols, REST, GraphQL, gRPC, OAuth 2.0, JWT, API gateways, and load balancing
-
-7. **Read Operations** (0_Observability_Fundamentals → 1_Systematic_Debugging_and_Failure_Patterns)
-   - How to debug production issues using metrics, logs, and traces systematically
-
-
-## Key Insights
-
-### Why this structure exists
-
-1. **Foundations first** — You must understand why systems evolve before studying any technology
-2. **Data storage early** — Databases are the bottleneck for most systems
-3. **Async and events together** — Messaging makes sense only after understanding database limits
-4. **Reliability after scale** — Design for failure only after you understand scale
-5. **Infrastructure before APIs** — Understand HTTP, TCP, and servers before designing API contracts
-6. **API design after infrastructure** — API design builds on protocol knowledge and reliability patterns
-7. **Operations last** — Understand all the systems before studying how to debug them
-
-
-Every technology covered here is explained in context:
-- **Kafka** — Why it exists (event replay, multiple independent consumers)
-- **Redis** — Why it exists (repeated query problem)
-- **Sharding** — Why it's necessary (write scaling)
-- **Sagas** — Why they're needed (transactions don't work across services)
-- **GraphQL** — Why it exists (over-fetching, under-fetching in REST)
-- **gRPC** — Why it exists (performance and strong contracts for service-to-service)
-- **API Gateways** — Why they exist (centralized auth, rate limiting, routing)
-
+### 3. Generate the PDF
+Run the generator script at the repository root:
+```bash
+python generate_pdf.py
+```
+The compiled book will be saved as `backend_notes.pdf`.
