@@ -40,7 +40,11 @@ This knowledge base answers those questions.
 5. **Read Infrastructure** (0_Under_the_Hood → 1_Web_Server_Overview)
    - Understand the physical layer (HTTP, TCP, web servers, and database connectivity)
 
-6. **Read Operations** (0_Observability_Fundamentals → 1_Systematic_Debugging_and_Failure_Patterns)
+6. **Read API Design** (0_API_Communication_Protocols → 1_REST → 2_GraphQL → 3_gRPC → 4_State → 5_Versioning → 6_Auth → 7_Security → 8_Gateway)
+   - How to design, secure, and evolve API contracts
+   - Communication protocols, REST, GraphQL, gRPC, OAuth 2.0, JWT, API gateways, and load balancing
+
+7. **Read Operations** (0_Observability_Fundamentals → 1_Systematic_Debugging_and_Failure_Patterns)
    - How to debug production issues using metrics, logs, and traces systematically
 
 
@@ -52,7 +56,9 @@ This knowledge base answers those questions.
 2. **Data storage early** — Databases are the bottleneck for most systems
 3. **Async and events together** — Messaging makes sense only after understanding database limits
 4. **Reliability after scale** — Design for failure only after you understand scale
-5. **Infrastructure and operations last** — Understand problems before studying solutions
+5. **Infrastructure before APIs** — Understand HTTP, TCP, and servers before designing API contracts
+6. **API design after infrastructure** — API design builds on protocol knowledge and reliability patterns
+7. **Operations last** — Understand all the systems before studying how to debug them
 
 
 Every technology covered here is explained in context:
@@ -60,4 +66,7 @@ Every technology covered here is explained in context:
 - **Redis** — Why it exists (repeated query problem)
 - **Sharding** — Why it's necessary (write scaling)
 - **Sagas** — Why they're needed (transactions don't work across services)
+- **GraphQL** — Why it exists (over-fetching, under-fetching in REST)
+- **gRPC** — Why it exists (performance and strong contracts for service-to-service)
+- **API Gateways** — Why they exist (centralized auth, rate limiting, routing)
 
