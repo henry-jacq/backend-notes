@@ -7,7 +7,7 @@ summary: "As systems grow from one service to many, a critical question emerges:
 ---
 # API Gateway and Load Balancing
 
-As systems grow from one service to many, a critical question emerges: where do cross-cutting concerns live? Authentication, rate limiting, routing, logging — if every service implements these independently, you get inconsistency, duplication, and operational nightmares. API gateways and load balancers centralize these concerns.
+As systems grow from one service to many, a critical question emerges: where do cross-cutting concerns live? Authentication, rate limiting, routing, logging — if every service implements these independently, you get inconsistency, duplication, and operational nightmares. API gateways and load balancers centralise these concerns.
 
 ## The problem with direct client-to-service communication
 
@@ -20,6 +20,7 @@ Client -> Product Service (port 8003, auth check, rate limit, logging)
 Client -> Payment Service (port 8004, auth check, rate limit, logging)
 
 Problems:
+
   - Client knows about every service (tight coupling)
   - Each service implements auth, rate limiting, logging (duplication)
   - Adding a service requires updating all clients
@@ -36,6 +37,7 @@ Client -> API Gateway -> User Service
                      -> Payment Service
 
 Gateway handles:
+
   - Authentication (once, before routing)
   - Rate limiting (centralized)
   - Routing (client calls one endpoint)
@@ -85,12 +87,14 @@ With gateway auth:
 
 ```
 Gateway auth flow:
+
   1. Client sends: Authorization: Bearer eyJhbG...
   2. Gateway validates JWT (signature, expiry, audience)
   3. Gateway adds internal headers:
        X-User-Id: 123
        X-User-Role: admin
        X-Request-Id: uuid-abc
+
   4. Gateway forwards to backend service
   5. Backend trusts headers (internal network only)
 ```
@@ -202,15 +206,16 @@ Mobile client -> Mobile BFF gateway -> services
 Partner API   -> Partner gateway    -> services
 ```
 
-Each client type gets its own gateway optimized for its needs.
+Each client type gets its own gateway optimised for its needs.
 
 **Why BFF exists:**
+
 - Mobile needs different response shapes (smaller payloads, fewer fields)
 - Web needs different authentication (cookies vs tokens)
 - Partners need different rate limits and versioning
 - Different teams can own different BFFs
 
-**Trade-off:** More gateways to maintain. But each is simpler and optimized.
+**Trade-off:** More gateways to maintain. But each is simpler and optimised.
 
 ### Popular API gateways
 
@@ -313,7 +318,7 @@ Request X routes to the next server clockwise on the ring.
 Adding/removing a server only affects adjacent requests.
 ```
 
-Minimizes redistribution when servers are added or removed. Used by distributed caches and databases.
+Minimises redistribution when servers are added or removed. Used by distributed caches and databases.
 
 ### L4 vs L7 load balancing
 
@@ -445,6 +450,7 @@ Service A Pod:
 ```
 
 **What a service mesh provides:**
+
 - mTLS between all services (automatic)
 - Load balancing with circuit breakers
 - Distributed tracing
@@ -452,12 +458,14 @@ Service A Pod:
 - Retry policies
 
 **When you need a service mesh:**
+
 - 20+ microservices
 - Need consistent security policies across all services
 - Need observability without modifying application code
 - Complex traffic management (canary, blue-green, A/B)
 
 **When you don't:**
+
 - Fewer than 10 services
 - Monolith or small number of services
 - Team doesn't have expertise to operate mesh infrastructure
@@ -473,4 +481,4 @@ Service A Pod:
 6. **Ignoring cold starts** — new instances need warm-up time before receiving full traffic. Use gradual ramp-up
 7. **No circuit breaker** — gateway continues sending traffic to failing services, cascading the failure
 
-This concludes the API Design section. APIs are the contracts through which systems communicate. Designing them well — choosing the right protocol, structuring resources correctly, managing state, evolving versions, securing access, and centralizing cross-cutting concerns — is what separates systems that scale from systems that collapse under their own complexity.
+This concludes the API Design section. APIs are the contracts through which systems communicate. Designing them well — choosing the right protocol, structuring resources correctly, managing state, evolving versions, securing access, and centralising cross-cutting concerns — is what separates systems that scale from systems that collapse under their own complexity.

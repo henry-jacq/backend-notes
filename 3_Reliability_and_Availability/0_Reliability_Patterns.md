@@ -60,11 +60,13 @@ Attempt 2: packet arrives
 Retrying works for transient failures.
 
 **When retries help:**
+
 - Network timeout (usually brief)
 - Temporary overload (service recovers quickly)
 - Momentary unavailability (service restarts, comes back)
 
 **When retries don't help:**
+
 - Permanent failure (service down permanently)
 - Bug in downstream service (retrying same request returns same error)
 - Permanent resource exhaustion
@@ -81,6 +83,7 @@ Attempt 4: give up, return error
 **Exponential backoff:** each retry waits longer than the previous one.
 
 **Why backoff helps:**
+
 - Don't overwhelm struggling service
 - Give service time to recover
 - Spread requests (not thundering herd)
@@ -104,9 +107,10 @@ Retries succeed.
 ```
 
 **Retry limits:**
+
 - Max 3 retries (diminishing returns)
 - Max total time (don't wait forever)
-- Jitter (add randomness to prevent synchronized storms)
+- Jitter (add randomness to prevent synchronised storms)
 
 **Idempotency requirement:**
 Retries only safe if operation is idempotent (retrying has no additional effect).
@@ -191,11 +195,13 @@ Back to closed:
 ```
 
 **Benefits:**
+
 - Fast failure (fail immediately, not after timeout)
 - Prevents overwhelming struggling service
 - Signals to user that service is down (not hanging)
 
 **Trade-off:**
+
 - User sees error instead of cached response or fallback
 - Must have fallback strategy
 

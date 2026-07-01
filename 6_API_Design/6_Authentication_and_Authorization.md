@@ -1,15 +1,15 @@
 ---
-title: "Authentication and Authorization"
+title: "Authentication and Authorisation"
 part: 6
 part_title: "API Design"
 chapter: 7
 summary: "Every production API must answer two questions: **who is calling?** (authentication) and **what are they allowed to..."
 ---
-# Authentication and Authorization
+# Authentication and Authorisation
 
-Every production API must answer two questions: **who is calling?** (authentication) and **what are they allowed to do?** (authorization). These are different concerns with different mechanisms. Conflating them is one of the most common API security mistakes.
+Every production API must answer two questions: **who is calling?** (authentication) and **what are they allowed to do?** (authorisation). These are different concerns with different mechanisms. Conflating them is one of the most common API security mistakes.
 
-## Authentication vs authorization
+## Authentication vs authorisation
 
 ```
 Authentication (authn):
@@ -32,7 +32,7 @@ Authentication: Token belongs to user 123 (identity verified)
 Authorization: Does user 123 have permission to delete user 456? (permission checked)
 ```
 
-Authentication happens first. Authorization depends on authentication.
+Authentication happens first. Authorisation depends on authentication.
 
 ## API keys
 
@@ -53,16 +53,19 @@ Request:
 ```
 
 **When API keys work:**
+
 - Server-to-server communication
 - Public APIs with usage tracking (rate limiting per key)
 - Low-security scenarios (read-only public data)
 
 **When API keys don't work:**
+
 - User-facing authentication (API keys identify applications, not users)
 - High-security scenarios (keys are long-lived, hard to rotate)
 - Delegated access (user grants limited access to a third party)
 
 **API key security:**
+
 - Never embed in client-side code (visible in browser)
 - Transmit only over HTTPS
 - Store hashed on server side (like passwords)
@@ -71,7 +74,7 @@ Request:
 
 ## OAuth 2.0
 
-OAuth 2.0 is the standard for **delegated authorization**. It allows a user to grant a third-party application limited access to their resources without sharing their password.
+OAuth 2.0 is the standard for **delegated authorisation**. It allows a user to grant a third-party application limited access to their resources without sharing their password.
 
 ### The problem OAuth solves
 
@@ -98,7 +101,7 @@ Authorization Server -> Issues tokens after user consent (Google, GitHub, etc.)
 Resource Server -> The API that holds the user's data
 ```
 
-### Authorization Code flow (most secure, server-side apps)
+### Authorisation Code flow (most secure, server-side apps)
 
 This is the recommended flow for web applications with a backend server.
 
@@ -143,9 +146,9 @@ Step 6: Client uses access token to call API
 ```
 
 **Why the code exchange exists (Step 4):**
-The authorization code is exchanged server-to-server. The access token never passes through the browser. This prevents token theft via browser history, referrer headers, or JavaScript.
+The authorisation code is exchanged server-to-server. The access token never passes through the browser. This prevents token theft via browser history, referrer headers, or JavaScript.
 
-### Authorization Code flow with PKCE (public clients)
+### Authorisation Code flow with PKCE (public clients)
 
 PKCE (Proof Key for Code Exchange) secures the flow for clients that can't keep a secret (mobile apps, SPAs).
 
@@ -169,7 +172,7 @@ Step 5: Server verifies SHA256(code_verifier) == code_challenge
 ```
 
 **Why PKCE matters:**
-Without PKCE, an attacker who intercepts the authorization code (via malicious app on same device) can exchange it for tokens. With PKCE, they also need the code_verifier, which never left the original client.
+Without PKCE, an attacker who intercepts the authorisation code (via malicious app on same device) can exchange it for tokens. With PKCE, they also need the code_verifier, which never left the original client.
 
 ### Client Credentials flow (service-to-service)
 
@@ -193,6 +196,7 @@ Response:
 ```
 
 **Use when:**
+
 - Microservice A calls microservice B
 - Background jobs accessing APIs
 - No user context needed
@@ -204,6 +208,7 @@ Token returned directly in URL fragment:
   https://myapp.com/callback#access_token=eyJhbG...
 
 Problems:
+
   - Token visible in browser history
   - Token visible in server logs (if referrer leaks)
   - No refresh token
@@ -348,6 +353,7 @@ Access token expires:
   Body: { "refresh_token": "rt_abc123..." }
 
   Server:
+
     1. Look up refresh token in database
     2. Verify not revoked or expired
     3. Issue new access token
@@ -396,6 +402,7 @@ Client-side:
   Server: Environment variable or secrets manager
 
 NEVER store refresh tokens in:
+
   - localStorage (accessible to XSS)
   - sessionStorage (lost on tab close)
   - URL parameters (visible in logs)
@@ -421,6 +428,7 @@ Check: "delete:users" in token.scope? -> No -> 403 Forbidden
 ```
 
 **Scope design principles:**
+
 - Use resource:action format (`read:users`, `write:orders`)
 - Start with least privilege (minimal scopes by default)
 - Allow scope combination (`read:users write:users`)
@@ -449,11 +457,13 @@ Check: viewer role allows read only -> 403 Forbidden
 ```
 
 **When RBAC works:**
+
 - Small number of well-defined roles
 - Permissions are role-based, not context-dependent
 - Organization structure maps to roles
 
 **When RBAC doesn't work:**
+
 - "Alice can edit articles she authored but not others"
 - "Users can access data in their region only"
 - Complex, attribute-dependent rules
@@ -477,6 +487,7 @@ Evaluation:
 ```
 
 **When ABAC works:**
+
 - Fine-grained, context-dependent permissions
 - Multi-tenant systems (tenant isolation)
 - Regulatory requirements (data residency, time-based access)
@@ -512,11 +523,13 @@ Service A -> Service B
 ```
 
 **When mTLS works:**
+
 - Zero-trust networks (verify every connection)
 - Service mesh environments (Istio, Linkerd manage certificates)
 - High-security environments (financial, healthcare)
 
 **Challenges:**
+
 - Certificate management (issuance, rotation, revocation)
 - Certificate authority infrastructure
 - Debugging encrypted traffic is harder
@@ -527,6 +540,7 @@ Services authenticate with tokens issued by a central authority.
 
 ```
 Service A needs to call Service B:
+
 1. Service A authenticates to auth server (client credentials flow)
 2. Auth server issues access token for Service A
 3. Service A calls Service B with token
@@ -545,4 +559,4 @@ Simpler than mTLS but less secure (tokens can be stolen).
 6. **Not validating JWT audience** — token meant for Service A accepted by Service B
 7. **Transmitting tokens over HTTP** — always use HTTPS. Tokens in plain HTTP are visible to anyone on the network
 
-Authentication verifies identity. Authorization checks permissions. But APIs also need protection against abuse, attacks, and misuse at the network level. See [7_API_Security_and_Rate_Limiting.md](file:///d:/Playground/Backend%20Notes/6_API_Design/7_API_Security_and_Rate_Limiting.md).
+Authentication verifies identity. Authorisation checks permissions. But APIs also need protection against abuse, attacks, and misuse at the network level. See [7_API_Security_and_Rate_Limiting.md](file:///d:/Playground/Backend%20Notes/6_API_Design/7_API_Security_and_Rate_Limiting.md).

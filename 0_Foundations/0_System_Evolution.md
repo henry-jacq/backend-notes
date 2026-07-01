@@ -45,6 +45,7 @@ Metrics that matter at this stage:
 A single application server fails when it runs out of capacity. This manifests as:
 
 **Symptoms:**
+
 - CPU usage approaches 100%
 - Memory usage grows constantly
 - Requests start timing out
@@ -77,6 +78,7 @@ A load balancer distributes requests across multiple servers. This solves CPU bo
 But a problem emerges: all servers write to the same database. The database becomes the bottleneck.
 
 **Symptoms of database bottleneck:**
+
 - CPU on database server is at 100%
 - Slow queries pile up in query queue
 - Connection pool fills up
@@ -107,12 +109,14 @@ Database
 A cache server (Redis, Memcached) holds data in RAM. RAM is orders of magnitude faster than disk. Reads that would hit the database for 10ms now hit cache for 0.1ms.
 
 **Symptoms that caching helps:**
+
 - Database CPU is high because of repeated reads
 - Same queries run thousands of times per second
 - Read latency is the dominant factor in response time
 - Database connections are exhausted by readers
 
 **Symptoms that caching doesn't help:**
+
 - Most queries are unique (cache hit rate low)
 - Writes dominate over reads
 - Data changes constantly (cache stale)
@@ -127,6 +131,7 @@ Problem: caching helps reads, but writes still hit one database.
 Example: an e-commerce system gets 1,000 orders per second. Each order is a write. One database server's disk can only write so fast.
 
 **Symptoms:**
+
 - Write latency increases as load increases
 - Database CPU is 100% but mostly doing writes
 - Disk I/O is maxed out

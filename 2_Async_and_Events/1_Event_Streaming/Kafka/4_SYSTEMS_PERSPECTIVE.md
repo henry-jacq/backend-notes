@@ -16,12 +16,14 @@ Before Kafka, messaging systems existed (RabbitMQ, ActiveMQ, JMS). They worked f
 But at scale (thousands to millions of messages per second), they failed for one reason: they were not designed to store data permanently on disk.
 
 Traditional messaging systems:
+
 - Delivered messages from producer to consumer
 - Deleted messages after delivery
 - Stored messages in RAM
 - Lost messages if the broker crashed
 
 This works for notification systems and lightweight event distribution. It breaks when:
+
 - You need to replay events (a consumer crashed, came back online, wants old messages)
 - You want to audit what happened (keep all messages forever)
 - Multiple consumers need to process the same stream independently
@@ -35,12 +37,14 @@ This works for notification systems and lightweight event distribution. It break
 **Design:** messages queued in RAM, persisted to disk, then deleted after delivery
 
 **What worked:**
+
 - Simple pub/sub model
 - Fair distribution across consumers
 - Low latency
 - Small to moderate message volumes
 
 **Symptoms of breaking:**
+
 - Broker crash = message loss (despite persistence, some messages in flight)
 - Broker becomes a bottleneck (all messages flow through one server)
 - Scaling horizontally is hard (each broker is independent, message routing complex)
@@ -48,19 +52,21 @@ This works for notification systems and lightweight event distribution. It break
 - High memory usage (broker holds messages in queue)
 
 **Why it breaks:**
-RabbitMQ is optimized for message delivery, not message storage. It deletes messages after delivery. At high volumes, this creates bottlenecks.
+RabbitMQ is optimised for message delivery, not message storage. It deletes messages after delivery. At high volumes, this creates bottlenecks.
 
 ### Traditional databases as message storage
 
 **Design:** store events as rows in a table, consumer queries periodically
 
 **What worked:**
+
 - Permanent storage
 - ACID guarantees
 - Complex queries on events
 - Multiple consumers reading same data
 
 **Symptoms of breaking:**
+
 - Query performance degrades (millions of rows, scanning slow)
 - Writes become contention point (all writers hit same table)
 - Consumer state management is complex (consumer must track last read offset in separate table)
@@ -68,7 +74,7 @@ RabbitMQ is optimized for message delivery, not message storage. It deletes mess
 - Network overhead high (every event transmitted from database to consumer)
 
 **Why it breaks:**
-Databases are not optimized for streaming append-only workloads. Indexing, locking, and query optimization create overhead.
+Databases are not optimised for streaming append-only workloads. Indexing, locking, and query optimisation create overhead.
 
 ## Kafka's design decision: immutable log
 
@@ -98,7 +104,7 @@ All read the same log independently.
 - Events are never deleted (until retention policy expires)
 - Multiple consumers can read the same events independently
 - Consumers track their position (offset)
-- Append-only write pattern is optimized (sequential disk I/O, not random)
+- Append-only write pattern is optimised (sequential disk I/O, not random)
 - No in-memory queuing, no message loss
 - Horizontal scaling by splitting into partitions (each partition on different broker)
 

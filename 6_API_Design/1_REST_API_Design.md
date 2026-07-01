@@ -9,7 +9,7 @@ summary: "REST (Representational State Transfer) is the dominant paradigm for we
 
 REST (Representational State Transfer) is the dominant paradigm for web APIs. Most APIs you interact with are REST APIs. But most REST APIs are poorly designed — they expose database tables as endpoints, ignore HTTP semantics, and break consumers with every release.
 
-Good REST design treats the API as a product with clear contracts, predictable behavior, and graceful evolution.
+Good REST design treats the API as a product with clear contracts, predictable behaviour, and graceful evolution.
 
 ## What REST actually means
 
@@ -24,7 +24,7 @@ REST is an architectural style, not a specification. It was defined by Roy Field
 
 Most "REST" APIs only follow the first two constraints. That's fine for most use cases.
 
-## Resource modeling
+## Resource modelling
 
 The core concept of REST: everything is a resource. A resource is a noun, not a verb.
 
@@ -61,11 +61,13 @@ GET /orders/456                -> specific order
 ```
 
 **When to nest:**
+
 - Resource only exists in context of parent (comments on a post)
 - Parent-child relationship is the primary access pattern
 - Nesting depth ≤ 2 (deeper nesting becomes unwieldy)
 
 **When to keep flat:**
+
 - Resource has its own identity (orders exist independently of users)
 - Multiple access patterns exist (orders by user, by date, by status)
 - Deep nesting would create long URLs
@@ -155,8 +157,9 @@ Use status codes correctly. They tell the client what happened without parsing t
 ```
 
 **Common mistakes:**
+
 - Returning `200` with an error in the body (client thinks it succeeded)
-- Using `404` for authorization failures (leaks resource existence)
+- Using `404` for authorisation failures (leaks resource existence)
 - Returning `500` for all errors (client can't distinguish retryable vs non-retryable)
 
 ## URI design principles
@@ -215,6 +218,7 @@ GET /users?offset=40&limit=20   -> next 20 users
 **Problem:** Offset pagination breaks with real-time data. If a new record is inserted at position 0, all offsets shift. The client may see duplicates or miss records.
 
 **When offset works:**
+
 - Data is relatively static
 - Users navigate by page number
 - Total count is needed
@@ -240,6 +244,7 @@ GET /users?limit=20&cursor=eyJpZCI6MjB9     -> next 20 after cursor
 **How it works:** The cursor encodes a position (usually the last item's ID). The server queries `WHERE id > cursor_id LIMIT 20`. Inserts don't shift the window.
 
 **When cursor works:**
+
 - Data changes frequently (social feeds, event logs)
 - Infinite scroll UIs
 - Large datasets where `COUNT(*)` is expensive
@@ -291,7 +296,7 @@ Most modern APIs only support JSON. That's fine. But set `Content-Type` correctl
 
 ## Error response format
 
-Standardize error responses across the entire API.
+Standardise error responses across the entire API.
 
 ```json
 {
@@ -313,12 +318,14 @@ Standardize error responses across the entire API.
 ```
 
 **Requirements:**
+
 - Machine-readable error code (not just the HTTP status)
 - Human-readable message
 - Field-level details for validation errors
 - Consistent structure for all error responses
 
 **Never expose:**
+
 - Stack traces
 - Database error messages
 - Internal service names

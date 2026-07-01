@@ -29,6 +29,7 @@ With observability, you see the state of the system and identify root cause.
 Quantitative measurements: numbers over time.
 
 Examples:
+
 - Requests per second
 - Response latency (p50, p95, p99)
 - CPU usage (%)
@@ -40,12 +41,14 @@ Examples:
 - Database query latency (ms)
 
 **What metrics show:**
+
 - Where is the problem (CPU high? Memory high? Disk slow?)
 - How big is the problem (error rate 0.1% or 5%?)
 - When did it start (3 AM spike or gradual?)
 - How it correlates (error rate spike with latency spike?)
 
 **Metrics limitations:**
+
 - Show what is happening, not why
 - Aggregated (p95 latency hides individual slow requests)
 - Historical (show past, not current state)
@@ -55,6 +58,7 @@ Examples:
 Discrete events: what happened?
 
 Examples:
+
 - Application started
 - User logged in
 - Order created
@@ -63,11 +67,13 @@ Examples:
 - Database error
 
 **What logs show:**
+
 - Timeline of events
 - Error messages (why something failed)
 - Context (which user, which transaction)
 
 **Log limitations:**
+
 - Verbose (millions of log lines)
 - Requires searching to find relevant events
 - Difficult to correlate across services
@@ -90,11 +96,13 @@ Request GET /product/123
 ```
 
 **What traces show:**
+
 - Which component is slow
 - How much time each step takes
 - Dependencies between steps
 
 **Trace limitations:**
+
 - Overhead to collect
 - Large volume (millions of traces)
 - Requires setup
@@ -143,23 +151,27 @@ Request GET /product/123
 Metrics are only useful if you alert on them.
 
 **Alert on:**
+
 - Latency threshold exceeded (p95 > 200ms)
 - Error rate threshold exceeded (> 1%)
 - Resource exhaustion (CPU > 90%, memory > 85%)
 - Specific error conditions (database connection failed)
 
 **Do not alert on:**
+
 - Metrics that are normal (CPU 50% is fine)
 - Metrics you cannot act on
 - Metrics that always fire (alert fatigue)
 
 **Good alerts:**
+
 - Have clear threshold
 - Relate to SLA (latency threshold based on SLA)
 - Actionable (alert implies action)
 - Have low false positive rate
 
 **Bad alerts:**
+
 - Too many (alert fatigue, ignored)
 - Unclear threshold
 - Not correlated to actual problem

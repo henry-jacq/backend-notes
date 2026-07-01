@@ -51,4 +51,4 @@ Redis also includes specialized structures for advanced use cases:
 - HyperLogLog for approximate cardinality counting.
 - Streams for event data and log-like message storage.
 
-Each data type has specific command sets and behavior. Choose the type that matches the access pattern and data shape for your workload.
+Each data type has specific command sets and behaviour. Choose the type that matches the access pattern and data shape for your workload.

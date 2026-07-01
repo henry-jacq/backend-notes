@@ -92,11 +92,13 @@ Signature: HMAC(header + payload, secret)
 The token contains the user's identity and permissions. The server validates the signature without looking anything up.
 
 **Advantages:**
+
 - Server doesn't store session data
 - Any server can validate the token
 - No database lookup per request
 
 **Disadvantages:**
+
 - Cannot revoke individual tokens (token is valid until expiry)
 - Token size grows with claims (every request carries the payload)
 - Sensitive data in token is visible (base64 encoded, not encrypted)
@@ -125,11 +127,13 @@ Any server can look up any session.
 ```
 
 **Advantages:**
+
 - Can revoke sessions instantly (delete from store)
 - Session data stays server-side (not visible to client)
 - Token is small (just an opaque ID)
 
 **Disadvantages:**
+
 - Every request requires a store lookup (added latency)
 - Session store becomes a single point of failure
 - Session store must scale with user count
@@ -156,6 +160,7 @@ Self-contained token. Server can validate without any lookup.
 Structure: header.payload.signature
 
 Flow:
+
 1. Client authenticates -> server creates JWT, signs it
 2. Client stores JWT (localStorage, cookie, memory)
 3. Client sends JWT with every request
@@ -168,11 +173,13 @@ Validation:
 ```
 
 **When JWT works:**
+
 - Microservices (each service validates independently)
 - Short-lived tokens (minutes to hours)
 - Claims rarely change during token lifetime
 
 **When JWT doesn't work:**
+
 - Need to revoke tokens immediately (logout, compromised account)
 - Large number of claims (token becomes too large)
 - Token data changes frequently
@@ -185,6 +192,7 @@ Random string. Requires server-side lookup.
 Token: f47ac10b-58cc-4372-a567-0e02b2c3d479
 
 Flow:
+
 1. Client authenticates -> server creates random token, stores in Redis
 2. Client sends token with every request
 3. Server looks up token in Redis -> gets user data
@@ -192,11 +200,13 @@ Flow:
 ```
 
 **When opaque tokens work:**
+
 - Need instant revocation (delete from store)
 - Sensitive data should not be in the token
 - Server-side control over sessions is required
 
 **When opaque tokens don't work:**
+
 - Thousands of services (each lookup adds latency)
 - Token store availability is a concern
 
@@ -206,17 +216,20 @@ Use both. Short-lived JWT for routine requests, opaque refresh token for renewin
 
 ```
 Access token (JWT):
+
   - Short lived (15 minutes)
   - Self-contained (no lookup)
   - Used for API requests
 
 Refresh token (opaque):
+
   - Long lived (30 days)
   - Stored in server-side store
   - Used only to get new access tokens
   - Can be revoked instantly
 
 Flow:
+
 1. Login -> receive access token (JWT) + refresh token (opaque)
 2. API requests -> use access token
 3. Access token expires -> send refresh token to /token/refresh
@@ -237,36 +250,41 @@ Subsequent requests (automatic):
 ```
 
 **Advantages:**
+
 - Browser sends automatically (no client code needed)
 - `HttpOnly` prevents JavaScript access (XSS protection)
 - `Secure` ensures HTTPS only
 - `SameSite` prevents CSRF
 
 **Disadvantages:**
+
 - Not suitable for non-browser clients (mobile apps, other services)
 - CORS complications for cross-domain APIs
 - Cookie size limits (~4KB)
 
-### Authorization header
+### Authorisation header
 
 ```
 Authorization: Bearer eyJhbG...
 ```
 
 **Advantages:**
+
 - Works with any client (browser, mobile, service)
 - No CORS cookie complications
 - Explicit — developer controls when to send it
 
 **Disadvantages:**
+
 - Client must store token (localStorage vulnerable to XSS)
 - Client must attach to every request manually
 - No automatic browser handling
 
 **Recommendation:**
+
 - Browser-only apps -> cookies with `HttpOnly`, `Secure`, `SameSite`
-- APIs consumed by multiple clients -> Authorization header
-- Service-to-service -> mTLS or Authorization header
+- APIs consumed by multiple clients -> Authorisation header
+- Service-to-service -> mTLS or Authorisation header
 
 ## State in distributed systems
 
@@ -282,11 +300,13 @@ If Server 1 dies -> Alice's session is lost
 ```
 
 **Problems:**
+
 - Uneven load distribution (one server may get all active users)
 - Server failure loses sessions
 - Scaling requires session migration
 
 **When sticky sessions are acceptable:**
+
 - WebSocket connections (must maintain connection to same server)
 - In-memory caches that are expensive to rebuild
 - Legacy systems that can't be refactored
@@ -300,6 +320,7 @@ Any server can handle any request.
 ```
 
 **Problems:**
+
 - Replication delay (stale reads possible)
 - Network bandwidth for replication
 - Complexity grows with server count

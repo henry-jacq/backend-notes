@@ -198,6 +198,7 @@ union SearchResult = User | Post | Comment
 ```
 
 The type system enables:
+
 - Automatic validation (invalid queries rejected before execution)
 - IDE autocompletion
 - Generated client code (TypeScript types from schema)
@@ -251,6 +252,7 @@ Query:
 }
 
 Execution:
+
 1. Fetch 10 users           -> 1 query: SELECT * FROM users LIMIT 10
 2. For each user, fetch posts:
    -> SELECT * FROM posts WHERE author_id = 1
@@ -283,6 +285,7 @@ With DataLoader:
 ```
 
 **How DataLoader works:**
+
 1. Collect all IDs requested in the current tick
 2. Batch them into a single query
 3. Distribute results back to individual resolvers
@@ -316,6 +319,7 @@ Clients can write arbitrarily expensive queries:
 This could trigger millions of database queries.
 
 **Protections:**
+
 - **Depth limiting** — reject queries deeper than N levels (typically 5-7)
 - **Complexity scoring** — assign cost to each field, reject queries exceeding a budget
 - **Pagination limits** — cap `first`/`last` arguments (max 100)
@@ -366,6 +370,7 @@ GraphQL caching is hard:
 ```
 
 Solutions:
+
 - **Persisted queries** — hash queries, use GET with query ID
 - **Response caching** — cache full responses by query hash
 - **Field-level caching** — cache individual resolver results

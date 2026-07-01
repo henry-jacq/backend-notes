@@ -53,9 +53,10 @@ Light queries continue working.
 3. **Resources by customer**
    - Customer A's requests
    - Customer B's requests
-   - One customer's bad behavior doesn't affect other
+   - One customer's bad behaviour doesn't affect other
 
 **Trade-off:**
+
 - Resource overhead (multiple pools instead of one)
 - Complexity in configuration
 
@@ -105,6 +106,7 @@ for i in range(3):
 ```
 
 **Result:**
+
 - Overwhelming already-struggling service
 - Makes problem worse
 - Service stays down longer
@@ -140,6 +142,7 @@ Attempt 3: succeeds (returns same transfer, no new transfer created)
 **Mistake:** open circuit after just 5 errors
 
 **Result:**
+
 - Circuit opens on temporary spike
 - Service recovers but requests rejected
 - Artificial unavailability
@@ -151,6 +154,7 @@ Attempt 3: succeeds (returns same transfer, no new transfer created)
 **Mistake:** circuit opens, return error immediately
 
 **Result:**
+
 - User sees error
 - Could have returned cached response
 
@@ -161,6 +165,7 @@ Attempt 3: succeeds (returns same transfer, no new transfer created)
 **Mistake:** circuit opens, nobody notices
 
 **Result:**
+
 - Service recovers but circuit stays open
 - Manual intervention required
 - Unnecessary unavailability
@@ -172,6 +177,7 @@ Attempt 3: succeeds (returns same transfer, no new transfer created)
 **Symptom: error rate spikes**
 
 Check:
+
 1. Is this temporary (transient failure)?
    - If yes, retries should handle it
 
@@ -184,6 +190,7 @@ Check:
 **Symptom: latency high but no errors**
 
 Check:
+
 1. Are retries happening?
    - Each retry adds latency
    - May be timeout-and-retry loop
@@ -211,13 +218,14 @@ Check:
 - What would happen if every service had a circuit breaker to every other service?
 - How would you know if bulkheads are helping or just wasting resources?
 - If a service is down, should you retry forever or give up?
-- Why is jitter better than synchronized retries?
+- Why is jitter better than synchronised retries?
 - At what error rate should a circuit breaker open?
 - What should happen when circuit breaker opens?
 
 ## Summary
 
 Reliability patterns are about automatic responses to failures:
+
 - Circuit breakers prevent cascading failures.
 - Bulkheads contain resource exhaustion.
 

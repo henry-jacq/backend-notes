@@ -28,11 +28,13 @@ Each server handles 333k events/sec
 ```
 
 **Breaking without partitions:**
+
 - Single broker disk I/O saturated
 - Response time increases
 - Bottleneck is not solvable by adding brokers (one broker handles all)
 
 **How partitions help:**
+
 - Multiple brokers distribute load
 - Each partition is independent (can be consumed independently)
 - Ordering guaranteed within partition (all orders from user 1 in same partition, processed in order)
@@ -55,12 +57,14 @@ Coordinated by consumer group coordinator.
 ```
 
 **Breaking without consumer groups:**
+
 - One consumer tries to read 1 million events/sec
 - Consumer CPU maxed, cannot process fast enough
 - Events accumulate on broker (broker memory fills)
 - Broker crashes or becomes unavailable
 
 **How consumer groups help:**
+
 - Multiple consumers split the work
 - Each consumer has less data to process
 - Linear scaling (add consumer = proportional throughput increase)
@@ -83,11 +87,13 @@ Data not lost.
 ```
 
 **Breaking without replication:**
+
 - Hardware failure = event loss
 - Broker planned maintenance = downtime
 - Network partition = loss of broker
 
 **How replication helps:**
+
 - Data survives broker failure
 - Replication lag is small (followers keep up)
 - If leader fails, election happens, follower becomes leader
@@ -100,12 +106,14 @@ Data not lost.
 **Solution:** keep events on disk indefinitely (or by retention policy)
 
 **Breaking without retention:**
+
 - Consumer crashes, restarts, asks for same events
 - Those events already deleted
 - Consumer missed them
 - No way to recover
 
 **With retention:**
+
 - Events kept for X days or X bytes
 - Consumer can seek back and replay
 - New consumers can read from beginning
@@ -159,11 +167,13 @@ Data not lost.
 | Complexity | Higher | Lower |
 
 **Choose RabbitMQ when:**
+
 - Events don't need to be replayed
 - Low to moderate volume
 - Simple pub/sub is enough
 
 **Choose Kafka when:**
+
 - Need to replay events
 - High volume
 - Multiple independent consumers
@@ -178,11 +188,13 @@ Data not lost.
 | Consumer state | Consumer tracks offset | App tracks state |
 
 **Choose database when:**
+
 - Complex queries needed
 - Random access patterns
 - State updates (not just appends)
 
 **Choose Kafka when:**
+
 - Sequential ordering important
 - Same event stream, multiple consumers
 - Audit trail
@@ -197,11 +209,13 @@ Data not lost.
 | Cost | Infrastructure | Usage-based |
 
 **Choose managed pub/sub when:**
+
 - Operational overhead unacceptable
 - Moderate volume
 - Cloud-native architecture
 
 **Choose Kafka when:**
+
 - Precise control needed
 - On-premises required
 - Very high volume
@@ -214,6 +228,7 @@ Data not lost.
 **Mistake:** create 100 partitions for a small workload
 
 **Result:**
+
 - Rebalancing slow (coordinator must move 100 partitions)
 - Each partition replication overhead
 - Consumer group rebalancing causes lag spikes
@@ -226,6 +241,7 @@ Data not lost.
 **Mistake:** single consumer reads entire topic
 
 **Result:**
+
 - Consumer becomes bottleneck
 - Cannot scale
 - If consumer crashes, events pile up
@@ -237,6 +253,7 @@ Data not lost.
 **Mistake:** consumer doesn't track offset, always reads from beginning
 
 **Result:**
+
 - Duplicates processed
 - Idempotency not enforced
 - Events processed multiple times
@@ -245,9 +262,10 @@ Data not lost.
 
 ### 4. Synchronous processing in consumer
 
-**Mistake:** consumer processes events one at a time, serialized
+**Mistake:** consumer processes events one at a time, serialised
 
 **Result:**
+
 - Throughput limited by consumer processing speed
 - Cannot batch operations
 
@@ -258,6 +276,7 @@ Data not lost.
 **Mistake:** no alerts on consumer lag
 
 **Result:**
+
 - Consumer falls behind
 - Days pass before anyone notices
 - When noticed, huge backlog exists
@@ -280,6 +299,7 @@ Data not lost.
 ## Summary
 
 Kafka exists because traditional messaging systems could not handle:
+
 - High volume (millions of events/second)
 - Multiple independent consumers
 - Event replay capability

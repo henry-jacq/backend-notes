@@ -28,6 +28,7 @@ Client sends request
 **Problem:** client must wait. If service is slow, client waits.
 
 At scale:
+
 - Many clients waiting
 - Thread pool exhausted
 - Resource exhaustion
@@ -75,7 +76,8 @@ Producer (client)
 ```
 
 **Benefits:**
-- Producer and consumer not synchronized
+
+- Producer and consumer not synchronised
 - Consumers can process at their own pace
 - Multiple consumers can process same message type
 - Messages persist (if queue crashes, messages not lost)
@@ -97,11 +99,13 @@ Producer sends message: "calculate total for order #123"
 ```
 
 **Use cases:**
+
 - Remote procedure calls
 - RPC-like communication
 - Producer needs result
 
 **Challenges:**
+
 - Still waiting for response (partially asynchronous)
 - Requires correlation ID (to match request and reply)
 - Reply queue must exist
@@ -121,11 +125,13 @@ All three receive same event.
 ```
 
 **Use cases:**
+
 - Event notifications
 - Real-time updates
 - Fanout (one event triggers multiple actions)
 
 **Characteristics:**
+
 - Multiple independent consumers
 - Each consumer processes event independently
 - Consumers process at own pace
@@ -161,12 +167,14 @@ Consumer 3 was processing but restarted: resumes from checkpoint
 ```
 
 **Use cases:**
+
 - Event sourcing (rebuilding state from events)
 - Replay capability (reprocess events)
 - Audit trail (immutable record)
 - Multiple independent consumers
 
 **Characteristics:**
+
 - Events are immutable
 - Events stored durably
 - Consumers maintain offset (how far they've processed)

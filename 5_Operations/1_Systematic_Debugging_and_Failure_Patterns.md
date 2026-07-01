@@ -14,23 +14,27 @@ This document covers common failure patterns in production environments, step-by
 ### Pattern 1: Database is slow
 
 **Metrics indicate:**
+
 - Response latency increasing
 - Database CPU at 100%
 - Database connection pool filling
 - Disk I/O high
 
 **Logs show:**
+
 - Slow query warnings
 - Lock wait messages
 - Connection timeout errors
 
 **Investigation:**
+
 1. Check slow query log (which queries are slow?)
 2. Check query execution plan (full scan or index?)
 3. Check for lock contention (other transactions blocking?)
 4. Check data volume (table too large?)
 
 **Example root causes:**
+
 - Missing index (full table scan)
 - N+1 queries (application fetching one-by-one)
 - Hot row (many transactions on same row)
@@ -39,20 +43,24 @@ This document covers common failure patterns in production environments, step-by
 ### Pattern 2: Memory leak or growth
 
 **Metrics indicate:**
+
 - Memory usage growing over time
 - Garbage collection pauses increasing
 - Eventually out-of-memory
 
 **Logs show:**
+
 - OutOfMemory error
 - Garbage collection logs
 
 **Investigation:**
+
 1. Heap dump (where is memory used?)
 2. Object allocation profiler (what is creating objects?)
 3. Reference count (what is holding references?)
 
 **Example root causes:**
+
 - Objects never released (circular references)
 - Cache growing unbounded (no eviction)
 - Accidental string concatenation (creating copies)
@@ -61,20 +69,24 @@ This document covers common failure patterns in production environments, step-by
 ### Pattern 3: Request timeout
 
 **Metrics indicate:**
+
 - Latency p99 increased
 - Timeout error rate increased
 - Thread count high (threads waiting)
 
 **Logs show:**
+
 - Timeout messages
 - Incomplete traces (request started but never finished)
 
 **Investigation:**
+
 1. Thread dump (what are threads doing?)
 2. Lock traces (are threads waiting for locks?)
 3. Trace analysis (where did request get stuck?)
 
 **Example root causes:**
+
 - Downstream service slow (waiting for response)
 - Database connection pool exhausted
 - Lock contention
@@ -83,20 +95,24 @@ This document covers common failure patterns in production environments, step-by
 ### Pattern 4: Error rate spike
 
 **Metrics indicate:**
+
 - Error rate from 0.1% to 5%
 - Specific error type (timeout, database error, etc.)
 
 **Logs show:**
+
 - Error messages
 - Stack traces
 - Correlation with other events
 
 **Investigation:**
+
 1. Check what error type increased
 2. Check when it started (correlation with deployment? traffic change?)
 3. Check if it affects all users or specific ones
 
 **Example root causes:**
+
 - Dependency went down (database, cache, external API)
 - Traffic spike (system overloaded)
 - New code deployed with bug
@@ -118,16 +134,19 @@ Service A slow or down
 Each service failure cascades.
 
 **Metrics indicate:**
+
 - Multiple services showing errors
 - Errors growing over time (not stabilizing)
 - Latency increasing across services
 
 **Investigation:**
+
 1. Find the root service (which service failed first?)
 2. Determine cause of root failure
 3. Fix root, others recover
 
 **Example root causes:**
+
 - One service down, others depend on it
 - Resource exhaustion (thread pool full, connection pool full)
 - Retry storms (service retries too aggressively, overwhelming system)
@@ -142,6 +161,7 @@ Not "it's slow."
 Instead: "latency p99 increased from 200ms to 500ms at 3:05 AM."
 
 **Questions:**
+
 - What metric changed?
 - How much did it change?
 - When did it start?
@@ -220,6 +240,7 @@ Query time: 5ms
 **Mistake:** "it's probably the cache," make changes without data
 
 **Result:**
+
 - Wrong component fixed
 - Problem persists
 - Time wasted
@@ -231,6 +252,7 @@ Query time: 5ms
 **Mistake:** add caching, increase connection pool, upgrade database all at once
 
 **Result:**
+
 - Problem goes away but don't know which fix helped
 - If something breaks, don't know which change caused it
 
@@ -241,6 +263,7 @@ Query time: 5ms
 **Mistake:** see latency spike, check only latency metric
 
 **Result:**
+
 - Miss context (was CPU also high? Error rate?)
 - Wrong hypothesis
 
@@ -251,6 +274,7 @@ Query time: 5ms
 **Mistake:** problem occurred at 3 AM, don't check what deployed yesterday
 
 **Result:**
+
 - Obvious cause missed (new code deployed)
 
 **Better:** always check what changed recently (code, config, traffic).
@@ -260,6 +284,7 @@ Query time: 5ms
 **Mistake:** problem reported as "sometimes slow," don't try to reproduce
 
 **Result:**
+
 - Cannot verify root cause
 - Cannot verify fix works
 

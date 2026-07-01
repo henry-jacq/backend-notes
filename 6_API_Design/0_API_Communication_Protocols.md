@@ -35,11 +35,13 @@ Client <--response--- Server
 Used by: REST, GraphQL, gRPC (unary calls)
 
 **When it works:**
+
 - Client needs data and can wait for it
 - Operations have clear inputs and outputs
 - Latency is acceptable (typically <500ms)
 
 **When it breaks:**
+
 - Client needs continuous updates (polling wastes resources)
 - Server processing takes minutes or hours
 - High-frequency updates would create too many requests
@@ -69,11 +71,13 @@ Client <---data------> Server
 Used by: WebSockets, SSE (server-only), gRPC streaming
 
 **When it works:**
+
 - Real-time updates (stock prices, chat messages, live feeds)
 - Large data uploads in chunks
 - Long-running operations with progress updates
 
 **When it breaks:**
+
 - Simple CRUD operations (overhead of maintaining connections)
 - Stateless architectures (streaming requires connection state)
 - High fan-out to many clients (each connection consumes server resources)
@@ -91,11 +95,13 @@ Publisher --event--> Broker --event--> Subscriber A
 Used by: Message brokers (Kafka, RabbitMQ), webhooks
 
 **When it works:**
+
 - Multiple consumers need the same event
 - Producers and consumers scale independently
 - Loose coupling between services
 
 **When it breaks:**
+
 - Client needs immediate response (pub-sub is asynchronous)
 - Ordering guarantees are critical (depends on broker)
 - Simple point-to-point communication (pub-sub adds complexity)
@@ -115,6 +121,7 @@ Connection 3: GET /products  -> response
 ```
 
 **Characteristics:**
+
 - One request per connection at a time (head-of-line blocking)
 - Text-based headers (human-readable but verbose)
 - Persistent connections (keep-alive) reuse TCP connections
@@ -140,18 +147,21 @@ Single connection:
 ```
 
 **Key improvements:**
+
 - **Multiplexing** — multiple requests on one connection, no head-of-line blocking at HTTP level
 - **Binary framing** — binary protocol, more efficient parsing
 - **Header compression (HPACK)** — reduces repeated header overhead
 - **Server push** — server can send resources before client requests them
-- **Stream prioritization** — client can prioritize important requests
+- **Stream prioritisation** — client can prioritise important requests
 
 **Why it matters for APIs:**
+
 - gRPC requires HTTP/2 (streaming depends on multiplexing)
 - Reduces latency for chatty APIs (many small requests)
 - Single connection reduces TCP handshake overhead
 
 **Trade-off:**
+
 - TCP-level head-of-line blocking still exists (a lost packet blocks all streams)
 - More complex to debug (binary protocol, not human-readable in transit)
 
@@ -160,16 +170,19 @@ Single connection:
 Replaces TCP with QUIC (UDP-based).
 
 **Key improvements:**
+
 - **No TCP head-of-line blocking** — lost packet only blocks its stream, not all streams
 - **Faster connection establishment** — 0-RTT or 1-RTT (TCP + TLS requires 2-3 RTT)
 - **Connection migration** — survives network changes (Wi-Fi to cellular)
 
 **When HTTP/3 matters:**
+
 - Mobile clients with unreliable networks
 - High-latency connections (fewer round trips)
 - Applications where TCP head-of-line blocking is measurable
 
 **Current state:**
+
 - Supported by major CDNs and browsers
 - Not yet universal for API-to-API communication
 - Most backend services still use HTTP/2
@@ -188,24 +201,28 @@ Client <--------messages---------> Server
 ```
 
 **How it works:**
+
 1. Client initiates HTTP request with `Upgrade: websocket` header
 2. Server responds with `101 Switching Protocols`
 3. Connection upgrades from HTTP to WebSocket
 4. Both sides can send messages at any time
 
 **When WebSockets work:**
+
 - Real-time chat applications
 - Live collaboration (Google Docs-style)
 - Gaming with low-latency requirements
 - Financial data feeds
 
 **When WebSockets don't work:**
+
 - Simple request-response APIs (unnecessary complexity)
 - Stateless server architectures (WebSockets require connection state)
 - Behind proxies or load balancers that don't support WebSocket upgrade
 - When clients are behind restrictive firewalls
 
 **Trade-offs:**
+
 - Each connection consumes server memory (connection state)
 - Scaling requires sticky sessions or connection-aware load balancing
 - No built-in request-response semantics (you must implement your own)
@@ -223,18 +240,21 @@ Client <--event: update--- Server
 ```
 
 **How it works:**
+
 - Client opens HTTP connection with `Accept: text/event-stream`
 - Server keeps connection open, sends events as they occur
 - Built-in reconnection (browser handles it automatically)
 - Uses standard HTTP (works with existing infrastructure)
 
 **When SSE works:**
+
 - Live notifications and feeds
 - Dashboard updates
 - Progress indicators for long-running operations
 - Any scenario where server pushes to client (not bidirectional)
 
 **When SSE doesn't work:**
+
 - Client needs to send frequent messages to server (SSE is server-to-client only)
 - Binary data (SSE is text-based)
 - High-frequency updates where HTTP overhead matters
@@ -254,26 +274,31 @@ Infrastructure   | Standard HTTP        | Requires WebSocket support
 ## Protocol selection guide
 
 **Use HTTP/1.1 + REST when:**
+
 - Building standard CRUD APIs
 - Simplicity and compatibility matter most
 - Request volumes are moderate
 
 **Use HTTP/2 + REST or gRPC when:**
+
 - Many concurrent requests to the same server
 - Low latency matters
 - Service-to-service communication
 
 **Use WebSockets when:**
+
 - Bidirectional real-time communication is required
 - Low latency in both directions is critical
 - Both client and server initiate messages
 
 **Use SSE when:**
+
 - Server needs to push updates to clients
 - Standard HTTP infrastructure must be used
 - Simplicity is preferred over WebSocket complexity
 
 **Use message brokers (Kafka, RabbitMQ) when:**
+
 - Asynchronous, decoupled communication
 - Multiple consumers need the same events
 - Durability and replay matter

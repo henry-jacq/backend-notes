@@ -14,6 +14,7 @@ This document covers messaging semantics (delivery guarantees, message ordering)
 ### Delivery guarantees
 
 **At most once**
+
 - Message may not be delivered
 - If delivered, only once
 - Fastest but messages can be lost
@@ -27,6 +28,7 @@ No retry, message lost
 ```
 
 **At least once**
+
 - Message guaranteed delivered
 - May be delivered multiple times
 - Slower but no loss (except idempotency issues)
@@ -41,6 +43,7 @@ Requires idempotent processing
 ```
 
 **Exactly once**
+
 - Message guaranteed delivered exactly once
 - Hardest to implement
 - Usually at least once with idempotency
@@ -54,6 +57,7 @@ Future redelivery: skip (already has ID)
 ```
 
 **Trade-off:**
+
 - At most once: fast, may lose
 - At least once: slower, requires idempotency
 - Exactly once: complexity, usually at least once + idempotency
@@ -84,6 +88,7 @@ Email has wrong name.
 ```
 
 **How to guarantee:**
+
 - Single consumer per message type (not parallel)
 - Messages keyed by entity (all entity's messages to same partition)
 
@@ -100,6 +105,7 @@ Partition 1 processes sequentially (maintains order).
 ```
 
 **Trade-off:**
+
 - Ordered: sequential processing, cannot parallelize
 - Unordered: parallel processing, no order guarantee
 
@@ -122,6 +128,7 @@ OrderCreated event
 
 ```
 Service A:
+
   1. Create order
   2. Call Inventory, wait for response
   3. Call Billing, wait for response
@@ -138,6 +145,7 @@ Cascading failures.
 
 ```
 Service A:
+
   1. Create order
   2. Publish OrderCreated event
   3. Return to user (immediately)
@@ -152,11 +160,13 @@ Parallel processing, user doesn't wait.
 ```
 
 **Advantages:**
+
 - Loose coupling (services don't call each other)
 - Parallel execution
 - Scalable (add more subscribers easily)
 
 **Challenges:**
+
 - Eventual consistency (services see change at different times)
 - No strong guarantee all actions complete
 - More complex debugging (spread across multiple services)
@@ -250,6 +260,7 @@ Inventory off by one.
 **Symptom: Messages not being processed**
 
 Check:
+
 1. Is queue receiving messages? (produce test message)
 2. Is consumer running? (check process)
 3. Is consumer stuck? (check logs for errors)
@@ -258,6 +269,7 @@ Check:
 **Symptom: Duplicate processing**
 
 Check:
+
 1. Are messages being delivered twice? (check event logs)
 2. Is processing idempotent? (can retry safely?)
 3. Are consumers acknowledging properly? (check ACK logs)
@@ -265,6 +277,7 @@ Check:
 **Symptom: Queue is full, producer blocked**
 
 Check:
+
 1. Are consumers processing? (check throughput)
 2. Is consumer slow? (check latency)
 3. Are messages stuck? (check dead-letter queue)
@@ -273,6 +286,7 @@ Check:
 **Symptom: Messages arriving out of order**
 
 Check:
+
 1. Are you requiring order? (need to?)
 2. Are messages partitioned correctly? (same entity key?)
 3. Are multiple consumers reading same partition? (violation of order)
@@ -303,6 +317,7 @@ Check:
 Messaging is fundamental to scaling systems. It decouples producers and consumers, enabling parallel processing and independent scaling.
 
 Three patterns serve different needs:
+
 - Request-reply: when you need a response
 - Pub/Sub: when you want fanout to multiple consumers
 - Event streaming: when you need durability and replay

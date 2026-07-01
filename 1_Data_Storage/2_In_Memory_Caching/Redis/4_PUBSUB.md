@@ -31,7 +31,7 @@ Redis Pub/Sub is not a durable queue. Messages are delivered only to clients tha
 - `PUBLISH channel message`
   - Publish a message to a channel.
 
-## Behavior
+## Behaviour
 
 - Subscribers receive messages only while they remain connected and subscribed.
 - Channels do not store messages. Redis forwards messages directly to active subscribers.

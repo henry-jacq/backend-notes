@@ -42,6 +42,7 @@ Replicas think master is down.
 Replicas elect new master.
 
 Now two masters:
+
   - Old master: accepting writes
   - New master: accepting writes
 
@@ -76,6 +77,7 @@ Replicate across geographical regions for disaster recovery.
 **Single region:**
 ```
 Region US-East
+
   - Master
   - Replicas
   
@@ -88,10 +90,12 @@ Disaster (fire, power outage):
 **Multi-region:**
 ```
 Region US-East
+
   - Master
   - Replicas
 
 Region US-West
+
   - Master (replica of US-East)
   - Replicas
 
@@ -197,6 +201,7 @@ Load balancer:
 ```
 
 **Challenges:**
+
 - False positives (service appears down but is working)
 - Timeout tuning (too short = false positives, too long = delayed detection)
 
@@ -257,6 +262,7 @@ Last hour's data lost
 **Mistake:** load balancer sends requests to failed service
 
 **Result:**
+
 - Some requests fail immediately
 - Some requests timeout
 - User experience poor
@@ -283,6 +289,7 @@ System slow despite replica available
 **Mistake:** automatic failover but no way to revert or adjust
 
 **Result:**
+
 - Failover happens but is wrong (wrong replica promoted)
 - No manual override
 - System remains in wrong state
@@ -294,6 +301,7 @@ System slow despite replica available
 **Mistake:** never actually test failover
 
 **Result:**
+
 - Failover breaks when needed
 - Data loss during recovery
 - Manual recovery required (hours)
@@ -305,6 +313,7 @@ System slow despite replica available
 **Symptom: Intermittent unavailability**
 
 Check:
+
 1. Is master healthy? (CPU, memory, disk)
 2. Is replication lagging? (replica lag high?)
 3. Are replicas healthy? (can they be promoted?)
@@ -313,6 +322,7 @@ Check:
 **Symptom: Data inconsistency after failover**
 
 Check:
+
 1. Was replica fully replicated? (lag before failover?)
 2. Did master have unacknowledged writes? (async replication?)
 3. Was data intentionally not replicated? (acknowledged)
@@ -320,6 +330,7 @@ Check:
 **Symptom: Slow recovery after failover**
 
 Check:
+
 1. Is new master slow? (capacity issue?)
 2. How much traffic are you sending? (overloaded after failover?)
 3. Are clients retrying aggressively? (retry storm?)

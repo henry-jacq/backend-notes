@@ -23,6 +23,7 @@ API attack:
 ```
 
 APIs are easier to attack because:
+
 - Automated tools can send thousands of requests per second
 - No browser rendering step to slow down attackers
 - API documentation tells attackers exactly how to call endpoints
@@ -114,6 +115,7 @@ After 1 second: tokens = 10 (refilled)
 ```
 
 **Advantages:**
+
 - Allows controlled bursts (up to bucket capacity)
 - Smooth rate limiting over time
 - Simple to implement and understand
@@ -135,6 +137,7 @@ Processing: [req] -> process -> [req] -> process (fixed rate)
 ```
 
 **Difference from token bucket:**
+
 - Token bucket allows bursts up to capacity
 - Leaky bucket processes at a constant rate (smooths bursts)
 
@@ -238,11 +241,13 @@ Path traversal:
 
 ```
 Protect against:
+
   - 10GB JSON payload -> server runs out of memory parsing
   - Deeply nested JSON -> stack overflow during parsing
   - Millions of array elements -> processing takes forever
 
 Limits to set:
+
   - Max request body size: 1MB (adjust per endpoint)
   - Max JSON depth: 20 levels
   - Max array length: 1000 elements
@@ -297,6 +302,7 @@ Browser: origin is allowed -> send actual POST request
 ```
 
 **Common CORS mistakes:**
+
 - `Access-Control-Allow-Origin: *` with credentials (browsers reject this)
 - Not handling OPTIONS preflight (requests fail silently)
 - Allowing all origins in production (defeats the purpose)
@@ -441,4 +447,4 @@ Layer 3: Application
 7. **Hardcoded secrets in code** — API keys, database passwords in source control
 8. **No request size limits** — 1GB JSON payload crashes the server
 
-Rate limiting protects availability. Authentication protects identity. But in a microservices architecture, these concerns multiply across every service. API gateways and load balancers centralize these cross-cutting concerns. See [8_API_Gateway_and_Load_Balancing.md](file:///d:/Playground/Backend%20Notes/6_API_Design/8_API_Gateway_and_Load_Balancing.md).
+Rate limiting protects availability. Authentication protects identity. But in a microservices architecture, these concerns multiply across every service. API gateways and load balancers centralise these cross-cutting concerns. See [8_API_Gateway_and_Load_Balancing.md](file:///d:/Playground/Backend%20Notes/6_API_Design/8_API_Gateway_and_Load_Balancing.md).

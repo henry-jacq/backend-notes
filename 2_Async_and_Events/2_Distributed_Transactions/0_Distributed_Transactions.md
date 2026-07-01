@@ -23,6 +23,7 @@ Both must succeed, or neither.
 ```
 
 If Service A succeeds but Service B fails:
+
 - Money leaves source account
 - Money never arrives at destination
 - Money is lost
@@ -37,6 +38,7 @@ Shipping Service (Service D): create shipment
 ```
 
 If order created but billing fails:
+
 - Order exists without payment
 - Inventory decremented without charge
 - Customer shipped without paying
@@ -163,6 +165,7 @@ During prepare phase, services lock resources:
 Service A locks account balance for 5 seconds (prepare)
 Other transactions waiting to access balance blocked
 If many transactions in prepare phase:
+
   - Resources held
   - Other transactions blocked
   - Cascading delays
@@ -184,6 +187,7 @@ If coordinator is down, what do services do? Wait indefinitely? Abort? Nobody kn
 ### 5. Limited to same organization
 
 Two-phase commit requires strong coupling:
+
 - Coordinator must know about all services
 - Services must implement two-phase protocol
 - All services must be operational
@@ -205,11 +209,13 @@ Session 2: proceeds
 ```
 
 Works because:
+
 - Single coordinator (the database)
 - Same hardware (no network delay)
 - Strong consistency guarantee from database
 
 Across independent services:
+
 - Multiple coordinators (each service)
 - Network delay (messages may be lost)
 - No single source of truth

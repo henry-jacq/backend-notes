@@ -16,6 +16,7 @@ This section covers the physical and virtual infrastructure that runs backend sy
 **0_Under_the_Hood.md** — HTTP protocol, TCP, web servers, databases
 
 How communication actually works:
+
 - HTTP protocol (requests, responses)
 - TCP foundation (reliable delivery)
 - Request/response cycle
@@ -28,6 +29,7 @@ Understand the mechanics before studying higher-level patterns. Everything is bu
 **1_Web_Server_Overview.md** — Nginx, Apache, application servers
 
 How servers handle requests:
+
 - Server types and characteristics
 - Operating system considerations
 - Configuration and performance tuning
@@ -53,26 +55,31 @@ This is the "operations" side of infrastructure: how to run systems in productio
 ## Connection to other sections
 
 **Infrastructure + Reliability:**
+
 - Load balancers distributing traffic
 - Health checks removing failed servers
 - Failover automation
 
 **Infrastructure + Data Storage:**
+
 - Database connectivity
 - Connection pooling to databases
 - Replica selection
 
 **Infrastructure + Async and Events:**
+
 - Message broker infrastructure
 - Kafka cluster setup
 - Network between services
 
 **Infrastructure + Operations:**
+
 - Monitoring servers
 - Log aggregation from servers
 - Performance metrics collection
 
 **Infrastructure + API Design:**
+
 - HTTP protocol fundamentals underpin REST and GraphQL
 - Load balancers distribute API traffic
 - API gateways handle auth, rate limiting, and routing
@@ -97,6 +104,7 @@ Message Brokers (Kafka, RabbitMQ)
 ```
 
 Each layer has its role:
+
 - Load balancer: distribute traffic
 - Web server: parse HTTP, route to app
 - Application: business logic
@@ -107,4 +115,5 @@ Each layer has its role:
 ## Next sections
 
 After understanding infrastructure:
+
 - **Operations** — monitoring, debugging, incident response for all of the above

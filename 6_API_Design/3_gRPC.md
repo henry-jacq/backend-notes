@@ -7,9 +7,9 @@ summary: "gRPC is a high-performance RPC (Remote Procedure Call) framework devel
 ---
 # gRPC
 
-gRPC is a high-performance RPC (Remote Procedure Call) framework developed by Google. It uses Protocol Buffers for serialization and HTTP/2 for transport. Where REST is resource-oriented ("give me this thing"), gRPC is action-oriented ("do this operation").
+gRPC is a high-performance RPC (Remote Procedure Call) framework developed by Google. It uses Protocol Buffers for serialisation and HTTP/2 for transport. Where REST is resource-oriented ("give me this thing"), gRPC is action-oriented ("do this operation").
 
-gRPC exists because REST has overhead that matters at scale: text-based serialization, no built-in streaming, and loose contracts. When services call each other thousands of times per second, that overhead becomes measurable.
+gRPC exists because REST has overhead that matters at scale: text-based serialisation, no built-in streaming, and loose contracts. When services call each other thousands of times per second, that overhead becomes measurable.
 
 ## Why gRPC exists
 
@@ -31,7 +31,8 @@ REST response:
 ```
 
 **Overhead:**
-- JSON parsing: ~10-100x slower than binary serialization
+
+- JSON parsing: ~10-100x slower than binary serialisation
 - Text headers: repeated on every request
 - No streaming: long-running operations need polling
 - Loose contract: JSON has no schema enforcement at transport level
@@ -56,11 +57,11 @@ message OrderResponse {
 }
 ```
 
-The binary payload is typically 5-10x smaller than JSON. Serialization is 10-100x faster. The contract is enforced at compile time.
+The binary payload is typically 5-10x smaller than JSON. Serialisation is 10-100x faster. The contract is enforced at compile time.
 
 ## Protocol Buffers (protobuf)
 
-Protocol Buffers are gRPC's serialization format. You define message structures in `.proto` files, and a compiler generates code for your language.
+Protocol Buffers are gRPC's serialisation format. You define message structures in `.proto` files, and a compiler generates code for your language.
 
 ### Message definition
 
@@ -184,6 +185,7 @@ Client <--end of stream----- Server
 ```
 
 **Use when:**
+
 - Returning large datasets in chunks
 - Real-time updates (stock prices, sensor data)
 - Progress updates for long-running operations
@@ -208,6 +210,7 @@ Client <--response--------- Server
 ```
 
 **Use when:**
+
 - Uploading large files in chunks
 - Batch operations (client sends many items, server processes all at once)
 - Aggregation (client sends data points, server returns summary)
@@ -233,6 +236,7 @@ Client <--message C--------- Server
 Messages are independent — neither side waits for the other.
 
 **Use when:**
+
 - Chat applications
 - Real-time collaboration
 - Interactive workflows (client sends data, server sends feedback continuously)
@@ -261,7 +265,8 @@ protoc compiler
 ```
 
 **What gets generated:**
-- Message classes with serialization/deserialization
+
+- Message classes with serialisation/deserialisation
 - Client stubs (call remote methods as if local)
 - Server interfaces (implement methods, framework handles transport)
 
@@ -274,10 +279,11 @@ print(user.name)  # "Alice"
 ```
 
 The generated client handles:
-- Serialization (object -> protobuf binary)
+
+- Serialisation (object -> protobuf binary)
 - HTTP/2 framing
 - Connection management
-- Deserialization (protobuf binary -> object)
+- Deserialisation (protobuf binary -> object)
 
 The developer writes business logic. gRPC handles the plumbing.
 
@@ -297,12 +303,14 @@ All on a single TCP connection.
 ```
 
 **Benefits:**
+
 - Multiple RPCs on one connection (no connection-per-request overhead)
 - Streaming is built into the protocol
 - Header compression reduces overhead for repeated calls
 - Flow control prevents fast senders from overwhelming slow receivers
 
 **Limitation:**
+
 - Browser support is limited (browsers don't expose HTTP/2 framing directly)
 - gRPC-Web exists as a workaround (proxy translates HTTP/1.1 -> HTTP/2)
 
@@ -324,6 +332,7 @@ Ecosystem           | Massive                 | Growing
 ```
 
 **Use gRPC when:**
+
 - Service-to-service communication (microservices)
 - Performance matters (high throughput, low latency)
 - Streaming is needed (real-time data, long-running ops)
@@ -331,6 +340,7 @@ Ecosystem           | Massive                 | Growing
 - Polyglot environment (many languages need the same API)
 
 **Use REST when:**
+
 - Public APIs (browser clients, third-party integrations)
 - Simple CRUD operations
 - Human debugging is important (curl, Postman)
@@ -379,6 +389,7 @@ REST (simple):
 gRPC (more complex):
   Load balancer must understand HTTP/2 frames
   Options:
+
     - L7 proxy (Envoy, nginx with gRPC support)
     - Client-side load balancing (client knows all server addresses)
     - Service mesh (Istio, Linkerd)

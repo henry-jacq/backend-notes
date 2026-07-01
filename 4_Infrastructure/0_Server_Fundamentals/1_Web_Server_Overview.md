@@ -114,7 +114,7 @@ Practices:
 
 ## Performance Tuning
 
-Optimization should be guided by metrics, not guesses.
+Optimisation should be guided by metrics, not guesses.
 
 Monitor:
 
@@ -128,7 +128,7 @@ Strategies:
 
 - Load Balancing: distribute requests across servers
 - Caching: store frequently requested data
-- Database Indexing: optimize queries
+- Database Indexing: optimise queries
 - Resource Monitoring: use tools like Prometheus, Grafana, or htop
 
 ## Backup and Disaster Recovery
@@ -168,6 +168,7 @@ Example alert:
 
 ```
 Trigger if:
+
 - p95 latency > 500ms for 5 minutes
 - 5xx errors > 2% for 3 minutes
 - CPU > 90% for 10 minutes

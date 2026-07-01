@@ -22,6 +22,7 @@ A saga solves this by breaking the work into small steps and adding compensating
 A saga is a sequence of local transactions.
 
 Each step:
+
 - performs its own work
 - publishes an event or sends a message
 - triggers the next step
@@ -62,16 +63,19 @@ This is one reason why Saga became popular: it avoids the rigidity of a global t
 Each service reacts to events and decides what to do next.
 
 Flow:
+
 - Service A completes work
 - Service A publishes an event
 - Service B listens and performs its step
 - If something fails, the services publish failure events and trigger compensations
 
 Pros:
+
 - simple when the flow is straightforward
 - low central coordination
 
 Cons:
+
 - harder to trace and debug as the flow grows
 - logic becomes spread across services
 
@@ -80,6 +84,7 @@ Cons:
 A dedicated orchestrator controls the workflow.
 
 Flow:
+
 - Orchestrator tells Service A to start
 - Orchestrator waits for result
 - Orchestrator tells Service B to continue
@@ -88,10 +93,12 @@ Flow:
 This is how saga orchestration works: the orchestrator acts like a workflow manager that knows the current state of the business process and decides what should happen next.
 
 Pros:
+
 - easier to monitor and control
 - central place for business workflow logic
 
 Cons:
+
 - introduces an extra component
 - orchestrator becomes a critical part of the system
 
@@ -100,6 +107,7 @@ Cons:
 A compensating action is the reverse of a completed step.
 
 Examples:
+
 - refund payment
 - release reserved inventory
 - cancel an order
@@ -110,6 +118,7 @@ Compensation must be designed carefully. Some actions may not be fully reversibl
 ## When to use saga
 
 Use saga when:
+
 - multiple services must coordinate
 - each service has its own database
 - strong distributed transactions are too expensive or not available
@@ -118,6 +127,7 @@ Use saga when:
 ## When not to use saga
 
 Avoid saga when:
+
 - the workflow is simple and can stay in one service
 - atomicity is required and the business can accept a single transaction boundary
 - compensation logic is too complex or impossible to model safely
@@ -148,7 +158,7 @@ Retries help with transient failures, but they should be controlled to avoid dup
 
 ### 3. Timeouts and deadlines
 
-Long-running workflows need clear timeout rules and recovery behavior.
+Long-running workflows need clear timeout rules and recovery behaviour.
 
 ### 4. Monitoring
 
@@ -171,6 +181,7 @@ Saga-based systems usually use eventual consistency. That means the system may b
 The Saga pattern is a practical approach for handling distributed business workflows without a single global transaction. It trades strong consistency for resilience, flexibility, and service independence.
 
 In short:
+
 - break the workflow into local transactions
 - publish events or trigger the next step
 - use compensating actions on failure

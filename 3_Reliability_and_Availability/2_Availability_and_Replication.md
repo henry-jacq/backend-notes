@@ -36,6 +36,7 @@ Availability is expressed as uptime percentage.
 | 99.999% (five nines) | 5.26 minutes | 26 seconds |
 
 **Reality check:**
+
 - 99% (two nines) is achievable with basic redundancy
 - 99.9% (three nines) requires solid engineering
 - 99.99% (four nines) is very difficult
@@ -54,6 +55,7 @@ Replica 2: copy of master (reads only)
 ```
 
 **Benefits:**
+
 - Read distribution (scale read throughput)
 - High availability (if master fails, replica takes over)
 - Data durability (multiple copies)
@@ -64,6 +66,7 @@ Replica 2: copy of master (reads only)
 
 ```
 Write to master:
+
   1. Master receives write
   2. Master applies write
   3. Master waits for replicas to acknowledge
@@ -80,6 +83,7 @@ Consistent but slower.
 
 ```
 Write to master:
+
   1. Master receives write
   2. Master applies write
   3. Master confirms write to client

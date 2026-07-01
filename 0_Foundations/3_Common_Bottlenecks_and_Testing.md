@@ -12,11 +12,13 @@ summary: "No summary available"
 ### Database queries
 
 Symptoms:
+
 - Database CPU at 100%
 - Slow query log filling up
 - Query latency increasing with load
 
 Causes:
+
 - Missing indexes (full table scans)
 - N+1 queries (one query triggers many follow-up queries)
 - Inefficient join order
@@ -24,12 +26,14 @@ Causes:
 - Locks on frequently updated rows
 
 Investigation:
+
 - Enable query logging
 - Look at execution plans
 - Count queries per request
 - Measure query latency
 
 Fix order:
+
 1. Add indexes
 2. Remove N+1 queries
 3. Cache query results
@@ -38,22 +42,26 @@ Fix order:
 ### Memory allocation and garbage collection
 
 Symptoms:
+
 - Memory usage grows over time
 - Latency spikes periodically (garbage collection pauses)
 - Out-of-memory errors
 
 Causes:
+
 - Objects created unnecessarily (allocations in hot loops)
 - Memory leaks (references held longer than needed)
 - Large objects kept in memory
 - Inefficient data structures
 
 Investigation:
+
 - Heap dumps
 - Allocation profilers
 - Garbage collection logs
 
 Fix:
+
 - Reduce object allocation
 - Release references explicitly
 - Use efficient data structures
@@ -62,21 +70,25 @@ Fix:
 ### Lock contention
 
 Symptoms:
+
 - High CPU usage but throughput does not increase
 - Latency increases with concurrent load
 - Thread count high but threads waiting
 
 Causes:
+
 - Too many threads competing for locks
 - Holding locks too long
 - Coarse-grained locking (locking entire table instead of row)
 
 Investigation:
+
 - Thread dumps (show which threads are waiting)
 - Lock statistics (if available)
 - Contention profilers
 
 Fix:
+
 - Fine-grained locking (lock smaller data)
 - Reduce time locks are held
 - Use lock-free data structures
@@ -85,44 +97,52 @@ Fix:
 ### Network I/O
 
 Symptoms:
+
 - Network bandwidth near limit
-- Requests that cross data centers are slow
+- Requests that cross data centres are slow
 - Latency correlated with request size
 
 Causes:
+
 - Large response sizes
-- Inefficient serialization (JSON vs binary)
+- Inefficient serialisation (JSON vs binary)
 - Chatty protocols (many round trips for one logical operation)
 
 Investigation:
+
 - Network packet capture
 - Request size distribution
 - Bandwidth utilization
 
 Fix:
+
 - Compress responses
 - Filter unnecessary data
-- Use binary serialization
+- Use binary serialisation
 - Batch operations
 
 ### Disk I/O
 
 Symptoms:
+
 - Disk utilization high but CPU/memory low
 - Response times variable and unpredictable
 - Latency correlated with disk activity
 
 Causes:
+
 - Sequential reads instead of random
 - Inefficient caching (disk thrashing)
 - Fsync on every write (unnecessary durability guarantees)
 - Insufficient RAM for working set
 
 Investigation:
+
 - Disk I/O monitoring
 - File access patterns
 
 Fix:
+
 - Reduce fsync frequency (batch writes)
 - Increase RAM or cache size
 - Prefetch data
@@ -130,44 +150,48 @@ Fix:
 
 ## Amdahl's Law and diminishing returns
 
-Amdahl's Law describes why optimizing one component stops helping at some point.
+Amdahl's Law describes why optimising one component stops helping at some point.
 
 If a system spends 70% of time in component A and 30% in component B:
 
-- Optimizing A by 50% saves 35% overall
-- Optimizing A by 99% saves 69.3% overall (approaching limit)
-- Optimizing B saves almost nothing initially
+- Optimising A by 50% saves 35% overall
+- Optimising A by 99% saves 69.3% overall (approaching limit)
+- Optimising B saves almost nothing initially
 
-Once you optimize the bottleneck, a different component becomes the bottleneck.
+Once you optimise the bottleneck, a different component becomes the bottleneck.
 
-This is why profiling before optimization matters. Without profiling, developers often optimize the wrong thing and see no improvement.
+This is why profiling before optimisation matters. Without profiling, developers often optimise the wrong thing and see no improvement.
 
 ## Caching decisions
 
 Caching helps when:
+
 - Same data is read repeatedly
 - Working set fits in available memory
 - Cache hit rate is high (> 80%)
 - Data doesn't change too frequently
 
 Caching hurts when:
+
 - Cache hit rate is low (< 30%)
 - Data changes constantly (cache invalidation complexity)
 - Memory is limited and cache causes eviction of other data
 - Stale data causes bugs
 
 **Cache effectiveness:**
+
 - Hit rate below 50%: probably not worth the complexity
 - Hit rate 50-80%: helps but monitor carefully
 - Hit rate above 80%: definitely worthwhile
 
 Many developers add caching reactively ("it's slow, add cache!"). Better approach: measure whether queries are repeated. If yes, cache helps. If no, cache adds complexity without benefit.
 
-## Premature optimization trap
+## Premature optimisation trap
 
-The most common performance mistake: optimizing before understanding requirements.
+The most common performance mistake: optimising before understanding requirements.
 
 Examples:
+
 - Adding Redis before measuring database latency
 - Implementing connection pooling in application before checking if database is the bottleneck
 - Rewriting code in a faster language before profiling
@@ -175,11 +199,12 @@ Examples:
 
 All these add complexity.
 
-**When to optimize:**
+**When to optimise:**
+
 1. Requirements are clear (response time target exists)
 2. Current system doesn't meet them (measured)
 3. Bottleneck is identified (profiled)
-4. Simple optimizations tried first (indexes, caching, code)
+4. Simple optimisations tried first (indexes, caching, code)
 5. Impact is measured (before/after comparison)
 
 ## Performance testing
@@ -232,14 +257,14 @@ Without alerts, performance degradation goes unnoticed until users complain.
 - What metric is most important: p50, p95, or p99 latency?
 - If a query takes 1 second but only happens once per day, does it matter?
 - How do you prove that adding cache will actually help?
-- What happens if the bottleneck is network I/O in a data center you don't control?
-- If you optimize the database query from 700ms to 100ms, and response time improves by only 50%, what else is slow?
-- When is premature optimization actually a good idea?
+- What happens if the bottleneck is network I/O in a data centre you don't control?
+- If you optimise the database query from 700ms to 100ms, and response time improves by only 50%, what else is slow?
+- When is premature optimisation actually a good idea?
 - How do you differentiate between performance problem and scalability problem?
 
 ## Summary
 
-Performance engineering is about understanding systems deeply, measuring accurately, and optimizing the real bottleneck.
+Performance engineering is about understanding systems deeply, measuring accurately, and optimising the real bottleneck.
 
 Most performance problems are not about choosing faster technologies. They are about:
 

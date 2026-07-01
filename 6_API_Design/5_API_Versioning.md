@@ -19,6 +19,7 @@ A breaking change is any change that causes existing clients to fail without mod
 
 ```
 Breaking changes:
+
   - Removing a field from a response
   - Renaming a field
   - Changing a field's type (string -> integer)
@@ -33,6 +34,7 @@ Breaking changes:
 
 ```
 Non-breaking changes:
+
   - Adding a new field to a response (clients ignore unknown fields)
   - Adding a new endpoint
   - Adding an optional parameter
@@ -75,12 +77,14 @@ GET /v2/users/123
 ```
 
 **Advantages:**
+
 - Obvious and explicit
-- Easy to test (change URL, see different behavior)
+- Easy to test (change URL, see different behaviour)
 - Easy to route (load balancer, API gateway)
 - Cache-friendly (different URL = different cache entry)
 
 **Disadvantages:**
+
 - URL changes for every version bump
 - Clients must update URLs
 - Resource identity changes (/v1/users/123 ≠ /v2/users/123, but they're the same user)
@@ -113,11 +117,13 @@ X-API-Version: 2
 ```
 
 **Advantages:**
+
 - Clean URLs (resource identity doesn't change)
 - Can default to latest version if header missing
 - Separates versioning from resource identification
 
 **Disadvantages:**
+
 - Not visible in URL (harder to debug, share, bookmark)
 - Requires header inspection for routing
 - Clients must set headers correctly
@@ -131,11 +137,13 @@ GET /users/123?api-version=2024-01-15
 ```
 
 **Advantages:**
+
 - URL-visible (can share, bookmark)
 - Optional (default to latest if not specified)
 - Easy to add to existing APIs
 
 **Disadvantages:**
+
 - Pollutes query parameters (mixes versioning with filtering)
 - Inconsistent with query parameter semantics (version is metadata, not a filter)
 
@@ -152,11 +160,13 @@ Content-Type: application/vnd.myapi.v2+json
 ```
 
 **Advantages:**
+
 - RESTful (uses HTTP content negotiation as intended)
 - Fine-grained (can version individual resources)
 - Clean URLs
 
 **Disadvantages:**
+
 - Complex to implement and test
 - Not widely understood by developers
 - Tooling support is limited
@@ -197,11 +207,13 @@ Client sets api-version: 2024-01-15
 ```
 
 **Advantages:**
+
 - No arbitrary version numbers
 - Clear timeline of changes
 - Client pins to a date and migrates when ready
 
 **Disadvantages:**
+
 - Many versions to maintain (every date is potentially different)
 - Complex server-side logic to handle date ranges
 - Must document what changed on each date
@@ -218,6 +230,7 @@ PATCH -> bug fixes (v2.1.0 -> v2.1.1)
 ```
 
 **In practice for APIs:**
+
 - Only MAJOR version appears in URL: `/v1/`, `/v2/`
 - MINOR and PATCH are internal (documented in changelog)
 - Clients care about MAJOR (determines compatibility)
@@ -230,17 +243,20 @@ Deprecation is how you tell consumers to stop using an old version.
 
 ```
 Phase 1: Announce deprecation
+
   - Document that v1 will be deprecated
   - Add Deprecation header to v1 responses
   - Communicate timeline (email, docs, dashboard)
 
 Phase 2: Sunset period
+
   - v1 still works
   - v2 is the recommended version
   - v1 responses include Sunset header with date
   - Log which clients still use v1
 
 Phase 3: End of life
+
   - v1 returns 410 Gone
   - Clients that didn't migrate break
   - Support available for migration assistance
@@ -263,6 +279,7 @@ Link: <https://api.example.com/v2/docs>; rel="successor-version"
 
 ```
 Good deprecation:
+
   1. Announce 6+ months in advance
   2. Provide migration guide (v1 field -> v2 field mapping)
   3. Offer both versions simultaneously
@@ -271,6 +288,7 @@ Good deprecation:
   6. Provide migration tools or scripts
 
 Bad deprecation:
+
   1. Remove endpoint without notice
   2. Change behavior silently
   3. Give 2 weeks notice for a breaking change
@@ -332,6 +350,7 @@ GraphQL takes a different approach: **no versioning**.
 
 ```
 Instead of versions, evolve the schema:
+
   1. Add new fields (non-breaking)
   2. Deprecate old fields (mark with @deprecated)
   3. Remove deprecated fields after migration period
@@ -366,6 +385,7 @@ message User {
 ```
 
 **Rules:**
+
 - Never change field numbers
 - Never change field types
 - Use `reserved` for removed fields
@@ -377,7 +397,7 @@ Old clients reading v2 messages ignore unknown fields. New clients reading v1 me
 
 1. **No versioning from day one** — adding versioning later requires migrating all consumers simultaneously
 2. **Too many versions** — maintaining 5+ active versions is unsustainable
-3. **Silent breaking changes** — changing behavior without bumping version
+3. **Silent breaking changes** — changing behaviour without bumping version
 4. **No deprecation period** — removing versions without warning
 5. **Versioning internal APIs like public APIs** — internal APIs can afford faster deprecation cycles
 6. **Coupling version to deployment** — version represents the contract, not the release

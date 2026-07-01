@@ -14,12 +14,14 @@ This section covers how to operate backend systems in production: monitoring, de
 ### Observability and Debugging
 
 **[0_Observability_Fundamentals.md](file:///d:/Playground/Backend%20Notes/5_Operations/0_Observability_Fundamentals.md)** — Observability Pillars & Alerting
+
 - Why observability matters (unpredictable failures in production)
 - Three pillars of observability (metrics, logs, traces)
 - Key metrics for different architectural components (app, database, cache, queue)
 - Designing actionable alerts and avoiding alert fatigue
 
 **[1_Systematic_Debugging_and_Failure_Patterns.md](file:///d:/Playground/Backend%20Notes/5_Operations/1_Systematic_Debugging_and_Failure_Patterns.md)** — Debugging & Failure Patterns
+
 - Core failure patterns (slow database, memory leaks, timeouts, error spikes, cascading failures)
 - Step-by-step systematic debugging strategy
 - Checklist for production readiness
@@ -48,21 +50,25 @@ These documents teach you how to debug production issues systematically instead 
 ## Connection to other sections
 
 **Operations + Data Storage:**
+
 - Database query monitoring
 - Slow query logs
 - Replication lag alerts
 
 **Operations + Async and Events:**
+
 - Consumer lag monitoring (how far behind consumer is)
 - Message queue depth
 - Dead-letter queue alerts
 
 **Operations + Reliability:**
+
 - Circuit breaker state monitoring
 - Retry rate monitoring
 - Failover verification
 
 **Operations + Infrastructure:**
+
 - Server metrics (CPU, memory, disk)
 - Network metrics (latency, bandwidth)
 - Connection pool exhaustion
@@ -70,6 +76,7 @@ These documents teach you how to debug production issues systematically instead 
 ## Practical skills
 
 After this section, you'll know how to:
+
 - Identify where a problem actually is (not guess)
 - Correlate metrics to understand cause
 - Debug systematically
@@ -91,9 +98,10 @@ This is the systematic approach that separates senior engineers from junior ones
 ## Next: Advanced topics
 
 After mastering operations monitoring:
+
 - **Capacity planning** — forecasting growth, resource planning
 - **Incident response** — handling production emergencies
 - **Security** — protecting systems from attacks
-- **Cost optimization** — efficiency at scale
+- **Cost optimisation** — efficiency at scale
 
 These are advanced topics built on top of everything you've learned so far.

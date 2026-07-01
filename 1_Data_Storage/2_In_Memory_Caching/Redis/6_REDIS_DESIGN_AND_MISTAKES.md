@@ -16,17 +16,20 @@ This document covers Redis breaking points, its single-threaded architecture, ev
 **Problem:** Redis is single-threaded. Commands execute one at a time.
 
 **Why this works despite single-threaded:**
+
 - In-memory operations are fast (no I/O waits)
 - Blocking on I/O (disk, network) is not necessary
 - No lock contention (no concurrent reads/writes)
 - Predictable latency (no garbage collection pauses)
 
 **Breaking point of single-threaded:**
+
 - Very high command rate (millions/second)
 - Complex operations that require multiple commands
 - Network I/O becomes bottleneck (single network interface)
 
 **How scaling happens:**
+
 - Multiple Redis instances (sharding by key)
 - Each instance handles subset of keys
 - Client determines which instance for each key
@@ -52,16 +55,19 @@ This document covers Redis breaking points, its single-threaded architecture, ev
    - Other systems support this
 
 **Why Redis chose eviction:**
+
 - Simple to implement
-- Predictable behavior (LRU is familiar)
+- Predictable behaviour (LRU is familiar)
 - Doesn't require application changes (no out-of-memory errors)
 
 **Trade-off of eviction:**
+
 - Unknown data is evicted (could be important)
 - Cache hit rate drops when memory is full
-- Unpredictable behavior (which key is evicted?)
+- Unpredictable behaviour (which key is evicted?)
 
 **When eviction breaks:**
+
 - Working set larger than memory
 - Eviction policy doesn't match data importance
 - Important data keeps getting evicted
@@ -78,11 +84,13 @@ This document covers Redis breaking points, its single-threaded architecture, ev
 4. **Both** (RDB for speed, AOF for safety)
 
 **Why different options:**
+
 - Caching doesn't require persistence (data can be regenerated)
 - Session storage needs persistence (losing user sessions is bad)
 - Real-time counters can tolerate some loss (cache miss)
 
 **Trade-off of persistence:**
+
 - More persistence = slower (disk I/O required)
 - No persistence = faster but riskier
 
@@ -98,11 +106,13 @@ SET cache:user:12345 "{...}" EX 3600
 ```
 
 **Benefits:**
+
 - Stale data removed automatically
 - Memory pressure relieved
 - No manual cleanup needed
 
 **Trade-off:**
+
 - TTL must be set correctly (too short = cache misses, too long = memory filled)
 - Expiration process (background task) uses CPU
 
@@ -119,12 +129,14 @@ Subscriber 3 receives: "user:login"
 ```
 
 **Why in a cache store:**
+
 - Real-time notifications are common in web apps
 - Message brokers add operational complexity
 - Redis is already running (reuse infrastructure)
 - Low latency important (in-memory)
 
 **Trade-off of Redis Pub/Sub vs Kafka:**
+
 - Redis: fast, in-memory, no persistence
 - Kafka: persisted, replay-able, multiple independent consumers
 
@@ -160,7 +172,7 @@ Different design choices for different problems.
    - Response times high
    - Commands queuing up
    - Reason: very high command rate, complex operations
-   - Fix: shard Redis (multiple instances), optimize commands, use pipeline batching
+   - Fix: shard Redis (multiple instances), optimise commands, use pipeline batching
 
 5. **Persistence overhead**
    - Redis slow, tail latency high
@@ -175,6 +187,7 @@ Different design choices for different problems.
 **Mistake:** add Redis without measuring database query time
 
 **Result:**
+
 - Cache hit rate low
 - Added operational complexity
 - Little performance improvement
@@ -186,6 +199,7 @@ Different design choices for different problems.
 **Mistake:** set cache TTL to 1 hour for frequently changing data
 
 **Result:**
+
 - Stale data served to users
 - Users see inconsistent state
 - Cache bugs
@@ -197,6 +211,7 @@ Different design choices for different problems.
 **Mistake:** cache a user profile but don't invalidate when user updates it
 
 **Result:**
+
 - User updates profile
 - Cache still has old data
 - User sees their old profile
@@ -216,6 +231,7 @@ GET key1000
 ```
 
 **Result:**
+
 - 1000 network round trips
 - Very slow
 - Redis single-thread starved
@@ -237,6 +253,7 @@ PIPELINE [
 **Mistake:** no alerts on Redis memory or hit rate
 
 **Result:**
+
 - Memory fills silently
 - Eviction happens
 - Hit rate drops
@@ -258,11 +275,13 @@ PIPELINE [
 | Speed | Fast | Slightly faster |
 
 **Choose Memcached when:**
+
 - Simple key-value caching only
 - Operational simplicity critical
 - No persistence needed
 
 **Choose Redis when:**
+
 - Complex data structures needed
 - Persistence important
 - Pub/Sub messaging wanted
@@ -277,10 +296,12 @@ PIPELINE [
 | Memory usage | High | Low |
 
 **Choose database caching (indexes) when:**
+
 - Working set fits in database buffer pool
 - Consistency critical
 
 **Choose Redis when:**
+
 - Performance critical
 - Cache miss acceptable
 - Working set larger than database buffer pool
@@ -305,6 +326,7 @@ Redis exists because databases alone cannot meet performance requirements at sca
 Redis's design (in-memory, rich data structures, expiration, persistence options) is not arbitrary. Each choice responds to specific production requirements that simple caching could not handle.
 
 The key insight: caching is not magic. It helps when:
+
 1. Same data requested repeatedly (high hit rate)
 2. Working set fits in memory
 3. Stale data is acceptable

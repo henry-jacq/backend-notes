@@ -12,6 +12,7 @@ This document explains why databases fail as systems grow, focusing on single da
 ## The database bottleneck
 
 A single database server is finite. It has:
+
 - CPU cores (limited parallel query execution)
 - Memory (buffer pool size, working set limit)
 - Disk I/O bandwidth (read/write throughput)
@@ -33,6 +34,7 @@ Multiple application servers
 ```
 
 Each write must:
+
 1. Reach the database
 2. Acquire a lock
 3. Modify the data
@@ -44,6 +46,7 @@ Each write must:
 At high write volume, the database becomes the bottleneck.
 
 **Symptoms:**
+
 - Write latency increasing with load
 - Lock waits in slow query log
 - Disk I/O at 100%
@@ -63,6 +66,7 @@ Gap grows: events accumulate, latency increases
 Even with replication (replicas for read offload), replicas themselves become saturated.
 
 **Symptoms:**
+
 - Read latency increasing
 - Query queue building
 - Replica lag growing (replicas cannot keep up with writes)
@@ -82,6 +86,7 @@ Only 20% of queries hit cache.
 Without enough buffer pool, most queries hit disk (slow).
 
 **Solutions:**
+
 - Add more memory (limited by hardware)
 - Reduce working set (delete old data)
 - Improve caching (application caching with Redis)
@@ -112,16 +117,19 @@ Master (handles writes)
 ```
 
 **Benefits:**
+
 - Reads distribute across replicas
 - Read throughput increases
 - High availability (if master fails, replica becomes master)
 
 **Limitations:**
+
 - All writes still go to master (write bottleneck remains)
 - Replication lag (replicas lag behind master by milliseconds to seconds)
 - Consistency issue (replicas may see different state than master during lag)
 
 **Symptoms of replication not helping:**
+
 - Replica lag growing (replicas cannot keep up)
 - Master still saturated (writes still the bottleneck)
 - Inconsistency bugs (read from replica, gets stale data)

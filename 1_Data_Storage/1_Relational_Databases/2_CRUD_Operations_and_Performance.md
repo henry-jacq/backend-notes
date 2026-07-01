@@ -30,6 +30,7 @@ VALUES (1, 'Alice', 'alice@example.com', NOW())
 ```
 
 **What happens:**
+
 1. Validate data (email format correct?)
 2. Check constraints (unique email? foreign keys valid?)
 3. Find space on disk
@@ -39,6 +40,7 @@ VALUES (1, 'Alice', 'alice@example.com', NOW())
 7. Return success
 
 **Cost:**
+
 - Single insert: microseconds to milliseconds
 - High-volume inserts: indexes slow this down
 - Constraints add overhead
@@ -53,8 +55,9 @@ INSERT INTO users (id, name, email) VALUES
 ```
 
 **Better than 3 separate INSERT statements:**
+
 - Network round trips: 3 vs 1
-- Index updates: batch optimized
+- Index updates: batch optimised
 
 ### Batch insert performance
 
@@ -65,6 +68,7 @@ Same data, 100x fewer round trips
 ```
 
 **Trade-off:**
+
 - Batching increases throughput
 - Reduces latency per row
 - Increases memory usage per batch
@@ -80,6 +84,7 @@ SELECT * FROM users WHERE age > 30
 ```
 
 **Execution:**
+
 1. Start at first row
 2. Check condition (age > 30?)
 3. If true, include in result
@@ -87,6 +92,7 @@ SELECT * FROM users WHERE age > 30
 5. Repeat until end
 
 **Problem at scale:**
+
 - 1 billion rows
 - Half match condition
 - All 1 billion rows scanned
@@ -103,6 +109,7 @@ SELECT * FROM users WHERE age > 30
 ```
 
 **Execution with index:**
+
 1. Look up age > 30 in index
 2. Index has pre-sorted list of ages
 3. Find first age > 30 (binary search)
@@ -110,11 +117,13 @@ SELECT * FROM users WHERE age > 30
 5. Only relevant rows read
 
 **Performance improvement:**
+
 - Full scan: 10 seconds (scan all rows)
 - Index scan: 100 milliseconds (direct lookup)
 - 100x faster
 
 **Trade-off:**
+
 - Index takes disk space
 - Index slows down writes (index must be updated)
 
@@ -128,17 +137,19 @@ WHERE users.region = 'us-west'
 ```
 
 **Execution:**
+
 1. Find users in region us-west (possibly with index)
 2. For each user, find matching orders
 3. Combine results
 
 **At scale:**
+
 - Users table: 1 million rows
 - Orders table: 100 million rows
 - If join unoptimized: nested loop 1M * 100M = 100 trillion checks
 - Each check: disk I/O
 
-**Solution:** indexes on join columns, query planner optimization.
+**Solution:** indexes on join columns, query planner optimisation.
 
 ## Update (UPDATE)
 
@@ -151,6 +162,7 @@ UPDATE users SET email = 'alice2@example.com' WHERE id = 1
 ```
 
 **What happens:**
+
 1. Find row with id=1 (index lookup)
 2. Check constraints (new email unique?)
 3. Update the row
@@ -159,6 +171,7 @@ UPDATE users SET email = 'alice2@example.com' WHERE id = 1
 6. Acknowledge to client
 
 **Cost:**
+
 - Lookup: fast (index)
 - Constraint check: depends on what constraints
 - Index updates: can be expensive if many indexes
@@ -170,17 +183,20 @@ UPDATE users SET status = 'verified' WHERE signup_date < '2020-01-01'
 ```
 
 **Without index on signup_date:**
+
 - Full table scan of all users
 - Check condition for each row
 - Update matching rows
 - Update all indexes for each row
 
 **With index on signup_date:**
+
 - Index lookup: find users before 2020
 - Update only those rows
 - Update indexes only for those rows
 
 **Performance difference:**
+
 - Full scan: 1 hour (scan all users)
 - Index scan: 1 second (direct access to old users)
 
@@ -207,6 +223,7 @@ Correct.
 ```
 
 **Cost of locks:**
+
 - High contention (many updates to same row): transactions wait
 - Waits cause latency spikes
 - High-frequency updates to hot rows become bottleneck
@@ -222,6 +239,7 @@ DELETE FROM users WHERE id = 1
 ```
 
 **What happens:**
+
 1. Find row with id=1
 2. Mark row as deleted (or physically remove)
 3. Update indexes
@@ -229,6 +247,7 @@ DELETE FROM users WHERE id = 1
 5. Acknowledge
 
 **Cost:**
+
 - Lookup: fast with index
 - Index removal: expensive if many indexes
 
@@ -243,6 +262,7 @@ DELETE FROM notifications WHERE user_id = 1
 ```
 
 **Problem at scale:**
+
 - Delete one user
 - User has 1 million orders
 - 1 million cascade deletes
@@ -250,6 +270,7 @@ DELETE FROM notifications WHERE user_id = 1
 - Single delete takes hours
 
 **Solution:**
+
 - Soft deletes (mark as deleted, don't physically delete)
 - Batch deletes over time
 - Denormalize (don't need cascade if data denormalized)

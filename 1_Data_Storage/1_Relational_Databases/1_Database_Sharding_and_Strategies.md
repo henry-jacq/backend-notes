@@ -15,6 +15,7 @@ Sharding is splitting data across multiple databases.
 
 ```
 Data split by user ID:
+
 - Shard 1: users 1-1,000,000
 - Shard 2: users 1,000,001-2,000,000
 - Shard 3: users 2,000,001-3,000,000
@@ -27,6 +28,7 @@ Load distributed across shards.
 ```
 
 **Benefits:**
+
 - Write load distributed
 - Read load distributed
 - Each shard smaller (fits more in memory)
@@ -37,10 +39,12 @@ Load distributed across shards.
 ### 1. Operational complexity
 
 **Before sharding:**
+
 - One database server
 - Simple deployment
 
 **After sharding:**
+
 - Multiple database servers
 - Backup must shard too
 - Failover must happen per shard
@@ -74,6 +78,7 @@ WHERE user_id = 500000 AND product_id = 999999
 ```
 
 **Execution:**
+
 - Query Shard 1 for user's orders
 - For each order, query Shard 3 for product
 - Aggregate results
@@ -81,6 +86,7 @@ WHERE user_id = 500000 AND product_id = 999999
 This is slow (many network round trips).
 
 **Solutions:**
+
 - Denormalize (store product info in shard 1 too)
 - Accept the complexity
 - Use different architecture for cross-shard queries
@@ -97,6 +103,7 @@ User B (Shard 2): increase balance by $100
 If User A's update succeeds but Shard 2 is down, User B never gets the money.
 
 **Solutions:**
+
 - Avoid cross-shard transactions
 - Use saga pattern (eventual consistency)
 - Accept data loss risk
@@ -113,6 +120,7 @@ Requires moving data from shards 1-3 to shards 1-4.
 ```
 
 During rebalancing:
+
 - System unavailable for affected data
 - Or complex dual-write logic
 - Risk of data loss or duplication
@@ -126,10 +134,12 @@ shard_id = hash(user_id) % num_shards
 ```
 
 **Pros:**
+
 - Even distribution (if hash is good)
 - Deterministic (same user always in same shard)
 
 **Cons:**
+
 - Adding shards requires rebalancing all data
 - Queries that don't know user_id need to scan all shards
 
@@ -142,10 +152,12 @@ user_id 2,000,001-3,000,000 -> Shard 3
 ```
 
 **Pros:**
+
 - Range queries easier (users 1-500,000 in Shard 1)
 - Adding shards doesn't require rebalancing (new shard for new range)
 
 **Cons:**
+
 - Uneven distribution (if user IDs not uniform)
 - Hot shards (if range has more active users)
 
@@ -159,10 +171,12 @@ user_id 500 -> Shard 3
 ```
 
 **Pros:**
+
 - Flexible rebalancing (directory updated, no data move)
 - Can adapt to load (hot shards migrated)
 
 **Cons:**
+
 - Directory lookup overhead
 - Directory is single point of failure
 - Complex to implement
@@ -180,10 +194,12 @@ Shard 3 (users 2,000,001-3,000,000): 5% of traffic
 Shard 1 becomes bottleneck.
 
 **Causes:**
+
 - Data is not uniform (some users much more popular)
 - Access patterns are not uniform (some regions active, others dormant)
 
 **Solutions:**
+
 - Sub-shard (Shard 1 split into 1a, 1b)
 - Denormalize (cache popular data elsewhere)
 - Rebalance based on load (move some users to other shards)
@@ -256,6 +272,7 @@ Sharding adds immense complexity. Use only when necessary.
 **Mistake:** create 50 indexes for 50 slow queries
 
 **Result:**
+
 - Write performance degrades (every write updates 50 indexes)
 - Storage bloats
 - Query planner confused (chooses wrong index)
@@ -267,17 +284,19 @@ Sharding adds immense complexity. Use only when necessary.
 **Mistake:** shard after 1 year, before data requires it
 
 **Result:**
+
 - Cross-shard queries immediately needed
 - Transactions fail
 - Operational complexity not justified
 
-**Better:** optimize single database first, shard only when necessary.
+**Better:** optimise single database first, shard only when necessary.
 
 ### 3. No query analysis
 
 **Mistake:** add indexes blindly without understanding queries
 
 **Result:**
+
 - Indexes don't help (wrong columns)
 - Write performance suffers
 - Unused indexes consume storage
@@ -289,6 +308,7 @@ Sharding adds immense complexity. Use only when necessary.
 **Mistake:** read from replica without checking lag
 
 **Result:**
+
 - Stale data returned
 - Users see inconsistent state
 - Application bugs from stale reads
@@ -300,6 +320,7 @@ Sharding adds immense complexity. Use only when necessary.
 **Mistake:** deploy sharding without metrics on per-shard load
 
 **Result:**
+
 - Hot shard emerges silently
 - Days pass before noticed
 - Affects users in that shard
@@ -317,6 +338,7 @@ Sharding adds immense complexity. Use only when necessary.
 | Caching (Redis) | Fast reads | Stale data risk |
 
 The best system often uses multiple layers:
+
 - Single database for small workload
 - Replication for high read volume
 - Caching for hot data
@@ -341,6 +363,7 @@ The best system often uses multiple layers:
 Database scaling is not one-size-fits-all. Each approach (replication, caching, sharding, denormalization) solves specific problems and introduces new ones.
 
 The best engineers understand:
+
 - When single database is insufficient (measure, don't guess)
 - What each scaling technique solves (write bottleneck, read bottleneck, memory limit)
 - What trade-offs each introduces (complexity, consistency, cross-shard queries)

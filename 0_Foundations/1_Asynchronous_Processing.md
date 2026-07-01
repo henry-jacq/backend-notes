@@ -38,17 +38,20 @@ Worker processes notification
 ```
 
 **Why this works:**
+
 - Request completes immediately
 - Users see fast response
 - Heavy work happens later
 - Work is retryable if it fails
 
 **Symptoms that async helps:**
+
 - Some request steps are slow (file processing, API calls to external services)
 - Work can be done later without affecting user
 - Same work is repeated across requests (batch it)
 
 **New problems introduced:**
+
 - Jobs may fail. Need retries.
 - Jobs may process out of order. Need idempotency.
 - Multiple workers might process the same job. Need locking or deduplication.
@@ -60,6 +63,7 @@ Worker processes notification
 Problem: multiple services need to react to the same event.
 
 Example: when an order is created:
+
 - Inventory service must decrease stock
 - Billing service must charge payment
 - Notification service must send email
@@ -77,6 +81,7 @@ Order service
 ```
 
 Problems:
+
 - Order service must know about all downstream services
 - If one service is slow, the whole request is slow
 - If one service is down, the order fails
@@ -100,12 +105,14 @@ Message broker (Kafka, RabbitMQ)
 Services subscribe to events they care about. Order service doesn't know about them.
 
 **Why this works:**
+
 - Decoupling. Services don't directly call each other.
 - Resilience. If billing service is slow, order is still created and stored.
 - Scalability. New services can subscribe without changing order service.
 - Replay. If a service goes down, it can catch up by replaying events.
 
 **New problems introduced:**
+
 - Distributed transactions no longer work (two-phase commit across message broker doesn't help)
 - Eventual consistency. Billing might happen 5 minutes after order.
 - Duplicate events. Message broker might deliver the same event twice. Services must be idempotent.
@@ -117,6 +124,7 @@ Services subscribe to events they care about. Order service doesn't know about t
 Understanding when to scale requires knowing what to measure:
 
 **Single server scaling limit:**
+
 - CPU usage of application server
 - Memory usage of application server
 - Request queue depth
@@ -124,6 +132,7 @@ Understanding when to scale requires knowing what to measure:
 - Requests per second at different latencies
 
 **Database scaling limit:**
+
 - CPU usage of database server
 - Disk I/O utilization
 - Query latency
@@ -131,11 +140,13 @@ Understanding when to scale requires knowing what to measure:
 - Connection pool usage
 
 **Cache effectiveness:**
+
 - Cache hit rate
 - Cache eviction rate
 - Memory usage
 
 **Queue processing:**
+
 - Queue depth (how many jobs waiting)
 - Job processing time
 - Job failure rate
@@ -143,14 +154,15 @@ Understanding when to scale requires knowing what to measure:
 
 ## Common scaling mistakes
 
-**Premature optimization:**
+**Premature optimisation:**
 Adding caching, sharding, or async processing before the system actually needs it. Code becomes complex. Problems that don't exist yet are now real problems to debug.
 
 **Scaling horizontally too early:**
 Load balancing adds complexity. Before scaling horizontally, try:
-1. Optimize database queries (indexes)
+
+1. Optimise database queries (indexes)
 2. Add caching
-3. Optimize application code (remove inefficiencies)
+3. Optimise application code (remove inefficiencies)
 4. Upgrade server hardware
 
 **Ignoring the database:**
@@ -191,4 +203,4 @@ Scaling is not about using cool technologies. It is about:
 5. Monitoring what breaks next
 6. Repeating as the system evolves
 
-The best engineers know when to scale and when to optimize. They can look at metrics and see where the next bottleneck will emerge before it becomes critical.
+The best engineers know when to scale and when to optimise. They can look at metrics and see where the next bottleneck will emerge before it becomes critical.

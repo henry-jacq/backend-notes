@@ -14,6 +14,7 @@ This document explains Redis not as a cache to learn, but as a solution to speci
 Before Redis, caching existed (Memcached, in-memory stores). The problem was not that caching didn't work. The problem was that databases got slower as systems scaled.
 
 A typical database:
+
 - Stores data on disk (durable but slow)
 - Answers queries by finding data on disk (I/O required)
 - Uses indexes to speed up lookups (but index lookups still require disk I/O)
@@ -31,6 +32,7 @@ At scale (millions of requests per day), a single expensive query repeated milli
 User requests:  GET /product/id/12345
 
 Database execution:
+
 1. Parse query
 2. Check query plan
 3. Find index entry for product 12345
@@ -65,9 +67,10 @@ The database performs the same work 1000 times.
 
 ### Why the problem exists
 
-Databases are optimized for durability and consistency, not repeated read performance. They must:
+Databases are optimised for durability and consistency, not repeated read performance. They must:
+
 - Check query plan
-- Verify authorization
+- Verify authorisation
 - Check for locks
 - Read from disk
 
@@ -90,6 +93,7 @@ User request -> Cache (RAM access, 0.1ms) -> Return immediately
 ```
 
 **Why this works:**
+
 - RAM is orders of magnitude faster than disk (100x)
 - Same data served from RAM, not disk
 - Database load drops dramatically
@@ -117,11 +121,13 @@ Both Redis and Memcached are in-memory stores. They are similar at first glance 
 **Design:** key-value store in RAM, distributed, simple
 
 **What worked:**
+
 - Very simple to use
 - Very fast
 - Low memory overhead
 
 **Breaking points:**
+
 - No persistence (crash = loss)
 - Limited data structures (only key-value)
 - No expiration management (keys kept forever or manually evicted)
@@ -143,6 +149,7 @@ Result: user session data
 **Design:** in-memory data structure store, more features, richer capabilities
 
 **What worked better:**
+
 - Multiple data structures (strings, hashes, lists, sets, sorted sets)
 - Built-in expiration (keys expire automatically)
 - Persistence to disk (optional)
@@ -192,7 +199,7 @@ key: leaderboard
 values: { user1: 1000, user2: 950, user3: 900 }
 ```
 
-Caching complex queries with Redis is easier when you can store hashes, lists, and sets directly, instead of serializing JSON to Memcached.
+Caching complex queries with Redis is easier when you can store hashes, lists, and sets directly, instead of serialising JSON to Memcached.
 
 ## When Redis becomes necessary
 
@@ -221,7 +228,7 @@ Redis was built at Antirez to cache complex queries and enable real-time feature
 4. **Leaderboards and rankings**
    - Sorted set of users by score
    - Database sorting is expensive
-   - Redis sorted sets are optimized for this
+   - Redis sorted sets are optimised for this
    - Queries are fast and updateable
 
 5. **Rate limiting**

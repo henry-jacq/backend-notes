@@ -49,10 +49,12 @@ Order Service receives PaymentFailed -> cancels order
 ```
 
 **Pros:**
+
 - Simple, no coordinator
 - Services are loosely coupled
 
 **Cons:**
+
 - Logic scattered across services
 - Hard to understand flow
 - Circular dependencies possible
@@ -63,6 +65,7 @@ Dedicated orchestrator coordinates:
 
 ```
 Orchestrator:
+
   1. Tell Order Service to create order
   2. Wait for response
   3. Tell Inventory Service to decrease stock
@@ -72,11 +75,13 @@ Orchestrator:
 ```
 
 **Pros:**
-- Workflow centralized
+
+- Workflow centralised
 - Easy to understand
 - Easier to debug
 
 **Cons:**
+
 - Orchestrator is coordinator (but simpler than 2PC)
 - More operational complexity
 
@@ -120,6 +125,7 @@ Step 2: Decrease inventory from 100 to 50
 Step 3: Charge payment (fails)
 
 Compensation:
+
   - Delete order (undo step 1)
   - Increase inventory back to 100 (undo step 2)
 ```
@@ -176,6 +182,7 @@ Every step and compensation must be idempotent (safe to retry).
 **Mistake:** assume step always completes or fails quickly
 
 **Result:**
+
 - Long timeout means long saga duration
 - Short timeout means premature failure
 - Retry logic needed
@@ -185,6 +192,7 @@ Every step and compensation must be idempotent (safe to retry).
 **Mistake:** steps not idempotent
 
 **Result:**
+
 - Retries cause duplicates (charged twice, order created twice)
 - Compensation applied multiple times
 - Data corruption
@@ -194,6 +202,7 @@ Every step and compensation must be idempotent (safe to retry).
 **Mistake:** no visibility into which sagas are in progress
 
 **Result:**
+
 - Compensation stuck (service that should undo is down)
 - Manual recovery required
 - Data inconsistency not detected
@@ -203,6 +212,7 @@ Every step and compensation must be idempotent (safe to retry).
 **Mistake:** A depends on B, B depends on A
 
 **Result:**
+
 - Deadlock (A waits for B, B waits for A)
 - Cannot recover
 
@@ -211,6 +221,7 @@ Every step and compensation must be idempotent (safe to retry).
 **Mistake:** saga completes but data is inconsistent
 
 **Result:**
+
 - Users see wrong state
 - Compensations don't happen
 - Data integrity issues persist
@@ -254,6 +265,7 @@ Every step and compensation must be idempotent (safe to retry).
 ## Summary
 
 Saga pattern accepts eventual consistency but requires:
+
 - Compensation logic for each step
 - Idempotent operations (safe to retry)
 - Monitoring to detect inconsistencies
