@@ -1,3 +1,10 @@
+---
+title: "Resource Isolation and Fault Tolerance"
+part: 4
+part_title: "Reliability and Availability"
+chapter: 2
+summary: "This document covers bulkheads (resource isolation), how to combine reliability patterns, and common reliability..."
+---
 # Resource Isolation and Fault Tolerance
 
 This document covers bulkheads (resource isolation), how to combine reliability patterns, and common reliability pitfalls.

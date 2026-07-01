@@ -1,3 +1,10 @@
+---
+title: "API Security and Rate Limiting"
+part: 6
+part_title: "API Design"
+chapter: 8
+summary: "An API is an attack surface. Every public endpoint is an invitation for abuse. Security is not optional — it is a..."
+---
 # API Security and Rate Limiting
 
 An API is an attack surface. Every public endpoint is an invitation for abuse. Security is not optional — it is a prerequisite for operating an API in production. Rate limiting is not just about fairness — it is about keeping the system alive.
@@ -8,10 +15,10 @@ Traditional web security focuses on browsers: cookies, HTML injection, form subm
 
 ```
 Web application attack:
-  Attacker → browser → HTML form → server
+  Attacker -> browser -> HTML form -> server
 
 API attack:
-  Attacker → script → HTTP request → server
+  Attacker -> script -> HTTP request -> server
   No browser. No forms. No CAPTCHA. Just raw requests.
 ```
 
@@ -31,11 +38,11 @@ Rate limiting controls how many requests a client can make in a time window. Wit
 Without rate limiting:
   Normal users: 10 requests/second
   Attacker: 10,000 requests/second
-  → Server overwhelmed → all users affected
+  -> Server overwhelmed -> all users affected
 
 With rate limiting:
   Each client: max 100 requests/minute
-  Attacker exceeds limit → gets 429 Too Many Requests
+  Attacker exceeds limit -> gets 429 Too Many Requests
   Normal users unaffected
 ```
 
@@ -47,13 +54,13 @@ With rate limiting:
 Window: 1 minute
 Limit: 100 requests
 
-00:00 - 00:59 → count requests → allow up to 100
-01:00 - 01:59 → counter resets → allow up to 100
+00:00 - 00:59 -> count requests -> allow up to 100
+01:00 - 01:59 -> counter resets -> allow up to 100
 
 Problem: boundary burst
-  00:59 → 100 requests (allowed)
-  01:00 → 100 requests (allowed, counter reset)
-  → 200 requests in 2 seconds
+  00:59 -> 100 requests (allowed)
+  01:00 -> 100 requests (allowed, counter reset)
+  -> 200 requests in 2 seconds
 ```
 
 Simple to implement but allows burst at window boundaries.
@@ -64,8 +71,8 @@ Simple to implement but allows burst at window boundaries.
 Track timestamp of every request.
 For each new request:
   Count requests in last 60 seconds
-  If count < limit → allow
-  If count >= limit → reject
+  If count < limit -> allow
+  If count >= limit -> reject
 
 No boundary problem. But stores every request timestamp (memory-intensive).
 ```
@@ -82,7 +89,7 @@ Weighted count = (previous × remaining%) + current
                = (80 × 0.5) + 40
                = 80
 
-If limit is 100 → allow (80 < 100)
+If limit is 100 -> allow (80 < 100)
 ```
 
 Good balance between accuracy and memory usage.
@@ -93,16 +100,16 @@ Good balance between accuracy and memory usage.
 Bucket holds tokens (max capacity: 100)
 Tokens added at fixed rate (10 per second)
 Each request consumes 1 token
-No tokens left → request rejected
+No tokens left -> request rejected
 
 State:
   tokens: 100 (starts full)
   refill_rate: 10/second
 
-Request at t=0: tokens = 99 → allowed
-Request at t=0: tokens = 98 → allowed
+Request at t=0: tokens = 99 -> allowed
+Request at t=0: tokens = 98 -> allowed
 ...
-100 requests at t=0: tokens = 0 → reject subsequent
+100 requests at t=0: tokens = 0 -> reject subsequent
 After 1 second: tokens = 10 (refilled)
 ```
 
@@ -124,7 +131,7 @@ Incoming:   [req][req][req][req][req]
                     ↓
 Queue:      [req][req][req] (max size 3)
                     ↓
-Processing: [req] → process → [req] → process (fixed rate)
+Processing: [req] -> process -> [req] -> process (fixed rate)
 ```
 
 **Difference from token bucket:**
@@ -137,10 +144,10 @@ Standard headers inform clients about their rate limit status:
 
 ```
 HTTP/1.1 200 OK
-X-RateLimit-Limit: 100        → max requests per window
-X-RateLimit-Remaining: 45     → requests left in current window
-X-RateLimit-Reset: 1700003600 → Unix timestamp when window resets
-Retry-After: 30               → seconds to wait (on 429 response)
+X-RateLimit-Limit: 100        -> max requests per window
+X-RateLimit-Remaining: 45     -> requests left in current window
+X-RateLimit-Reset: 1700003600 -> Unix timestamp when window resets
+Retry-After: 30               -> seconds to wait (on 429 response)
 
 HTTP/1.1 429 Too Many Requests
 Retry-After: 30
@@ -157,26 +164,26 @@ Retry-After: 30
 
 ```
 By IP address:
-  192.168.1.1 → 100 req/min
-  → Simple but shared IPs (corporate, NAT) punish legitimate users
+  192.168.1.1 -> 100 req/min
+  -> Simple but shared IPs (corporate, NAT) punish legitimate users
 
 By API key:
-  key_abc → 1000 req/min
-  key_def → 100 req/min
-  → Per-customer limits, different tiers
+  key_abc -> 1000 req/min
+  key_def -> 100 req/min
+  -> Per-customer limits, different tiers
 
 By user:
-  user_123 → 100 req/min
-  → Requires authentication first
+  user_123 -> 100 req/min
+  -> Requires authentication first
 
 By endpoint:
-  POST /orders → 10 req/min (expensive operation)
-  GET /products → 1000 req/min (cheap read)
-  → Different limits for different costs
+  POST /orders -> 10 req/min (expensive operation)
+  GET /products -> 1000 req/min (cheap read)
+  -> Different limits for different costs
 
 By combination:
-  user_123 + POST /orders → 10 req/min
-  → Most precise but most complex
+  user_123 + POST /orders -> 10 req/min
+  -> Most precise but most complex
 ```
 
 ## Input validation
@@ -187,24 +194,24 @@ Every input from every client is potentially malicious. Validate everything.
 
 ```
 Layer 1: Transport
-  → HTTPS only (reject HTTP)
-  → Content-Type header matches body
+  -> HTTPS only (reject HTTP)
+  -> Content-Type header matches body
 
 Layer 2: Syntax
-  → Valid JSON/XML/protobuf
-  → Required fields present
-  → Field types correct (string, integer, etc.)
+  -> Valid JSON/XML/protobuf
+  -> Required fields present
+  -> Field types correct (string, integer, etc.)
 
 Layer 3: Semantics
-  → Values within expected ranges
-  → Email format valid
-  → Date is not in the past
-  → Quantity > 0
+  -> Values within expected ranges
+  -> Email format valid
+  -> Date is not in the past
+  -> Quantity > 0
 
 Layer 4: Business rules
-  → User exists
-  → Sufficient inventory
-  → Account not suspended
+  -> User exists
+  -> Sufficient inventory
+  -> Account not suspended
 ```
 
 ### Common injection attacks
@@ -231,9 +238,9 @@ Path traversal:
 
 ```
 Protect against:
-  - 10GB JSON payload → server runs out of memory parsing
-  - Deeply nested JSON → stack overflow during parsing
-  - Millions of array elements → processing takes forever
+  - 10GB JSON payload -> server runs out of memory parsing
+  - Deeply nested JSON -> stack overflow during parsing
+  - Millions of array elements -> processing takes forever
 
 Limits to set:
   - Max request body size: 1MB (adjust per endpoint)
@@ -286,7 +293,7 @@ Access-Control-Allow-Origin: https://myapp.com
 Access-Control-Allow-Methods: POST
 Access-Control-Allow-Headers: Authorization
 
-Browser: origin is allowed → send actual POST request
+Browser: origin is allowed -> send actual POST request
 ```
 
 **Common CORS mistakes:**
@@ -303,8 +310,8 @@ Attack:
   User is logged into bank.com (has session cookie)
   User visits malicious-site.com
   Malicious site has: <form action="https://bank.com/transfer" method="POST">
-  Form submits automatically → browser sends bank.com cookies
-  → Money transferred without user's knowledge
+  Form submits automatically -> browser sends bank.com cookies
+  -> Money transferred without user's knowledge
 ```
 
 ### CSRF protection strategies
@@ -312,7 +319,7 @@ Attack:
 ```
 1. SameSite cookies:
    Set-Cookie: session=abc; SameSite=Strict
-   → Browser won't send cookie from cross-site requests
+   -> Browser won't send cookie from cross-site requests
 
 2. CSRF tokens:
    Server generates random token per session
@@ -320,11 +327,11 @@ Attack:
    Server validates token matches session
 
 3. Check Origin/Referer header:
-   If Origin != expected domain → reject
+   If Origin != expected domain -> reject
 
 4. Use Authorization header instead of cookies:
    Bearer tokens are not sent automatically by browser
-   → CSRF attacks don't work (attacker can't read the token)
+   -> CSRF attacks don't work (attacker can't read the token)
 ```
 
 **For APIs:** If you use `Authorization: Bearer` tokens (not cookies), CSRF is not a concern. CSRF exploits automatic cookie sending.
@@ -335,19 +342,19 @@ Attack:
 Response headers for API security:
 
 Strict-Transport-Security: max-age=31536000; includeSubDomains
-→ Force HTTPS for 1 year
+-> Force HTTPS for 1 year
 
 X-Content-Type-Options: nosniff
-→ Prevent MIME type sniffing
+-> Prevent MIME type sniffing
 
 X-Frame-Options: DENY
-→ Prevent embedding in iframes
+-> Prevent embedding in iframes
 
 Cache-Control: no-store
-→ Prevent caching sensitive responses
+-> Prevent caching sensitive responses
 
 Content-Security-Policy: default-src 'none'
-→ Restrict resource loading (mainly for HTML responses)
+-> Restrict resource loading (mainly for HTML responses)
 ```
 
 ## OWASP API Security Top 10
@@ -356,8 +363,8 @@ The most common API security vulnerabilities:
 
 ```
 1. Broken Object Level Authorization (BOLA)
-   GET /api/users/456/orders → returns orders for user 456
-   But caller is user 123 → should be denied
+   GET /api/users/456/orders -> returns orders for user 456
+   But caller is user 123 -> should be denied
    Fix: Always check if the authenticated user owns the requested resource
 
 2. Broken Authentication
@@ -366,7 +373,7 @@ The most common API security vulnerabilities:
 
 3. Broken Object Property Level Authorization
    PUT /api/users/123 { "role": "admin" }
-   Server blindly updates all fields → user becomes admin
+   Server blindly updates all fields -> user becomes admin
    Fix: Whitelist allowed fields per role, ignore unauthorized fields
 
 4. Unrestricted Resource Consumption
@@ -375,7 +382,7 @@ The most common API security vulnerabilities:
 
 5. Broken Function Level Authorization
    Regular user calls: DELETE /api/admin/users/456
-   Server doesn't check admin role → user deleted
+   Server doesn't check admin role -> user deleted
    Fix: Authorization check on every endpoint
 
 6. Unrestricted Access to Sensitive Business Flows
@@ -404,23 +411,23 @@ The most common API security vulnerabilities:
 
 ```
 DDoS (Distributed Denial of Service):
-  Thousands of machines → flood API with requests → service unavailable
+  Thousands of machines -> flood API with requests -> service unavailable
 
 Protection layers:
 
 Layer 1: Network (ISP/CDN)
-  → Absorb volumetric attacks (terabits of traffic)
-  → Cloudflare, AWS Shield, Akamai
+  -> Absorb volumetric attacks (terabits of traffic)
+  -> Cloudflare, AWS Shield, Akamai
 
 Layer 2: API Gateway
-  → Rate limiting per IP/key
-  → Geographic blocking
-  → Request filtering
+  -> Rate limiting per IP/key
+  -> Geographic blocking
+  -> Request filtering
 
 Layer 3: Application
-  → Request validation (reject malformed early)
-  → Circuit breakers on downstream calls
-  → Graceful degradation (serve cached responses)
+  -> Request validation (reject malformed early)
+  -> Circuit breakers on downstream calls
+  -> Graceful degradation (serve cached responses)
 ```
 
 ## Common API security mistakes

@@ -1,3 +1,10 @@
+---
+title: "Saga Pattern Deep Dive"
+part: 3
+part_title: "Async and Events"
+chapter: 11
+summary: "This document covers the details of the Saga Pattern, choreography vs orchestration, eventual consistency..."
+---
 # Saga Pattern Deep Dive
 
 This document covers the details of the Saga Pattern, choreography vs orchestration, eventual consistency trade-offs, and how to deal with compensation failures.

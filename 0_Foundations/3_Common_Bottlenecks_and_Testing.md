@@ -1,3 +1,10 @@
+---
+title: "Common Bottlenecks and Testing"
+part: 1
+part_title: "Foundations"
+chapter: 4
+summary: "No summary available"
+---
 # Common Bottlenecks and Testing
 
 ## Common performance bottlenecks

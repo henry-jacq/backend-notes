@@ -1,3 +1,10 @@
+---
+title: "Authentication and Authorization"
+part: 6
+part_title: "API Design"
+chapter: 7
+summary: "Every production API must answer two questions: **who is calling?** (authentication) and **what are they allowed to..."
+---
 # Authentication and Authorization
 
 Every production API must answer two questions: **who is calling?** (authentication) and **what are they allowed to do?** (authorization). These are different concerns with different mechanisms. Conflating them is one of the most common API security mistakes.
@@ -7,15 +14,15 @@ Every production API must answer two questions: **who is calling?** (authenticat
 ```
 Authentication (authn):
   "Who are you?"
-  → Verify identity
-  → Input: credentials (password, token, certificate)
-  → Output: identity (user ID, service name)
+  -> Verify identity
+  -> Input: credentials (password, token, certificate)
+  -> Output: identity (user ID, service name)
 
 Authorization (authz):
   "What can you do?"
-  → Verify permissions
-  → Input: identity + requested action
-  → Output: allow or deny
+  -> Verify permissions
+  -> Input: identity + requested action
+  -> Output: allow or deny
 ```
 
 **Example:**
@@ -39,10 +46,10 @@ Request:
 
 **How API keys work:**
 ```
-1. Developer registers → server generates API key
+1. Developer registers -> server generates API key
 2. Developer includes key in requests
-3. Server looks up key → finds associated account
-4. Server checks key permissions → allows or denies
+3. Server looks up key -> finds associated account
+4. Server checks key permissions -> allows or denies
 ```
 
 **When API keys work:**
@@ -85,10 +92,10 @@ With OAuth:
 ### OAuth 2.0 roles
 
 ```
-Resource Owner  → The user who owns the data
-Client          → The application requesting access
-Authorization Server → Issues tokens after user consent (Google, GitHub, etc.)
-Resource Server → The API that holds the user's data
+Resource Owner  -> The user who owns the data
+Client          -> The application requesting access
+Authorization Server -> Issues tokens after user consent (Google, GitHub, etc.)
+Resource Server -> The API that holds the user's data
 ```
 
 ### Authorization Code flow (most secure, server-side apps)
@@ -97,7 +104,7 @@ This is the recommended flow for web applications with a backend server.
 
 ```
 Step 1: Client redirects user to authorization server
-  → https://auth.example.com/authorize?
+  -> https://auth.example.com/authorize?
       response_type=code
       &client_id=my-app
       &redirect_uri=https://myapp.com/callback
@@ -105,11 +112,11 @@ Step 1: Client redirects user to authorization server
       &state=random-csrf-token
 
 Step 2: User authenticates and consents
-  → User sees: "My App wants to access your profile and email"
-  → User clicks "Allow"
+  -> User sees: "My App wants to access your profile and email"
+  -> User clicks "Allow"
 
 Step 3: Authorization server redirects back with code
-  → https://myapp.com/callback?code=AUTH_CODE_123&state=random-csrf-token
+  -> https://myapp.com/callback?code=AUTH_CODE_123&state=random-csrf-token
 
 Step 4: Client exchanges code for tokens (server-to-server)
   POST https://auth.example.com/token
@@ -148,7 +155,7 @@ Step 1: Client generates code_verifier (random string) and code_challenge
   code_challenge = BASE64URL(SHA256(code_verifier))
 
 Step 2: Client sends code_challenge with authorization request
-  → /authorize?...&code_challenge=E9Melhoa2OwvFrEMTJguCHaoeK1t8URWbuGJSstw&code_challenge_method=S256
+  -> /authorize?...&code_challenge=E9Melhoa2OwvFrEMTJguCHaoeK1t8URWbuGJSstw&code_challenge_method=S256
 
 Step 3: User authenticates, server returns authorization code
 
@@ -157,8 +164,8 @@ Step 4: Client sends code_verifier with token request
   Body: { code: "AUTH_CODE", code_verifier: "original_random_string" }
 
 Step 5: Server verifies SHA256(code_verifier) == code_challenge
-  → If match, issues tokens
-  → If no match, rejects (attacker intercepted code but doesn't have verifier)
+  -> If match, issues tokens
+  -> If no match, rejects (attacker intercepted code but doesn't have verifier)
 ```
 
 **Why PKCE matters:**
@@ -245,13 +252,13 @@ Three parts, base64url-encoded, separated by dots:
 
 **Registered claims:**
 ```
-sub  → Subject (who the token is about)
-iss  → Issuer (who created the token)
-aud  → Audience (who the token is for)
-exp  → Expiration time
-iat  → Issued at
-nbf  → Not before (token not valid before this time)
-jti  → JWT ID (unique identifier for this token)
+sub  -> Subject (who the token is about)
+iss  -> Issuer (who created the token)
+aud  -> Audience (who the token is for)
+exp  -> Expiration time
+iat  -> Issued at
+nbf  -> Not before (token not valid before this time)
+jti  -> JWT ID (unique identifier for this token)
 ```
 
 ### Signing algorithms
@@ -260,7 +267,7 @@ jti  → JWT ID (unique identifier for this token)
 ```
 HMAC-SHA256: Same secret to sign and verify
 
-Sign:   HMAC(header + payload, shared_secret) → signature
+Sign:   HMAC(header + payload, shared_secret) -> signature
 Verify: HMAC(header + payload, shared_secret) == signature?
 
 Problem: Every service that verifies needs the secret.
@@ -271,8 +278,8 @@ Problem: Every service that verifies needs the secret.
 ```
 RS256: Private key signs, public key verifies
 
-Sign:   RSA_SIGN(header + payload, private_key) → signature
-Verify: RSA_VERIFY(header + payload, public_key, signature) → valid?
+Sign:   RSA_SIGN(header + payload, private_key) -> signature
+Verify: RSA_VERIFY(header + payload, public_key, signature) -> valid?
 
 Advantage: Only auth server has private key.
            Any service can verify with public key.
@@ -286,13 +293,13 @@ Advantage: Only auth server has private key.
 ```
 Every service must validate:
 
-1. Signature valid?     → verify(token, public_key)
-2. Not expired?         → exp > current_time
-3. Not used too early?  → nbf <= current_time (if present)
-4. Correct issuer?      → iss == expected_issuer
-5. Correct audience?    → aud == this_service
-6. Required claims?     → sub, scope present
-7. Sufficient scope?    → token scope covers requested action
+1. Signature valid?     -> verify(token, public_key)
+2. Not expired?         -> exp > current_time
+3. Not used too early?  -> nbf <= current_time (if present)
+4. Correct issuer?      -> iss == expected_issuer
+5. Correct audience?    -> aud == this_service
+6. Required claims?     -> sub, scope present
+7. Sufficient scope?    -> token scope covers requested action
 ```
 
 **Never skip validation steps.** A common mistake is verifying the signature but ignoring expiration or audience.
@@ -308,16 +315,16 @@ Every service must validate:
 2. Key confusion attack
    Server expects RS256 (asymmetric)
    Attacker sends HS256 JWT signed with the public key
-   Server uses public key as HMAC secret → signature matches
+   Server uses public key as HMAC secret -> signature matches
    Fix: Enforce expected algorithm, never accept "alg" from token
 
 3. No expiration
-   Token valid forever → stolen token = permanent access
+   Token valid forever -> stolen token = permanent access
    Fix: Always set exp, keep access tokens short-lived (15-60 min)
 
 4. Sensitive data in payload
    JWT payload is base64-encoded, NOT encrypted
-   Anyone can decode it: base64decode(payload) → readable JSON
+   Anyone can decode it: base64decode(payload) -> readable JSON
    Fix: Never put passwords, credit cards, or secrets in JWT
 ```
 
@@ -329,12 +336,12 @@ Refresh tokens solve the conflict between security (short-lived tokens) and usab
 
 ```
 Login:
-  → Access token (JWT, 15 min expiry)
-  → Refresh token (opaque, 30 day expiry, stored server-side)
+  -> Access token (JWT, 15 min expiry)
+  -> Refresh token (opaque, 30 day expiry, stored server-side)
 
 Normal API calls:
   Authorization: Bearer <access_token>
-  → Server validates JWT (no database lookup)
+  -> Server validates JWT (no database lookup)
 
 Access token expires:
   POST /auth/token/refresh
@@ -359,19 +366,19 @@ Access token expires:
 ```
 Without rotation:
   Refresh token: rt_abc123
-  Used at time 1 → new access token (refresh token unchanged)
-  Used at time 2 → new access token (same refresh token)
+  Used at time 1 -> new access token (refresh token unchanged)
+  Used at time 2 -> new access token (same refresh token)
   If stolen, attacker can use it indefinitely until expiry
 
 With rotation:
   Refresh token: rt_abc123
-  Used at time 1 → new access token + new refresh token rt_def456
+  Used at time 1 -> new access token + new refresh token rt_def456
   Old rt_abc123 is invalidated
 
   If attacker stole rt_abc123 and tries to use it:
-  → Server detects reuse of invalidated token
-  → Revokes entire token family (all refresh tokens for this user)
-  → User must re-authenticate
+  -> Server detects reuse of invalidated token
+  -> Revokes entire token family (all refresh tokens for this user)
+  -> User must re-authenticate
 ```
 
 **Refresh token rotation detects theft.** When a revoked refresh token is used, it means either the legitimate user or an attacker is using a stale token. Revoking the entire family forces re-authentication, which is the safe choice.
@@ -401,16 +408,16 @@ Scopes define what a token is allowed to do.
 
 ```
 Scope examples:
-  read:users        → can read user data
-  write:users       → can create/update users
-  delete:users      → can delete users
-  admin:all         → full access
+  read:users        -> can read user data
+  write:users       -> can create/update users
+  delete:users      -> can delete users
+  admin:all         -> full access
 
 Token with limited scope:
   { "scope": "read:users read:orders" }
 
 Request: DELETE /users/123
-Check: "delete:users" in token.scope? → No → 403 Forbidden
+Check: "delete:users" in token.scope? -> No -> 403 Forbidden
 ```
 
 **Scope design principles:**
@@ -427,18 +434,18 @@ Permissions assigned to roles, roles assigned to users.
 
 ```
 Roles:
-  viewer  → can read
-  editor  → can read + write
-  admin   → can read + write + delete + manage users
+  viewer  -> can read
+  editor  -> can read + write
+  admin   -> can read + write + delete + manage users
 
-User Alice → role: editor
-User Bob   → role: viewer
+User Alice -> role: editor
+User Bob   -> role: viewer
 
 Request from Alice: PUT /articles/123
-Check: editor role allows write → 200 OK
+Check: editor role allows write -> 200 OK
 
 Request from Bob: PUT /articles/123
-Check: viewer role allows read only → 403 Forbidden
+Check: viewer role allows read only -> 403 Forbidden
 ```
 
 **When RBAC works:**
@@ -464,9 +471,9 @@ Attributes:
   Environment: { time: business_hours, ip: internal_network }
 
 Evaluation:
-  user.id == resource.author_id? → Yes
-  user.role == "editor"? → Yes
-  → Allow
+  user.id == resource.author_id? -> Yes
+  user.role == "editor"? -> Yes
+  -> Allow
 ```
 
 **When ABAC works:**
@@ -484,15 +491,15 @@ Both client and server present certificates. The strongest form of service-to-se
 
 ```
 Standard TLS:
-  Client verifies server certificate → "I trust this server"
+  Client verifies server certificate -> "I trust this server"
 
 Mutual TLS:
-  Client verifies server certificate → "I trust this server"
-  Server verifies client certificate → "I trust this client"
+  Client verifies server certificate -> "I trust this server"
+  Server verifies client certificate -> "I trust this client"
 ```
 
 ```
-Service A → Service B
+Service A -> Service B
 
 1. Service A presents its certificate
 2. Service B validates:

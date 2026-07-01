@@ -1,3 +1,10 @@
+---
+title: "Failover and Multi-Region Deployment"
+part: 4
+part_title: "Reliability and Availability"
+chapter: 4
+summary: "This document covers database failover handling, split-brain mitigation, multi-region deployments, active-passive vs..."
+---
 # Failover and Multi-Region Deployment
 
 This document covers database failover handling, split-brain mitigation, multi-region deployments, active-passive vs active-active patterns, and availability monitoring.

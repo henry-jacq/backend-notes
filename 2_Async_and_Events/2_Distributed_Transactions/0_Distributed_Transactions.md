@@ -1,3 +1,10 @@
+---
+title: "Distributed Transactions"
+part: 3
+part_title: "Async and Events"
+chapter: 9
+summary: "This document explains why coordinating transactions across independent systems is fundamentally difficult and what..."
+---
 # Distributed Transactions
 
 This document explains why coordinating transactions across independent systems is fundamentally difficult and what trade-offs engineers must make.

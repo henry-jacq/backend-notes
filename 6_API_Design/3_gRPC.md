@@ -1,3 +1,10 @@
+---
+title: "gRPC"
+part: 6
+part_title: "API Design"
+chapter: 4
+summary: "gRPC is a high-performance RPC (Remote Procedure Call) framework developed by Google. It uses Protocol Buffers for..."
+---
 # gRPC
 
 gRPC is a high-performance RPC (Remote Procedure Call) framework developed by Google. It uses Protocol Buffers for serialization and HTTP/2 for transport. Where REST is resource-oriented ("give me this thing"), gRPC is action-oriented ("do this operation").
@@ -267,10 +274,10 @@ print(user.name)  # "Alice"
 ```
 
 The generated client handles:
-- Serialization (object → protobuf binary)
+- Serialization (object -> protobuf binary)
 - HTTP/2 framing
 - Connection management
-- Deserialization (protobuf binary → object)
+- Deserialization (protobuf binary -> object)
 
 The developer writes business logic. gRPC handles the plumbing.
 
@@ -282,9 +289,9 @@ gRPC requires HTTP/2. This is not optional.
 Why HTTP/2 matters for gRPC:
 
 Multiplexing:
-  Stream 1: GetUser(123) → response
-  Stream 2: GetUser(456) → response (concurrent, same connection)
-  Stream 3: ListOrders() → response 1, response 2, ... (streaming)
+  Stream 1: GetUser(123) -> response
+  Stream 2: GetUser(456) -> response (concurrent, same connection)
+  Stream 3: ListOrders() -> response 1, response 2, ... (streaming)
 
 All on a single TCP connection.
 ```
@@ -297,7 +304,7 @@ All on a single TCP connection.
 
 **Limitation:**
 - Browser support is limited (browsers don't expose HTTP/2 framing directly)
-- gRPC-Web exists as a workaround (proxy translates HTTP/1.1 → HTTP/2)
+- gRPC-Web exists as a workaround (proxy translates HTTP/1.1 -> HTTP/2)
 
 ## gRPC vs REST — when to use which
 
@@ -335,17 +342,17 @@ Ecosystem           | Massive                 | Growing
 gRPC uses status codes (similar to but different from HTTP).
 
 ```
-OK                  → Success
-CANCELLED           → Operation cancelled by client
-INVALID_ARGUMENT    → Client sent invalid data (like 400)
-NOT_FOUND           → Resource not found (like 404)
-ALREADY_EXISTS      → Conflict (like 409)
-PERMISSION_DENIED   → Not authorized (like 403)
-UNAUTHENTICATED     → Not authenticated (like 401)
-RESOURCE_EXHAUSTED  → Rate limit or quota exceeded (like 429)
-UNAVAILABLE         → Service temporarily unavailable (like 503)
-INTERNAL            → Internal server error (like 500)
-DEADLINE_EXCEEDED   → Operation timed out (like 504)
+OK                  -> Success
+CANCELLED           -> Operation cancelled by client
+INVALID_ARGUMENT    -> Client sent invalid data (like 400)
+NOT_FOUND           -> Resource not found (like 404)
+ALREADY_EXISTS      -> Conflict (like 409)
+PERMISSION_DENIED   -> Not authorized (like 403)
+UNAUTHENTICATED     -> Not authenticated (like 401)
+RESOURCE_EXHAUSTED  -> Rate limit or quota exceeded (like 429)
+UNAVAILABLE         -> Service temporarily unavailable (like 503)
+INTERNAL            -> Internal server error (like 500)
+DEADLINE_EXCEEDED   -> Operation timed out (like 504)
 ```
 
 **Deadlines:** gRPC has built-in deadline propagation. A client sets a deadline, and every service in the call chain respects it.
@@ -353,10 +360,10 @@ DEADLINE_EXCEEDED   → Operation timed out (like 504)
 ```
 Client sets deadline: 5 seconds
 
-Client → Service A (2 seconds used)
-         Service A → Service B (remaining deadline: 3 seconds)
-                     Service B → Service C (remaining deadline: 1 second)
-                                 Service C exceeds deadline → DEADLINE_EXCEEDED
+Client -> Service A (2 seconds used)
+         Service A -> Service B (remaining deadline: 3 seconds)
+                     Service B -> Service C (remaining deadline: 1 second)
+                                 Service C exceeds deadline -> DEADLINE_EXCEEDED
 ```
 
 This prevents cascading timeouts. Every service knows how much time is left.
@@ -394,10 +401,10 @@ Load balancers use this to route traffic away from unhealthy instances.
 
 ```
 Client interceptors:
-  Logging → Auth → Retry → [send request]
+  Logging -> Auth -> Retry -> [send request]
 
 Server interceptors:
-  [receive request] → Auth → Logging → Rate Limit → [handle request]
+  [receive request] -> Auth -> Logging -> Rate Limit -> [handle request]
 ```
 
 Interceptors add cross-cutting concerns without modifying business logic. Similar to middleware in REST frameworks.

@@ -1,3 +1,10 @@
+---
+title: "Kafka Basics"
+part: 3
+part_title: "Async and Events"
+chapter: 4
+summary: "No summary available"
+---
 # Kafka Basics
 
 ## Topic

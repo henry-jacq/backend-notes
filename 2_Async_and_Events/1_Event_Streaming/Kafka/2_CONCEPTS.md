@@ -1,3 +1,10 @@
+---
+title: "Kafka Concepts"
+part: 3
+part_title: "Async and Events"
+chapter: 5
+summary: "This document explains the key Kafka concepts from `prompt.md`."
+---
 # Kafka Concepts
 
 This document explains the key Kafka concepts from `prompt.md`.

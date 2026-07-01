@@ -1,3 +1,10 @@
+---
+title: "Foundations: Core Systems Engineering Thinking"
+part: 1
+part_title: "Foundations"
+type: "part_intro"
+summary: "This section establishes the mental models you need to understand why backend systems are designed the way they are."
+---
 # Foundations: Core Systems Engineering Thinking
 
 This section establishes the mental models you need to understand why backend systems are designed the way they are.

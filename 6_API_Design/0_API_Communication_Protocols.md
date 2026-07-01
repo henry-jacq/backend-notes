@@ -1,3 +1,10 @@
+---
+title: "API Communication Protocols"
+part: 6
+part_title: "API Design"
+chapter: 1
+summary: "Before designing an API, you must choose how systems communicate. The protocol determines what is possible. Pick the..."
+---
 # API Communication Protocols
 
 Before designing an API, you must choose how systems communicate. The protocol determines what is possible. Pick the wrong protocol and you fight it forever. Pick the right one and the API design flows naturally.
@@ -102,9 +109,9 @@ Most APIs use HTTP. The version matters for performance.
 The workhorse of the web for two decades.
 
 ```
-Connection 1: GET /users     → response
-Connection 2: GET /orders    → response
-Connection 3: GET /products  → response
+Connection 1: GET /users     -> response
+Connection 2: GET /orders    -> response
+Connection 3: GET /products  -> response
 ```
 
 **Characteristics:**
@@ -127,9 +134,9 @@ Solves HTTP/1.1's performance problems.
 
 ```
 Single connection:
-  Stream 1: GET /users     → response
-  Stream 2: GET /orders    → response (concurrent)
-  Stream 3: GET /products  → response (concurrent)
+  Stream 1: GET /users     -> response
+  Stream 2: GET /orders    -> response (concurrent)
+  Stream 3: GET /products  -> response (concurrent)
 ```
 
 **Key improvements:**
@@ -236,7 +243,7 @@ Client <--event: update--- Server
 
 ```
 Feature          | SSE                  | WebSocket
-Direction        | Server → Client      | Bidirectional
+Direction        | Server -> Client      | Bidirectional
 Protocol         | HTTP                 | WebSocket (upgraded HTTP)
 Reconnection     | Automatic            | Manual
 Binary data      | No (text only)       | Yes
@@ -279,7 +286,7 @@ HTTP/1.1     | Medium  | Low        | Stateless    | Request-response
 HTTP/2       | Low     | Medium     | Stateless    | Multiplexed req-resp
 HTTP/3       | Lowest  | High       | Stateless    | Multiplexed req-resp
 WebSocket    | Low     | High       | Stateful     | Bidirectional
-SSE          | Medium  | Low        | Stateful     | Server → Client
+SSE          | Medium  | Low        | Stateful     | Server -> Client
 gRPC (HTTP/2)| Low     | Medium     | Stateless*   | All streaming types
 ```
 

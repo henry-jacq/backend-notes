@@ -1,3 +1,10 @@
+---
+title: "Web Server Overview"
+part: 5
+part_title: "Infrastructure"
+chapter: 2
+summary: "A web server receives client requests, processes them, and returns responses. It may serve static files, run..."
+---
 # Web Server Overview
 
 A web server receives client requests, processes them, and returns responses. It may serve static files, run application logic, query databases, validate authentication, or proxy requests to other services.

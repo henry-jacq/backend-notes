@@ -1,3 +1,10 @@
+---
+title: "Kafka: Why It Exists"
+part: 3
+part_title: "Async and Events"
+chapter: 7
+summary: "This document explains Kafka not as a technology to learn, but as a solution to specific breaking points that other..."
+---
 # Kafka: Why It Exists
 
 This document explains Kafka not as a technology to learn, but as a solution to specific breaking points that other messaging systems cannot handle.

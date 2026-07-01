@@ -1,3 +1,10 @@
+---
+title: "Asynchronous Processing"
+part: 1
+part_title: "Foundations"
+chapter: 2
+summary: "No summary available"
+---
 # Asynchronous Processing
 
 ## Asynchronous processing and queues

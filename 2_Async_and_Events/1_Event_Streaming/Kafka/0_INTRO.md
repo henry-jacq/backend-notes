@@ -1,3 +1,10 @@
+---
+title: "Apache Kafka"
+part: 3
+part_title: "Async and Events"
+chapter: 3
+summary: "Apache Kafka is a distributed event streaming platform. It is designed to publish, store, and subscribe to streams..."
+---
 # Apache Kafka
 
 Apache Kafka is a distributed event streaming platform. It is designed to publish, store, and subscribe to streams of records in real time.

@@ -1,3 +1,10 @@
+---
+title: "Kafka: Design Choices and Common Mistakes"
+part: 3
+part_title: "Async and Events"
+chapter: 8
+summary: "This document covers Kafka's breaking points, partitions, consumer groups, replica dynamics, and common mistakes in..."
+---
 # Kafka: Design Choices and Common Mistakes
 
 This document covers Kafka's breaking points, partitions, consumer groups, replica dynamics, and common mistakes in event-driven systems.

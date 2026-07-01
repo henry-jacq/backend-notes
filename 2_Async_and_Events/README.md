@@ -1,3 +1,10 @@
+---
+title: "Async and Events: Asynchronous Processing and Messaging"
+part: 3
+part_title: "Async and Events"
+type: "part_intro"
+summary: "This section covers how to handle work asynchronously, decouple services, and process events at scale."
+---
 # Async and Events: Asynchronous Processing and Messaging
 
 This section covers how to handle work asynchronously, decouple services, and process events at scale.

@@ -1,3 +1,10 @@
+---
+title: "Reliability and Availability: Building Systems That Don't Fail"
+part: 4
+part_title: "Reliability and Availability"
+type: "part_intro"
+summary: "This section covers how to make systems resilient to failures and keep them running despite problems."
+---
 # Reliability and Availability: Building Systems That Don't Fail
 
 This section covers how to make systems resilient to failures and keep them running despite problems.

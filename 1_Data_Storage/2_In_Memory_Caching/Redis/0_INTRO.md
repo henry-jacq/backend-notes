@@ -1,3 +1,10 @@
+---
+title: "Redis"
+part: 2
+part_title: "Data Storage"
+chapter: 5
+summary: "Redis is an open source, in-memory data structure store. It is used as a database, cache, and message broker."
+---
 # Redis
 
 Redis is an open source, in-memory data structure store. It is used as a database, cache, and message broker.

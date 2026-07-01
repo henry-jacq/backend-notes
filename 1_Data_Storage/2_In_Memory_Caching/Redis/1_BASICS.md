@@ -1,3 +1,10 @@
+---
+title: "Redis Basics"
+part: 2
+part_title: "Data Storage"
+chapter: 6
+summary: "Redis is an in-memory data structure store. It is often used as a cache, message broker, session store, and database..."
+---
 # Redis Basics
 
 Redis is an in-memory data structure store. It is often used as a cache, message broker, session store, and database for workloads that require low latency and high throughput.

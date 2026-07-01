@@ -1,3 +1,10 @@
+---
+title: "API Design: Contracts Between Systems"
+part: 6
+part_title: "API Design"
+type: "part_intro"
+summary: "This section covers how systems communicate through APIs. An API is the contract between a client and a server. Get..."
+---
 # API Design: Contracts Between Systems
 
 This section covers how systems communicate through APIs. An API is the contract between a client and a server. Get it wrong, and every consumer of that API suffers. Get it right, and the system is intuitive, evolvable, and resilient.
@@ -90,7 +97,7 @@ Read these in order. Protocols come first because you must choose how systems co
 ## Connection to other sections
 
 **API Design + Foundations:**
-- System evolution drives API evolution (monolith APIs → microservice APIs)
+- System evolution drives API evolution (monolith APIs -> microservice APIs)
 - Performance engineering applies to API latency and throughput
 
 **API Design + Data Storage:**

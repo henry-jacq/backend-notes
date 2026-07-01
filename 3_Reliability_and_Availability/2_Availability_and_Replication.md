@@ -1,3 +1,10 @@
+---
+title: "Availability and Replication"
+part: 4
+part_title: "Reliability and Availability"
+chapter: 3
+summary: "This document explains availability metrics and data replication strategies as the foundation for building..."
+---
 # Availability and Replication
 
 This document explains availability metrics and data replication strategies as the foundation for building fault-tolerant systems.

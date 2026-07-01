@@ -1,3 +1,10 @@
+---
+title: "Observability Fundamentals"
+part: 7
+part_title: "Operations"
+chapter: 1
+summary: "This document explains the fundamentals of observability in production systems: metrics, logs, traces, and alerting..."
+---
 # Observability Fundamentals
 
 This document explains the fundamentals of observability in production systems: metrics, logs, traces, and alerting strategies.

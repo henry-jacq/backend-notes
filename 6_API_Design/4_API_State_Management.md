@@ -1,3 +1,10 @@
+---
+title: "API State Management"
+part: 6
+part_title: "API Design"
+chapter: 5
+summary: "Statelessness is the most misunderstood concept in API design. Engineers say \"REST is stateless\" without..."
+---
 # API State Management
 
 Statelessness is the most misunderstood concept in API design. Engineers say "REST is stateless" without understanding what that means or why it matters. State doesn't disappear — it moves. The question is where it lives and who manages it.
@@ -10,13 +17,13 @@ A stateless API means the server does not store any information about previous r
 Stateless:
   Request 1: GET /users/123, Authorization: Bearer token-abc
   Request 2: GET /users/123, Authorization: Bearer token-abc
-  → Server processes each independently. No memory of Request 1.
+  -> Server processes each independently. No memory of Request 1.
 
 Stateful:
   Request 1: POST /login { "user": "alice", "pass": "..." }
-  → Server creates session, returns session_id
+  -> Server creates session, returns session_id
   Request 2: GET /users/123, Cookie: session_id=xyz
-  → Server looks up session_id in memory to identify user
+  -> Server looks up session_id in memory to identify user
 ```
 
 ## Why statelessness matters for APIs
@@ -25,14 +32,14 @@ Stateful:
 
 ```
 Stateful server:
-  User Alice → Server 1 (session stored in Server 1's memory)
-  User Alice → Server 2 (session not here → fails)
-  → Sticky sessions required (load balancer must route Alice to Server 1)
+  User Alice -> Server 1 (session stored in Server 1's memory)
+  User Alice -> Server 2 (session not here -> fails)
+  -> Sticky sessions required (load balancer must route Alice to Server 1)
 
 Stateless server:
-  User Alice → Server 1 (token in request, server validates)
-  User Alice → Server 2 (same token, server validates)
-  → Any server can handle any request
+  User Alice -> Server 1 (token in request, server validates)
+  User Alice -> Server 2 (same token, server validates)
+  -> Any server can handle any request
 ```
 
 Statelessness enables horizontal scaling. Add servers, remove servers — no session migration needed.
@@ -41,12 +48,12 @@ Statelessness enables horizontal scaling. Add servers, remove servers — no ses
 
 ```
 Stateful:
-  Server 1 crashes → all sessions on Server 1 are lost
+  Server 1 crashes -> all sessions on Server 1 are lost
   Users must re-authenticate
 
 Stateless:
-  Server 1 crashes → load balancer routes to Server 2
-  Token still valid → user continues without interruption
+  Server 1 crashes -> load balancer routes to Server 2
+  Token still valid -> user continues without interruption
 ```
 
 ### Caching
@@ -54,13 +61,13 @@ Stateless:
 ```
 Stateless request:
   GET /products?category=electronics
-  → Response depends only on the request
-  → Cache by URL, serve to any user
+  -> Response depends only on the request
+  -> Cache by URL, serve to any user
 
 Stateful request:
   GET /my-products
-  → Response depends on session (who is "my"?)
-  → Cannot cache without user context
+  -> Response depends on session (who is "my"?)
+  -> Cannot cache without user context
 ```
 
 ## Where state lives
@@ -110,7 +117,7 @@ Server does:
 
 **Session in shared store (Redis):**
 ```
-Server 1 → Redis ← Server 2
+Server 1 -> Redis <- Server 2
          ↗      ↖
 Server 3          Server 4
 
@@ -134,7 +141,7 @@ Long-lived state (user preferences, settings, API keys) lives in the database.
 ```
 Request: GET /users/123/preferences
 Server: SELECT preferences FROM users WHERE id = 123
-→ No session needed, state in database
+-> No session needed, state in database
 ```
 
 This is standard data retrieval, not session state.
@@ -149,15 +156,15 @@ Self-contained token. Server can validate without any lookup.
 Structure: header.payload.signature
 
 Flow:
-1. Client authenticates → server creates JWT, signs it
+1. Client authenticates -> server creates JWT, signs it
 2. Client stores JWT (localStorage, cookie, memory)
 3. Client sends JWT with every request
-4. Server validates signature → trusts the claims
+4. Server validates signature -> trusts the claims
 
 Validation:
-  verify(token.signature, server_secret) → valid/invalid
-  check(token.exp > now) → not expired
-  → No database query needed
+  verify(token.signature, server_secret) -> valid/invalid
+  check(token.exp > now) -> not expired
+  -> No database query needed
 ```
 
 **When JWT works:**
@@ -178,10 +185,10 @@ Random string. Requires server-side lookup.
 Token: f47ac10b-58cc-4372-a567-0e02b2c3d479
 
 Flow:
-1. Client authenticates → server creates random token, stores in Redis
+1. Client authenticates -> server creates random token, stores in Redis
 2. Client sends token with every request
-3. Server looks up token in Redis → gets user data
-4. If not found → invalid/expired
+3. Server looks up token in Redis -> gets user data
+4. If not found -> invalid/expired
 ```
 
 **When opaque tokens work:**
@@ -210,11 +217,11 @@ Refresh token (opaque):
   - Can be revoked instantly
 
 Flow:
-1. Login → receive access token (JWT) + refresh token (opaque)
-2. API requests → use access token
-3. Access token expires → send refresh token to /token/refresh
-4. Server validates refresh token in store → issues new access token
-5. Logout → delete refresh token from store
+1. Login -> receive access token (JWT) + refresh token (opaque)
+2. API requests -> use access token
+3. Access token expires -> send refresh token to /token/refresh
+4. Server validates refresh token in store -> issues new access token
+5. Logout -> delete refresh token from store
 ```
 
 ## Cookies vs headers
@@ -257,9 +264,9 @@ Authorization: Bearer eyJhbG...
 - No automatic browser handling
 
 **Recommendation:**
-- Browser-only apps → cookies with `HttpOnly`, `Secure`, `SameSite`
-- APIs consumed by multiple clients → Authorization header
-- Service-to-service → mTLS or Authorization header
+- Browser-only apps -> cookies with `HttpOnly`, `Secure`, `SameSite`
+- APIs consumed by multiple clients -> Authorization header
+- Service-to-service -> mTLS or Authorization header
 
 ## State in distributed systems
 
@@ -268,10 +275,10 @@ Authorization: Bearer eyJhbG...
 ```
 Load balancer routes user to the same server:
 
-User Alice → always → Server 1
-User Bob   → always → Server 2
+User Alice -> always -> Server 1
+User Bob   -> always -> Server 2
 
-If Server 1 dies → Alice's session is lost
+If Server 1 dies -> Alice's session is lost
 ```
 
 **Problems:**
@@ -287,7 +294,7 @@ If Server 1 dies → Alice's session is lost
 ### Session replication
 
 ```
-Server 1 writes session → replicates to Server 2, Server 3
+Server 1 writes session -> replicates to Server 2, Server 3
 
 Any server can handle any request.
 ```
@@ -300,10 +307,10 @@ Any server can handle any request.
 ### External session store
 
 ```
-All servers → shared Redis/Memcached
+All servers -> shared Redis/Memcached
 
-Server 1 writes session → Redis
-Server 2 reads session → Redis
+Server 1 writes session -> Redis
+Server 2 reads session -> Redis
 ```
 
 **This is the standard approach for production systems.** Redis provides sub-millisecond lookups, replication for availability, and TTL for automatic expiry.

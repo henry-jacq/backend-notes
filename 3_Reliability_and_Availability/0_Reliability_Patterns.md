@@ -1,3 +1,10 @@
+---
+title: "Reliability Patterns"
+part: 4
+part_title: "Reliability and Availability"
+chapter: 1
+summary: "This document explains how to build systems that continue working when failures occur. Reliability is not about..."
+---
 # Reliability Patterns
 
 This document explains how to build systems that continue working when failures occur. Reliability is not about preventing failures—failures happen. It is about containing them.

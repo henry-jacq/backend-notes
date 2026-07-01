@@ -1,3 +1,10 @@
+---
+title: "Performance Engineering Basics"
+part: 1
+part_title: "Foundations"
+chapter: 3
+summary: "Performance engineering is not about making things faster. It is about understanding what slow means, proving where..."
+---
 # Performance Engineering Basics
 
 Performance engineering is not about making things faster. It is about understanding what slow means, proving where slowness lives, and choosing what to optimize.

@@ -1,3 +1,10 @@
+---
+title: "API Gateway and Load Balancing"
+part: 6
+part_title: "API Design"
+chapter: 9
+summary: "As systems grow from one service to many, a critical question emerges: where do cross-cutting concerns live?..."
+---
 # API Gateway and Load Balancing
 
 As systems grow from one service to many, a critical question emerges: where do cross-cutting concerns live? Authentication, rate limiting, routing, logging — if every service implements these independently, you get inconsistency, duplication, and operational nightmares. API gateways and load balancers centralize these concerns.
@@ -7,10 +14,10 @@ As systems grow from one service to many, a critical question emerges: where do 
 ```
 Without gateway:
 
-Client → User Service    (port 8001, auth check, rate limit, logging)
-Client → Order Service   (port 8002, auth check, rate limit, logging)
-Client → Product Service (port 8003, auth check, rate limit, logging)
-Client → Payment Service (port 8004, auth check, rate limit, logging)
+Client -> User Service    (port 8001, auth check, rate limit, logging)
+Client -> Order Service   (port 8002, auth check, rate limit, logging)
+Client -> Product Service (port 8003, auth check, rate limit, logging)
+Client -> Payment Service (port 8004, auth check, rate limit, logging)
 
 Problems:
   - Client knows about every service (tight coupling)
@@ -23,10 +30,10 @@ Problems:
 ```
 With gateway:
 
-Client → API Gateway → User Service
-                     → Order Service
-                     → Product Service
-                     → Payment Service
+Client -> API Gateway -> User Service
+                     -> Order Service
+                     -> Product Service
+                     -> Payment Service
 
 Gateway handles:
   - Authentication (once, before routing)
@@ -49,12 +56,12 @@ Client request:
   GET /api/users/123
 
 Gateway routing rules:
-  /api/users/*    → user-service:8080
-  /api/orders/*   → order-service:8080
-  /api/products/* → product-service:8080
+  /api/users/*    -> user-service:8080
+  /api/orders/*   -> order-service:8080
+  /api/products/* -> product-service:8080
 
 Gateway forwards:
-  GET /users/123 → user-service:8080
+  GET /users/123 -> user-service:8080
 ```
 
 The client doesn't know which service handles the request. The gateway maps public URLs to internal services.
@@ -63,17 +70,17 @@ The client doesn't know which service handles the request. The gateway maps publ
 
 ```
 Without gateway auth:
-  Client → Service A (validates token)
-  Client → Service B (validates token)
-  Client → Service C (validates token)
-  → Every service implements token validation
+  Client -> Service A (validates token)
+  Client -> Service B (validates token)
+  Client -> Service C (validates token)
+  -> Every service implements token validation
 
 With gateway auth:
-  Client → Gateway (validates token) → Service A (trusts gateway)
-                                     → Service B (trusts gateway)
-                                     → Service C (trusts gateway)
-  → Token validated once at the gateway
-  → Services receive verified identity (e.g., X-User-Id header)
+  Client -> Gateway (validates token) -> Service A (trusts gateway)
+                                     -> Service B (trusts gateway)
+                                     -> Service C (trusts gateway)
+  -> Token validated once at the gateway
+  -> Services receive verified identity (e.g., X-User-Id header)
 ```
 
 ```
@@ -101,11 +108,11 @@ Gateway rate limiting:
     key_enterprise: unlimited
 
   Per endpoint:
-    GET  /products → 1000 req/min (cheap reads)
-    POST /orders   → 50 req/min (expensive writes)
+    GET  /products -> 1000 req/min (cheap reads)
+    POST /orders   -> 50 req/min (expensive writes)
 
   Per user:
-    user_123 → 100 req/min across all endpoints
+    user_123 -> 100 req/min across all endpoints
 ```
 
 Rate limiting at the gateway protects all backend services without each service implementing its own.
@@ -118,18 +125,18 @@ Client sends:
   Accept: application/json
 
 Gateway transforms:
-  → Rewrites URL: GET /users/123 (internal format)
-  → Adds headers: X-Request-Id, X-Forwarded-For
-  → Forwards to user-service
+  -> Rewrites URL: GET /users/123 (internal format)
+  -> Adds headers: X-Request-Id, X-Forwarded-For
+  -> Forwards to user-service
 
 Service responds:
   { "user_id": 123, "full_name": "Alice" }
 
 Gateway transforms response:
-  → Renames fields for v2 format: { "id": 123, "name": "Alice" }
-  → Adds CORS headers
-  → Adds security headers
-  → Returns to client
+  -> Renames fields for v2 format: { "id": 123, "name": "Alice" }
+  -> Adds CORS headers
+  -> Adds security headers
+  -> Returns to client
 ```
 
 This enables API versioning at the gateway level — backend services don't need to know about API versions.
@@ -140,17 +147,17 @@ This enables API versioning at the gateway level — backend services don't need
 Client needs data from multiple services for one page:
 
 Without aggregation:
-  Client → GET /users/123     → user data
-  Client → GET /orders?user=123 → order data
-  Client → GET /reviews?user=123 → review data
+  Client -> GET /users/123     -> user data
+  Client -> GET /orders?user=123 -> order data
+  Client -> GET /reviews?user=123 -> review data
   = 3 round trips
 
 With gateway aggregation:
-  Client → GET /users/123/profile
+  Client -> GET /users/123/profile
   Gateway:
-    → GET user-service/users/123
-    → GET order-service/orders?user=123
-    → GET review-service/reviews?user=123
+    -> GET user-service/users/123
+    -> GET order-service/orders?user=123
+    -> GET review-service/reviews?user=123
   Gateway combines responses into one:
   {
     "user": { ... },
@@ -165,11 +172,11 @@ With gateway aggregation:
 #### 6. SSL/TLS termination
 
 ```
-Client ←—HTTPS—→ Gateway ←—HTTP—→ Backend services
+Client <-—HTTPS—-> Gateway <-—HTTP—-> Backend services
                  (decrypts)      (internal network, no TLS overhead)
 
 Or for zero-trust:
-Client ←—HTTPS—→ Gateway ←—mTLS—→ Backend services
+Client <-—HTTPS—-> Gateway <-—mTLS—-> Backend services
                  (decrypts,       (re-encrypts with internal certs)
                   re-encrypts)
 ```
@@ -181,7 +188,7 @@ Terminating TLS at the gateway simplifies certificate management. One certificat
 #### Single gateway
 
 ```
-All clients → one gateway → all services
+All clients -> one gateway -> all services
 
 Simple. Works for small to medium systems.
 Risk: single point of failure, one team owns everything.
@@ -190,9 +197,9 @@ Risk: single point of failure, one team owns everything.
 #### Backend for Frontend (BFF)
 
 ```
-Web client    → Web BFF gateway    → services
-Mobile client → Mobile BFF gateway → services
-Partner API   → Partner gateway    → services
+Web client    -> Web BFF gateway    -> services
+Mobile client -> Mobile BFF gateway -> services
+Partner API   -> Partner gateway    -> services
 ```
 
 Each client type gets its own gateway optimized for its needs.
@@ -225,14 +232,14 @@ Load balancers distribute incoming requests across multiple instances of a servi
 
 ```
 Without load balancing:
-  All traffic → Server 1 (overloaded, crashes)
+  All traffic -> Server 1 (overloaded, crashes)
   Server 2 (idle)
   Server 3 (idle)
 
 With load balancing:
-  Traffic → Load Balancer → Server 1 (33%)
-                          → Server 2 (33%)
-                          → Server 3 (33%)
+  Traffic -> Load Balancer -> Server 1 (33%)
+                          -> Server 2 (33%)
+                          -> Server 3 (33%)
 ```
 
 ### Load balancing algorithms
@@ -240,10 +247,10 @@ With load balancing:
 #### Round robin
 
 ```
-Request 1 → Server 1
-Request 2 → Server 2
-Request 3 → Server 3
-Request 4 → Server 1 (cycle repeats)
+Request 1 -> Server 1
+Request 2 -> Server 2
+Request 3 -> Server 3
+Request 4 -> Server 1 (cycle repeats)
 ```
 
 Simple, fair distribution. Doesn't consider server load or request complexity.
@@ -253,9 +260,9 @@ Simple, fair distribution. Doesn't consider server load or request complexity.
 #### Weighted round robin
 
 ```
-Server 1 (8 CPU)  → weight 4 → gets 4 of every 7 requests
-Server 2 (4 CPU)  → weight 2 → gets 2 of every 7 requests
-Server 3 (2 CPU)  → weight 1 → gets 1 of every 7 requests
+Server 1 (8 CPU)  -> weight 4 -> gets 4 of every 7 requests
+Server 2 (4 CPU)  -> weight 2 -> gets 2 of every 7 requests
+Server 3 (2 CPU)  -> weight 1 -> gets 1 of every 7 requests
 ```
 
 Accounts for different server capacities. Doesn't account for real-time load.
@@ -264,7 +271,7 @@ Accounts for different server capacities. Doesn't account for real-time load.
 
 ```
 Server 1: 15 active connections
-Server 2: 8 active connections   ← next request goes here
+Server 2: 8 active connections   <- next request goes here
 Server 3: 12 active connections
 ```
 
@@ -275,7 +282,7 @@ Routes to the server with fewest active connections. Better for long-lived reque
 ```
 Server 1: avg response 50ms
 Server 2: avg response 120ms
-Server 3: avg response 30ms    ← next request goes here
+Server 3: avg response 30ms    <- next request goes here
 ```
 
 Routes to the fastest server. Adapts to real-time performance.
@@ -285,8 +292,8 @@ Routes to the fastest server. Adapts to real-time performance.
 ```
 hash(client_ip) % num_servers = server_index
 
-Client 1.2.3.4 → always → Server 2
-Client 5.6.7.8 → always → Server 3
+Client 1.2.3.4 -> always -> Server 2
+Client 5.6.7.8 -> always -> Server 3
 ```
 
 Same client always reaches the same server. Useful for sticky sessions but creates uneven distribution.
@@ -326,10 +333,10 @@ L7 (Application layer):
 
 ```
 L7 routing example:
-  /api/users/*    → user-service cluster
-  /api/orders/*   → order-service cluster
-  /api/v2/*       → v2 service cluster
-  Header: X-Canary: true → canary cluster
+  /api/users/*    -> user-service cluster
+  /api/orders/*   -> order-service cluster
+  /api/v2/*       -> v2 service cluster
+  Header: X-Canary: true -> canary cluster
 ```
 
 **API gateways operate at L7.** They need to inspect URLs, headers, and sometimes bodies to make routing decisions.
@@ -340,13 +347,13 @@ L7 routing example:
 Load balancer periodically checks each server:
 
 Active health check:
-  Every 10 seconds: GET /health → 200 OK?
-  If 3 consecutive failures → remove from pool
-  If healthy again → add back to pool
+  Every 10 seconds: GET /health -> 200 OK?
+  If 3 consecutive failures -> remove from pool
+  If healthy again -> add back to pool
 
 Passive health check:
   Monitor actual request responses
-  If error rate > threshold → remove from pool
+  If error rate > threshold -> remove from pool
 ```
 
 ```
@@ -372,22 +379,22 @@ Health check response:
 
 ```
 Without sticky sessions:
-  Request 1 from Alice → Server 1 (session created)
-  Request 2 from Alice → Server 3 (session not found!)
+  Request 1 from Alice -> Server 1 (session created)
+  Request 2 from Alice -> Server 3 (session not found!)
 
 With sticky sessions:
-  Request 1 from Alice → Server 1 (session created)
-  Request 2 from Alice → Server 1 (load balancer remembers)
+  Request 1 from Alice -> Server 1 (session created)
+  Request 2 from Alice -> Server 1 (load balancer remembers)
 ```
 
 **Implementation:**
 ```
 Cookie-based:
   Server sets: Set-Cookie: SERVERID=server1
-  Load balancer reads cookie → routes to server1
+  Load balancer reads cookie -> routes to server1
 
 IP-based:
-  hash(client_ip) → always same server
+  hash(client_ip) -> always same server
 ```
 
 **Trade-off:** Sticky sessions break horizontal scaling benefits. Prefer stateless APIs with external session stores (Redis). Use sticky sessions only for WebSocket connections or legacy applications.
@@ -410,7 +417,7 @@ Protocol translation | No                   | Yes (REST↔gRPC, etc.)
 
 **In practice, use both:**
 ```
-Internet → Cloud Load Balancer → API Gateway cluster → Service Load Balancer → Service instances
+Internet -> Cloud Load Balancer -> API Gateway cluster -> Service Load Balancer -> Service instances
            (L4, distributes       (L7, auth, rate      (L4/L7, distributes
             to gateway instances)  limit, routing)       to service instances)
 ```
@@ -421,10 +428,10 @@ For large microservice architectures, a service mesh handles service-to-service 
 
 ```
 Without service mesh:
-  Service A → (manual load balancing, auth, retry logic) → Service B
+  Service A -> (manual load balancing, auth, retry logic) -> Service B
 
 With service mesh (sidecar proxy):
-  Service A → Sidecar Proxy A → Sidecar Proxy B → Service B
+  Service A -> Sidecar Proxy A -> Sidecar Proxy B -> Service B
               (handles: mTLS, load balancing, retries, observability)
 ```
 
@@ -434,7 +441,7 @@ Data plane:   Sidecar proxies (Envoy) deployed alongside each service
 Control plane: Configuration server (Istio, Linkerd) that manages proxies
 
 Service A Pod:
-  [Service A] ←→ [Envoy Proxy] ←→ network ←→ [Envoy Proxy] ←→ [Service B]
+  [Service A] <--> [Envoy Proxy] <--> network <--> [Envoy Proxy] <--> [Service B]
 ```
 
 **What a service mesh provides:**

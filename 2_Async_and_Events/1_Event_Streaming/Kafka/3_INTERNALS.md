@@ -1,3 +1,10 @@
+---
+title: "First Mental Model: There Is No Permanent Central Brain"
+part: 3
+part_title: "Async and Events"
+chapter: 6
+summary: "Many beginners imagine:"
+---
 Excellent question. This is where most people stop thinking of Kafka as a "message queue" and start understanding it as a **distributed system**.
 
 You're basically asking:

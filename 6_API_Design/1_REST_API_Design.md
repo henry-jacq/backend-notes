@@ -1,3 +1,10 @@
+---
+title: "REST API Design"
+part: 6
+part_title: "API Design"
+chapter: 2
+summary: "REST (Representational State Transfer) is the dominant paradigm for web APIs. Most APIs you interact with are REST..."
+---
 # REST API Design
 
 REST (Representational State Transfer) is the dominant paradigm for web APIs. Most APIs you interact with are REST APIs. But most REST APIs are poorly designed — they expose database tables as endpoints, ignore HTTP semantics, and break consumers with every release.
@@ -23,18 +30,18 @@ The core concept of REST: everything is a resource. A resource is a noun, not a 
 
 **Good resource design:**
 ```
-/users              → collection of users
-/users/123          → specific user
-/users/123/orders   → orders belonging to user 123
-/orders/456         → specific order
+/users              -> collection of users
+/users/123          -> specific user
+/users/123/orders   -> orders belonging to user 123
+/orders/456         -> specific order
 ```
 
 **Bad resource design:**
 ```
-/getUser?id=123          → verb in URL
-/createOrder             → verb in URL
-/user/123/getOrders      → verb in URL
-/api/v1/fetchAllProducts → verb in URL
+/getUser?id=123          -> verb in URL
+/createOrder             -> verb in URL
+/user/123/getOrders      -> verb in URL
+/api/v1/fetchAllProducts -> verb in URL
 ```
 
 **The rule:** URLs identify resources (nouns). HTTP methods define actions (verbs).
@@ -43,14 +50,14 @@ The core concept of REST: everything is a resource. A resource is a noun, not a 
 
 **Nested (shows relationship):**
 ```
-GET /users/123/orders          → orders for user 123
-GET /users/123/orders/456      → specific order for user 123
+GET /users/123/orders          -> orders for user 123
+GET /users/123/orders/456      -> specific order for user 123
 ```
 
 **Flat (independent access):**
 ```
-GET /orders?user_id=123        → orders filtered by user
-GET /orders/456                → specific order
+GET /orders?user_id=123        -> orders filtered by user
+GET /orders/456                -> specific order
 ```
 
 **When to nest:**
@@ -88,12 +95,12 @@ Scenario: Client sends POST /orders to create an order.
 Network fails after server processes request but before client gets response.
 
 Without idempotency:
-  Client retries POST /orders → duplicate order created
+  Client retries POST /orders -> duplicate order created
 
 With idempotency key:
   Client sends POST /orders with Idempotency-Key: abc-123
   Client retries POST /orders with Idempotency-Key: abc-123
-  Server recognizes key, returns original response → no duplicate
+  Server recognizes key, returns original response -> no duplicate
 ```
 
 Idempotency is critical for any operation involving money, inventory, or state changes.
@@ -102,14 +109,14 @@ Idempotency is critical for any operation involving money, inventory, or state c
 ```
 PUT /users/123 { "name": "Alice", "email": "alice@example.com" }
 PUT /users/123 { "name": "Alice", "email": "alice@example.com" }
-→ Same result regardless of how many times called
+-> Same result regardless of how many times called
 ```
 
 **POST is not naturally idempotent:**
 ```
 POST /orders { "item": "laptop", "qty": 1 }
 POST /orders { "item": "laptop", "qty": 1 }
-→ Two orders created (not the same result)
+-> Two orders created (not the same result)
 ```
 
 ## HTTP status codes
@@ -119,32 +126,32 @@ Use status codes correctly. They tell the client what happened without parsing t
 ### Success codes (2xx)
 
 ```
-200 OK              → Request succeeded (GET, PUT, PATCH, DELETE)
-201 Created         → Resource created (POST)
-202 Accepted        → Request accepted for async processing
-204 No Content      → Success, no body returned (DELETE)
+200 OK              -> Request succeeded (GET, PUT, PATCH, DELETE)
+201 Created         -> Resource created (POST)
+202 Accepted        -> Request accepted for async processing
+204 No Content      -> Success, no body returned (DELETE)
 ```
 
 ### Client error codes (4xx)
 
 ```
-400 Bad Request     → Malformed request (invalid JSON, missing field)
-401 Unauthorized    → Authentication required or failed
-403 Forbidden       → Authenticated but not authorized
-404 Not Found       → Resource doesn't exist
-405 Method Not Allowed → HTTP method not supported for this resource
-409 Conflict        → Request conflicts with current state (duplicate)
-422 Unprocessable   → Request is valid but semantically incorrect
-429 Too Many Requests → Rate limit exceeded
+400 Bad Request     -> Malformed request (invalid JSON, missing field)
+401 Unauthorized    -> Authentication required or failed
+403 Forbidden       -> Authenticated but not authorized
+404 Not Found       -> Resource doesn't exist
+405 Method Not Allowed -> HTTP method not supported for this resource
+409 Conflict        -> Request conflicts with current state (duplicate)
+422 Unprocessable   -> Request is valid but semantically incorrect
+429 Too Many Requests -> Rate limit exceeded
 ```
 
 ### Server error codes (5xx)
 
 ```
-500 Internal Server Error → Unhandled server error
-502 Bad Gateway          → Upstream service returned invalid response
-503 Service Unavailable  → Server is overloaded or in maintenance
-504 Gateway Timeout      → Upstream service timed out
+500 Internal Server Error -> Unhandled server error
+502 Bad Gateway          -> Upstream service returned invalid response
+503 Service Unavailable  -> Server is overloaded or in maintenance
+504 Gateway Timeout      -> Upstream service timed out
 ```
 
 **Common mistakes:**
@@ -156,8 +163,8 @@ Use status codes correctly. They tell the client what happened without parsing t
 
 **Use plural nouns:**
 ```
-GET /users          → collection
-GET /users/123      → single resource
+GET /users          -> collection
+GET /users/123      -> single resource
 Not: GET /user/123
 ```
 
@@ -188,9 +195,9 @@ Any endpoint that returns a collection must support pagination. Returning thousa
 ### Offset-based pagination
 
 ```
-GET /users?offset=0&limit=20    → first 20 users
-GET /users?offset=20&limit=20   → next 20 users
-GET /users?offset=40&limit=20   → next 20 users
+GET /users?offset=0&limit=20    -> first 20 users
+GET /users?offset=20&limit=20   -> next 20 users
+GET /users?offset=40&limit=20   -> next 20 users
 ```
 
 **Response:**
@@ -215,8 +222,8 @@ GET /users?offset=40&limit=20   → next 20 users
 ### Cursor-based pagination
 
 ```
-GET /users?limit=20                          → first 20 users
-GET /users?limit=20&cursor=eyJpZCI6MjB9     → next 20 after cursor
+GET /users?limit=20                          -> first 20 users
+GET /users?limit=20&cursor=eyJpZCI6MjB9     -> next 20 after cursor
 ```
 
 **Response:**
@@ -251,13 +258,13 @@ GET /orders?created_after=2024-01-01&created_before=2024-12-31
 **Sorting:**
 ```
 GET /orders?sort=created_at&order=desc
-GET /orders?sort=-created_at                 → prefix notation (- means desc)
-GET /orders?sort=status,created_at           → multi-field sort
+GET /orders?sort=-created_at                 -> prefix notation (- means desc)
+GET /orders?sort=status,created_at           -> multi-field sort
 ```
 
 **Searching:**
 ```
-GET /users?q=alice                           → full-text search
+GET /users?q=alice                           -> full-text search
 GET /products?search=laptop&category=electronics
 ```
 
@@ -275,9 +282,9 @@ Content-Type: application/json
 
 **Multiple format support:**
 ```
-Accept: application/json    → JSON response
-Accept: application/xml     → XML response
-Accept: text/csv            → CSV response
+Accept: application/json    -> JSON response
+Accept: application/xml     -> XML response
+Accept: text/csv            -> CSV response
 ```
 
 Most modern APIs only support JSON. That's fine. But set `Content-Type` correctly.

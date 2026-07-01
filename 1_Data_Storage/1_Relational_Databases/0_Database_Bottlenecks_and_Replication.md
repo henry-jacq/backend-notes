@@ -1,3 +1,10 @@
+---
+title: "Database Bottlenecks and Replication"
+part: 2
+part_title: "Data Storage"
+chapter: 1
+summary: "This document explains why databases fail as systems grow, focusing on single database bottlenecks and how..."
+---
 # Database Bottlenecks and Replication
 
 This document explains why databases fail as systems grow, focusing on single database bottlenecks and how replication is used to scale read workloads.

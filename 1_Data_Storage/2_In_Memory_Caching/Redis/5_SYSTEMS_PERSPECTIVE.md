@@ -1,3 +1,10 @@
+---
+title: "Redis: Why It Exists"
+part: 2
+part_title: "Data Storage"
+chapter: 10
+summary: "This document explains Redis not as a cache to learn, but as a solution to specific performance bottlenecks that..."
+---
 # Redis: Why It Exists
 
 This document explains Redis not as a cache to learn, but as a solution to specific performance bottlenecks that databases cannot solve alone.

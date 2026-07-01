@@ -1,3 +1,10 @@
+---
+title: "Messaging Patterns"
+part: 3
+part_title: "Async and Events"
+chapter: 1
+summary: "This document explains how asynchronous communication between services works. Messaging is not a technology..."
+---
 # Messaging Patterns
 
 This document explains how asynchronous communication between services works. Messaging is not a technology choice—it is a fundamental architectural pattern for handling concurrent work.

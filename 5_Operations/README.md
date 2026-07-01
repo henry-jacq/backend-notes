@@ -1,3 +1,10 @@
+---
+title: "Operations: Running and Debugging Production Systems"
+part: 7
+part_title: "Operations"
+type: "part_intro"
+summary: "This section covers how to operate backend systems in production: monitoring, debugging, incident response."
+---
 # Operations: Running and Debugging Production Systems
 
 This section covers how to operate backend systems in production: monitoring, debugging, incident response.

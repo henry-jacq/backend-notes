@@ -1,3 +1,10 @@
+---
+title: "Data Storage: Persisting and Querying Data"
+part: 2
+part_title: "Data Storage"
+type: "part_intro"
+summary: "This section covers how to store data durably and retrieve it efficiently."
+---
 # Data Storage: Persisting and Querying Data
 
 This section covers how to store data durably and retrieve it efficiently.

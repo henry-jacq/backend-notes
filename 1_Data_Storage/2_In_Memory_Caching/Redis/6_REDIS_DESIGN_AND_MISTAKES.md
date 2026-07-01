@@ -1,3 +1,10 @@
+---
+title: "Redis: Design Choices and Common Mistakes"
+part: 2
+part_title: "Data Storage"
+chapter: 11
+summary: "This document covers Redis breaking points, its single-threaded architecture, eviction policies, persistence..."
+---
 # Redis: Design Choices and Common Mistakes
 
 This document covers Redis breaking points, its single-threaded architecture, eviction policies, persistence options, and common caching mistakes.

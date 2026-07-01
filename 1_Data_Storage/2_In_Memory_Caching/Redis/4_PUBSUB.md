@@ -1,3 +1,10 @@
+---
+title: "Redis Pub/Sub"
+part: 2
+part_title: "Data Storage"
+chapter: 9
+summary: "Publish/subscribe is a messaging pattern in Redis. It allows one client to publish messages to a channel and many..."
+---
 # Redis Pub/Sub
 
 Publish/subscribe is a messaging pattern in Redis. It allows one client to publish messages to a channel and many clients to receive those messages by subscribing.

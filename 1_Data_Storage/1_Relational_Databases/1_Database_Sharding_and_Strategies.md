@@ -1,3 +1,10 @@
+---
+title: "Database Sharding and Strategies"
+part: 2
+part_title: "Data Storage"
+chapter: 2
+summary: "This document covers database sharding—the distribution of data across multiple database servers to scale both reads..."
+---
 # Database Sharding and Strategies
 
 This document covers database sharding—the distribution of data across multiple database servers to scale both reads and writes.

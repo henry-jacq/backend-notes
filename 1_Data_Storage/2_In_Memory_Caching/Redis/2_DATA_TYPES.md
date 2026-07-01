@@ -1,3 +1,10 @@
+---
+title: "Redis Data Types"
+part: 2
+part_title: "Data Storage"
+chapter: 7
+summary: "Redis stores values using different built-in data structures. Each key has exactly one data type, and the data type..."
+---
 # Redis Data Types
 
 Redis stores values using different built-in data structures. Each key has exactly one data type, and the data type determines which commands can be used on that key.

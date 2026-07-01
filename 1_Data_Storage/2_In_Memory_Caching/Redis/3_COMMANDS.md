@@ -1,3 +1,10 @@
+---
+title: "Redis Common Commands"
+part: 2
+part_title: "Data Storage"
+chapter: 8
+summary: "This document covers the common Redis commands for basic key management and the main data types."
+---
 # Redis Common Commands
 
 This document covers the common Redis commands for basic key management and the main data types.

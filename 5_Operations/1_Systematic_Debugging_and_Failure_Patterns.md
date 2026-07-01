@@ -1,3 +1,10 @@
+---
+title: "Systematic Debugging and Failure Patterns"
+part: 7
+part_title: "Operations"
+chapter: 2
+summary: "This document covers common failure patterns in production environments, step-by-step troubleshooting workflows, and..."
+---
 # Systematic Debugging and Failure Patterns
 
 This document covers common failure patterns in production environments, step-by-step troubleshooting workflows, and debugging checklists.
@@ -290,4 +297,4 @@ Query time: 5ms
 
 Observability is the ability to understand your system from its external outputs. Common failures have patterns. Learning to recognize them (database slow, cascade failure, memory leak) helps you debug faster.
 
-Systematic debugging (define problem → check metrics → check logs → check traces → investigate) beats random guessing every time.
+Systematic debugging (define problem -> check metrics -> check logs -> check traces -> investigate) beats random guessing every time.

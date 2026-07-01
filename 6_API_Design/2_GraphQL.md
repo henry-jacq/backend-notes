@@ -1,3 +1,10 @@
+---
+title: "GraphQL"
+part: 6
+part_title: "API Design"
+chapter: 3
+summary: "GraphQL is a query language for APIs, developed by Facebook in 2012 and open-sourced in 2015. It was created to..."
+---
 # GraphQL
 
 GraphQL is a query language for APIs, developed by Facebook in 2012 and open-sourced in 2015. It was created to solve a specific problem: mobile clients at Facebook needed different data than web clients, and REST APIs were either returning too much data (over-fetching) or requiring too many requests (under-fetching).
@@ -26,17 +33,17 @@ Response:
 }
 
 Mobile app only needs: name and avatar_url
-→ 80% of the response data is wasted bandwidth
+-> 80% of the response data is wasted bandwidth
 ```
 
 ### Under-fetching with REST
 
 ```
 To render a user profile page:
-  GET /users/123           → user data
-  GET /users/123/posts     → user's posts
-  GET /users/123/followers → follower count
-  GET /users/123/following → following count
+  GET /users/123           -> user data
+  GET /users/123/posts     -> user's posts
+  GET /users/123/followers -> follower count
+  GET /users/123/following -> following count
 
 4 HTTP requests to render one page
 On mobile: 4 round trips × 200ms each = 800ms minimum
@@ -204,10 +211,10 @@ Resolvers are functions that fetch data for each field in the schema.
 Schema:                      Resolver:
 
 type User {
-  id: ID!                    → return user.id from database
-  name: String!              → return user.name from database
-  posts: [Post!]!            → query posts table WHERE author_id = user.id
-  followersCount: Int!       → query COUNT(*) from followers WHERE user_id = user.id
+  id: ID!                    -> return user.id from database
+  name: String!              -> return user.name from database
+  posts: [Post!]!            -> query posts table WHERE author_id = user.id
+  followersCount: Int!       -> query COUNT(*) from followers WHERE user_id = user.id
 }
 ```
 
@@ -216,12 +223,12 @@ Each field has a resolver. Parent fields resolve first, then child fields use th
 ```
 Query:
 {
-  user(id: 123) {         ← Root resolver: fetch user 123 from DB
-    name                   ← Trivial resolver: return user.name
-    posts {                ← Resolver: SELECT * FROM posts WHERE author_id = 123
-      title                ← Trivial resolver: return post.title
-      comments {           ← Resolver: SELECT * FROM comments WHERE post_id = ?
-        text               ← Trivial resolver: return comment.text
+  user(id: 123) {         <- Root resolver: fetch user 123 from DB
+    name                   <- Trivial resolver: return user.name
+    posts {                <- Resolver: SELECT * FROM posts WHERE author_id = 123
+      title                <- Trivial resolver: return post.title
+      comments {           <- Resolver: SELECT * FROM comments WHERE post_id = ?
+        text               <- Trivial resolver: return comment.text
       }
     }
   }
@@ -244,11 +251,11 @@ Query:
 }
 
 Execution:
-1. Fetch 10 users           → 1 query: SELECT * FROM users LIMIT 10
+1. Fetch 10 users           -> 1 query: SELECT * FROM users LIMIT 10
 2. For each user, fetch posts:
-   → SELECT * FROM posts WHERE author_id = 1
-   → SELECT * FROM posts WHERE author_id = 2
-   → SELECT * FROM posts WHERE author_id = 3
+   -> SELECT * FROM posts WHERE author_id = 1
+   -> SELECT * FROM posts WHERE author_id = 2
+   -> SELECT * FROM posts WHERE author_id = 3
    ... (10 queries)
 
 Total: 1 + 10 = 11 queries for one GraphQL request
@@ -272,7 +279,7 @@ Without DataLoader:
 
 With DataLoader:
   SELECT * FROM posts WHERE author_id IN (1, 2, 3, ..., 10)
-  → 1 query instead of 10
+  -> 1 query instead of 10
 ```
 
 **How DataLoader works:**
@@ -349,11 +356,11 @@ Result: allowed
 
 ```
 REST caching is simple:
-  GET /users/123 → cache by URL
+  GET /users/123 -> cache by URL
   CDN, browser, proxy can all cache
 
 GraphQL caching is hard:
-  POST /graphql → same URL, different query in body
+  POST /graphql -> same URL, different query in body
   CDN cannot distinguish queries
   Need application-level caching
 ```

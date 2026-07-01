@@ -1,3 +1,10 @@
+---
+title: "API Versioning"
+part: 6
+part_title: "API Design"
+chapter: 6
+summary: "APIs are contracts. When you change a contract, you break everyone relying on it. Versioning is how you evolve APIs..."
+---
 # API Versioning
 
 APIs are contracts. When you change a contract, you break everyone relying on it. Versioning is how you evolve APIs without destroying trust.
@@ -14,7 +21,7 @@ A breaking change is any change that causes existing clients to fail without mod
 Breaking changes:
   - Removing a field from a response
   - Renaming a field
-  - Changing a field's type (string → integer)
+  - Changing a field's type (string -> integer)
   - Removing an endpoint
   - Changing required parameters
   - Changing the meaning of a status code
@@ -48,12 +55,12 @@ Product requirement: separate first and last name.
 Version 2 (breaking):
   GET /users/123
   Response: { "first_name": "Alice", "last_name": "Smith" }
-  → "name" field removed → all clients parsing "name" break
+  -> "name" field removed -> all clients parsing "name" break
 
 Version 2 (non-breaking):
   GET /users/123
   Response: { "name": "Alice Smith", "first_name": "Alice", "last_name": "Smith" }
-  → "name" kept for backward compatibility → no clients break
+  -> "name" kept for backward compatibility -> no clients break
 ```
 
 ## Versioning strategies
@@ -82,12 +89,12 @@ GET /v2/users/123
 **Implementation:**
 ```
 Router:
-  /v1/* → handler_v1
-  /v2/* → handler_v2
+  /v1/* -> handler_v1
+  /v2/* -> handler_v2
 
 Or:
-  /v1/* → same handler, behavior flag = v1
-  /v2/* → same handler, behavior flag = v2
+  /v1/* -> same handler, behavior flag = v1
+  /v2/* -> same handler, behavior flag = v2
 ```
 
 **This is the most common approach.** Simple, widely understood, easy to implement.
@@ -183,10 +190,10 @@ Each date represents a snapshot of the API behavior.
 **How it works:**
 ```
 Client sets api-version: 2023-06-01
-→ Server returns response format as of June 1, 2023
+-> Server returns response format as of June 1, 2023
 
 Client sets api-version: 2024-01-15
-→ Server returns response format as of January 15, 2024
+-> Server returns response format as of January 15, 2024
 ```
 
 **Advantages:**
@@ -205,9 +212,9 @@ Client sets api-version: 2024-01-15
 MAJOR.MINOR.PATCH
   2.1.3
 
-MAJOR → breaking changes (v1 → v2)
-MINOR → new features, backward compatible (v2.0 → v2.1)
-PATCH → bug fixes (v2.1.0 → v2.1.1)
+MAJOR -> breaking changes (v1 -> v2)
+MINOR -> new features, backward compatible (v2.0 -> v2.1)
+PATCH -> bug fixes (v2.1.0 -> v2.1.1)
 ```
 
 **In practice for APIs:**
@@ -257,7 +264,7 @@ Link: <https://api.example.com/v2/docs>; rel="successor-version"
 ```
 Good deprecation:
   1. Announce 6+ months in advance
-  2. Provide migration guide (v1 field → v2 field mapping)
+  2. Provide migration guide (v1 field -> v2 field mapping)
   3. Offer both versions simultaneously
   4. Log usage of deprecated endpoints
   5. Contact heavy users directly

@@ -1,3 +1,10 @@
+---
+title: "CRUD Operations and Performance"
+part: 2
+part_title: "Data Storage"
+chapter: 3
+summary: "This document explains Create, Read, Update, Delete (CRUD) operations—the fundamental interactions with relational..."
+---
 # CRUD Operations and Performance
 
 This document explains Create, Read, Update, Delete (CRUD) operations—the fundamental interactions with relational databases—and analyzes their performance characteristics and locking mechanisms.

@@ -1,3 +1,10 @@
+---
+title: "Saga Design Pattern"
+part: 3
+part_title: "Async and Events"
+chapter: 10
+summary: "The Saga pattern is a way to manage a distributed transaction when multiple services must complete work together,..."
+---
 # Saga Design Pattern
 
 The Saga pattern is a way to manage a distributed transaction when multiple services must complete work together, but you do not want to rely on a single global transaction.
