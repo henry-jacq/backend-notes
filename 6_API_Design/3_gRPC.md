@@ -9,7 +9,7 @@ summary: "gRPC is a high-performance RPC (Remote Procedure Call) framework devel
 
 gRPC is a high-performance RPC (Remote Procedure Call) framework developed by Google. It uses Protocol Buffers for serialisation and HTTP/2 for transport. Where REST is resource-oriented ("give me this thing"), gRPC is action-oriented ("do this operation").
 
-gRPC exists because REST has overhead that matters at scale: text-based serialisation, no built-in streaming, and loose contracts. When services call each other thousands of times per second, that overhead becomes measurable.
+gRPC exists because REST has overhead that matters at scale: text-based serialisation, no built-in streaming and loose contracts. When services call each other thousands of times per second, that overhead becomes measurable.
 
 ## Why gRPC exists
 
@@ -61,7 +61,7 @@ The binary payload is typically 5-10x smaller than JSON. Serialisation is 10-100
 
 ## Protocol Buffers (protobuf)
 
-Protocol Buffers are gRPC's serialisation format. You define message structures in `.proto` files, and a compiler generates code for your language.
+Protocol Buffers are gRPC's serialisation format. You define message structures in `.proto` files and a compiler generates code for your language.
 
 ### Message definition
 
@@ -365,7 +365,7 @@ INTERNAL            -> Internal server error (like 500)
 DEADLINE_EXCEEDED   -> Operation timed out (like 504)
 ```
 
-**Deadlines:** gRPC has built-in deadline propagation. A client sets a deadline, and every service in the call chain respects it.
+**Deadlines:** gRPC has built-in deadline propagation. A client sets a deadline and every service in the call chain respects it.
 
 ```
 Client sets deadline: 5 seconds
@@ -428,4 +428,4 @@ Interceptors add cross-cutting concerns without modifying business logic. Simila
 4. **Not versioning proto files** — breaking changes in proto files break all clients
 5. **Using gRPC for browser clients** — need gRPC-Web proxy, adds complexity
 
-gRPC solves the performance and contract problem for service-to-service communication. But regardless of which protocol you choose (REST, GraphQL, gRPC), you need to manage state correctly. See [4_API_State_Management.md](file:///d:/Playground/Backend%20Notes/6_API_Design/4_API_State_Management.md).
+gRPC solves the performance and contract problem for service-to-service communication. But regardless of which protocol you choose (REST, GraphQL, gRPC), you need to manage state correctly. See [API State Management](file:///d:/Playground/Backend%20Notes/6_API_Design/4_API_State_Management.md).

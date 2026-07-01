@@ -3,11 +3,11 @@ title: "Systematic Debugging and Failure Patterns"
 part: 7
 part_title: "Operations"
 chapter: 2
-summary: "This document covers common failure patterns in production environments, step-by-step troubleshooting workflows, and..."
+summary: "Covers common failure patterns in production environments, step-by-step troubleshooting workflows and..."
 ---
 # Systematic Debugging and Failure Patterns
 
-This document covers common failure patterns in production environments, step-by-step troubleshooting workflows, and debugging checklists.
+Covers common failure patterns in production environments, step-by-step troubleshooting workflows and debugging checklists.
 
 ## Building intuition: common failure patterns
 

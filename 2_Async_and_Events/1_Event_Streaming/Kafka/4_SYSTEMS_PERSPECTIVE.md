@@ -3,11 +3,11 @@ title: "Kafka: Why It Exists"
 part: 3
 part_title: "Async and Events"
 chapter: 7
-summary: "This document explains Kafka not as a technology to learn, but as a solution to specific breaking points that other..."
+summary: "Explains Kafka not as a technology to learn, but as a solution to specific breaking points that other..."
 ---
 # Kafka: Why It Exists
 
-This document explains Kafka not as a technology to learn, but as a solution to specific breaking points that other messaging systems cannot handle.
+Explains Kafka not as a technology to learn, but as a solution to specific breaking points that other messaging systems cannot handle.
 
 ## The messaging problem that kafka solves
 
@@ -74,7 +74,7 @@ RabbitMQ is optimised for message delivery, not message storage. It deletes mess
 - Network overhead high (every event transmitted from database to consumer)
 
 **Why it breaks:**
-Databases are not optimised for streaming append-only workloads. Indexing, locking, and query optimisation create overhead.
+Databases are not optimised for streaming append-only workloads. Indexing, locking and query optimisation create overhead.
 
 ## Kafka's design decision: immutable log
 
@@ -142,4 +142,4 @@ Kafka was built at LinkedIn to handle their event pipeline: thousands of events 
    - Consumers can be added later without changing producer
    - RabbitMQ requires routing rules
 
-To learn about Kafka design details (partitions, consumer groups, replication, retention) and common setup mistakes, see [5_KAFKA_DESIGN_AND_MISTAKES.md](file:///d:/Playground/Backend%20Notes/2_Async_and_Events/1_Event_Streaming/Kafka/5_KAFKA_DESIGN_AND_MISTAKES.md).
+To learn about Kafka design details (partitions, consumer groups, replication, retention) and common setup mistakes, see [Kafka: Design Choices and Common Mistakes](file:///d:/Playground/Backend%20Notes/2_Async_and_Events/1_Event_Streaming/Kafka/5_KAFKA_DESIGN_AND_MISTAKES.md).

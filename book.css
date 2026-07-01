@@ -10,9 +10,14 @@
     @bottom-center { content: none; }
 }
 
+@page preface {
+    @top-right { content: none; }
+    @bottom-right { content: none; }
+}
+
 @page toc {
     @top-right { content: none; }
-    @bottom-center {
+    @bottom-right {
         content: counter(page, lower-roman); /* Roman numerals for table of contents */
         font-family: "Book Antiqua", Georgia, serif;
         font-size: 8.5pt;
@@ -22,12 +27,12 @@
 
 @page part-page {
     @top-right { content: none; }
-    @bottom-center { content: none; }
+    @bottom-right { content: none; }
 }
 
 @page chapter-page {
     @top-right {
-        content: "Backend Notes: Systems Engineering";
+        content: "Backend Systems Engineering";
         font-family: "Book Antiqua", Georgia, serif;
         font-size: 8pt;
         color: #999;
@@ -35,14 +40,11 @@
         padding-bottom: 3px;
     }
 
-    @bottom-center {
+    @bottom-right {
         content: counter(page);
         font-family: "Book Antiqua", Georgia, serif;
         font-size: 8.5pt;
         color: #777;
-        border-top: 0.5px solid #eee;
-        padding-top: 4px;
-        width: 100%;
     }
 }
 
@@ -82,11 +84,11 @@ p {
 
 .cover-page .book-title {
     font-family: "Book Antiqua", Georgia, serif;
-    font-size: 34pt;
+    font-size: 26pt;
     font-weight: bold;
-    letter-spacing: 3px;
+    letter-spacing: 2px;
     color: #111122;
-    margin-bottom: 5px;
+    margin-bottom: 8px;
     text-transform: uppercase;
 }
 
@@ -97,6 +99,16 @@ p {
     color: #444466;
     margin-top: 5px;
     margin-bottom: 30px;
+}
+
+.cover-page .book-author {
+    font-family: "Book Antiqua", Georgia, serif;
+    font-size: 11pt;
+    color: #444;
+    margin-top: 10px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    text-align: center;
 }
 
 .cover-page .book-divider {
@@ -122,6 +134,7 @@ p {
     color: #888;
     margin-top: 8cm;
     text-transform: uppercase;
+    text-align: center;
 }
 
 /* ── Table of Contents ──────────────────────────────────────── */
@@ -438,4 +451,65 @@ a {
     font-family: "Book Antiqua", Georgia, serif;
     border-top: 0.5px solid #eee;
     padding-top: 4px;
+}
+
+/* ── Preface Page ───────────────────────────────────────────── */
+.preface-page {
+    page: preface;
+    page-break-after: always;
+    padding-top: 2cm;
+}
+
+.preface-page h1 {
+    font-family: "Book Antiqua", Georgia, serif;
+    font-size: 22pt;
+    text-align: center;
+    margin-bottom: 30px;
+    letter-spacing: 2px;
+    color: #111122;
+    text-transform: uppercase;
+}
+
+.preface-page .preface-lead {
+    font-size: 11pt;
+    line-height: 1.7;
+    margin-bottom: 25px;
+    font-style: italic;
+    color: #333;
+    text-align: justify;
+}
+
+.preface-page .preface-disclaimer {
+    margin-top: 30px;
+}
+
+.preface-page .preface-disclaimer h2 {
+    font-family: "Book Antiqua", Georgia, serif;
+    font-size: 13pt;
+    font-weight: bold;
+    margin-top: 0;
+    margin-bottom: 15px;
+    color: #111122;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.preface-page .preface-disclaimer p {
+    font-size: 10pt;
+    color: #444;
+    line-height: 1.6;
+    margin-bottom: 15px;
+    text-align: justify;
+}
+
+.preface-page .preface-disclaimer ul {
+    margin: 0 0 15px 0;
+    padding-left: 20px;
+}
+
+.preface-page .preface-disclaimer li {
+    font-size: 10pt;
+    color: #444;
+    line-height: 1.6;
+    margin-bottom: 8px;
 }

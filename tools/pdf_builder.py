@@ -110,14 +110,42 @@ def build_cover_page() -> str:
     date_str = datetime.now().strftime("%B %Y")
     return f"""
     <div class="cover-page">
-        <div class="book-title">BACKEND NOTES</div>
-        <div class="book-subtitle">Systems Engineering</div>
+        <div class="book-title">Backend Systems <br> Engineering</div>
+        <div class="book-subtitle">A developer's guide to underlying systems</div>
         <hr class="book-divider">
         <p class="book-description">
             A structured knowledge base for building production backend systems.
             Engineering judgment over technology checklists.
         </p>
         <p class="book-meta">Generated {date_str}</p>
+        <div class="book-author">Henry J M</div>
+    </div>
+    """
+
+def build_preface_page() -> str:
+    """Generate a preface page outlining prerequisites and target audience."""
+    return """
+    <div class="preface-page">
+        <h1>Preface & Prerequisites</h1>
+        <p class="preface-lead">
+            This book is designed as a structured path for application developers transitioning into backend systems engineering. It aims to bridge the gap between writing functional code and understanding the complex, underlying system architectures that support it.
+        </p>
+        <div class="preface-disclaimer">
+            <h2>Target Audience & Prerequisites</h2>
+            <p>
+                This is not an introductory programming guide. To get the most out of these notes, you are expected to already have a working knowledge of:
+            </p>
+            <ul>
+                <li><strong>Version Control:</strong> Git repository structures, branching, merge conflicts, pull requests and commit workflows.</li>
+                <li><strong>Operating Systems & Concurrency:</strong> CPU core execution model, processes vs threads, thread blocking and basic memory organization (stack vs heap).</li>
+                <li><strong>Networking Foundations:</strong> The general client-server model, DNS lookup concepts and the basics of making standard HTTP requests.</li>
+                <li><strong>Database Basics:</strong> Standard SQL querying, tables, schemas and primary/foreign key relationships.</li>
+                <li><strong>Core Computer Science:</strong> Standard data structures (arrays, linked lists, hash tables, stacks, queues), sorting algorithms and Big O notation.</li>
+            </ul>
+            <p>
+                Rather than rehashing these baseline concepts, this text focuses on high-level engineering trade-offs, scalability bottlenecks, distributed transaction patterns and production reliability.
+            </p>
+        </div>
     </div>
     """
 
@@ -225,19 +253,21 @@ def build_full_html(entries: list) -> str:
             content_sections.append(build_chapter(meta, html_content))
 
     body_content = "\n".join(content_sections)
+    preface = build_preface_page()
 
     return f"""<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Backend Notes: Systems Engineering</title>
+    <title>Backend Systems Engineering</title>
     <style>
 {BOOK_CSS}
     </style>
 </head>
 <body>
     {cover}
+    {preface}
     {toc}
     {body_content}
 </body>
@@ -245,7 +275,7 @@ def build_full_html(entries: list) -> str:
 """
 
 def generate_book_pdf(output_path: Path, html_only: bool = False) -> None:
-    """Read markdown notes, sanitize, format, and generate the book."""
+    """Read markdown notes, sanitize, format and generate the book."""
     entries = []
 
     for rel_path, part, part_title, chapter, doc_type in FILES_CONFIG:

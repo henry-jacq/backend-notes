@@ -3,11 +3,11 @@ title: "Failover and Multi-Region Deployment"
 part: 4
 part_title: "Reliability and Availability"
 chapter: 4
-summary: "This document covers database failover handling, split-brain mitigation, multi-region deployments, active-passive vs..."
+summary: "Covers database failover handling, split-brain mitigation, multi-region deployments, active-passive vs..."
 ---
 # Failover and Multi-Region Deployment
 
-This document covers database failover handling, split-brain mitigation, multi-region deployments, active-passive vs active-active patterns, and availability monitoring.
+Covers database failover handling, split-brain mitigation, multi-region deployments, active-passive vs active-active patterns and availability monitoring.
 
 ## Failover: handling master failure
 
@@ -365,5 +365,5 @@ Availability requires redundancy. A single server cannot be always available.
 Replication copies data. Failover switches to replica when master fails.
 Multi-region deployment protects against regional disasters.
 
-The cost is complexity (managing multiple servers, handling consistency), operational overhead (monitoring, testing), and eventual consistency during failures.
+The cost is complexity (managing multiple servers, handling consistency), operational overhead (monitoring, testing) and eventual consistency during failures.
 The best systems balance availability needs with operational reality. Most don't need five nines. Three nines is hard enough.

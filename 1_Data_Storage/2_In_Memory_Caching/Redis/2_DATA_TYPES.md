@@ -3,11 +3,11 @@ title: "Redis Data Types"
 part: 2
 part_title: "Data Storage"
 chapter: 7
-summary: "Redis stores values using different built-in data structures. Each key has exactly one data type, and the data type..."
+summary: "Redis stores values using different built-in data structures. Each key has exactly one data type and the data type..."
 ---
 # Redis Data Types
 
-Redis stores values using different built-in data structures. Each key has exactly one data type, and the data type determines which commands can be used on that key.
+Redis stores values using different built-in data structures. Each key has exactly one data type and the data type determines which commands can be used on that key.
 
 ## String
 
@@ -27,20 +27,20 @@ Redis stores values using different built-in data structures. Each key has exact
 
 - An ordered sequence of strings.
 - Supports insertions and removals at both ends.
-- Useful for queues, recent activity feeds, and simple message lists.
+- Useful for queues, recent activity feeds and simple message lists.
 - Commands: `LPUSH`, `RPUSH`, `LPOP`, `RPOP`, `LRANGE`, `LINDEX`, `LSET`.
 
 ## Set
 
 - An unordered collection of unique strings.
-- Useful for membership tests, tags, and unique lists.
+- Useful for membership tests, tags and unique lists.
 - Commands: `SADD`, `SMEMBERS`, `SREM`, `SCARD`, `SISMEMBER`, `SUNION`, `SDIFF`, `SINTER`.
 
 ## Sorted Set
 
 - A set of unique members, each with an associated score.
 - Members are ordered by score.
-- Useful for leaderboards, priority queues, and range queries.
+- Useful for leaderboards, priority queues and range queries.
 - Commands: `ZADD`, `ZRANGE`, `ZREM`, `ZRANK`, `ZSCORE`, `ZCARD`.
 
 ## Additional types

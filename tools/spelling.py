@@ -98,7 +98,68 @@ BANNED_US_SPELLINGS = {
 }
 
 def clean_line_prose(line: str) -> str:
-    """Convert American spellings in a single line of prose to InE, preserving capitalization."""
+    """Convert American spellings in a single line of prose to InE, preserving capitalization,
+    and strip redundant 'This document explains/covers' phrasing."""
+    
+    # 1. Clean 'This document explains' and similar prefixes
+    prefixes = [
+        ("This document explains ", "Explains "),
+        ("This document covers ", "Covers "),
+        ("This document discusses ", "Discusses "),
+        ("This document details ", "Details "),
+        ("This document is about ", "About "),
+        ("This document provides ", "Provides "),
+        ("this document explains ", "Explains "),
+        ("this document covers ", "Covers "),
+        ("this document discusses ", "Discusses "),
+        ("this document details ", "Details "),
+        ("this document is about ", "About "),
+        ("this document provides ", "Provides "),
+    ]
+    
+    # Check if the line has frontmatter summary field
+    m = re.match(r'^summary:\s*"(.*)"\s*$', line)
+    is_frontmatter_summary = False
+    text_val = line
+    if m:
+        is_frontmatter_summary = True
+        text_val = m.group(1)
+        
+    has_match = False
+    for old, new in prefixes:
+        if text_val.startswith(old):
+            text_val = new + text_val[len(old):]
+            has_match = True
+            break
+            
+    if not has_match:
+        # Handle generic pattern: 'This document [verb] ...'
+        new_val = re.sub(r'^[Tt]his document\s+(?:explains|covers|discusses|details|provides|is about)\s+', 'Explains ', text_val)
+        if new_val != text_val:
+            text_val = new_val
+            has_match = True
+        else:
+            new_val = re.sub(r'^[Tt]his document\s+', '', text_val)
+            if new_val != text_val:
+                text_val = new_val
+                has_match = True
+
+    # Capitalize first letter if matched
+    if has_match and text_val and text_val[0].islower():
+        text_val = text_val[0].upper() + text_val[1:]
+        
+    if has_match:
+        if is_frontmatter_summary:
+            line = f'summary: "{text_val}"'
+        else:
+            line = text_val
+
+    # 2. Convert Oxford commas
+    line = line.replace(", and", " and")
+    line = line.replace(", And", " And")
+    line = line.replace(", AND", " AND")
+
+    # 3. Convert American spellings
     for pattern, replacement in BANNED_US_SPELLINGS.items():
         def repl_func(match):
             word = match.group(0)

@@ -3,11 +3,11 @@ title: "Database Bottlenecks and Replication"
 part: 2
 part_title: "Data Storage"
 chapter: 1
-summary: "This document explains why databases fail as systems grow, focusing on single database bottlenecks and how..."
+summary: "Explains why databases fail as systems grow, focusing on single database bottlenecks and how..."
 ---
 # Database Bottlenecks and Replication
 
-This document explains why databases fail as systems grow, focusing on single database bottlenecks and how replication is used to scale read workloads.
+Explains why databases fail as systems grow, focusing on single database bottlenecks and how replication is used to scale read workloads.
 
 ## The database bottleneck
 
@@ -136,4 +136,4 @@ Master (handles writes)
 
 Replication solves read scaling. It does not solve write scaling.
 
-To learn how sharding and other architectural strategies are used to scale both reads and writes, see [1_Database_Sharding_and_Strategies.md](file:///d:/Playground/Backend%20Notes/1_Data_Storage/1_Relational_Databases/1_Database_Sharding_and_Strategies.md).
+To learn how sharding and other architectural strategies are used to scale both reads and writes, see [Database Sharding and Strategies](file:///d:/Playground/Backend%20Notes/1_Data_Storage/1_Relational_Databases/1_Database_Sharding_and_Strategies.md).

@@ -32,7 +32,7 @@ Run the central tooling script at the repository root:
   ```bash
   python build_book.py
   ```
-- **Check compliance** (spelling, formatting, and layout validation):
+- **Check compliance** (spelling, formatting and layout validation):
   ```bash
   python build_book.py --check
   ```

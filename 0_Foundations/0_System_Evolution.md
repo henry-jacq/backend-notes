@@ -53,7 +53,7 @@ A single application server fails when it runs out of capacity. This manifests a
 - Response times degrade unpredictably
 
 **Why it happens:**
-Each request consumes CPU, memory, and database connections. A server has finite resources. When request rate exceeds what one server can process, requests queue up. If they queue too long, clients give up or retry, making it worse.
+Each request consumes CPU, memory and database connections. A server has finite resources. When request rate exceeds what one server can process, requests queue up. If they queue too long, clients give up or retry, making it worse.
 
 **Breaking point:**
 The server cannot handle concurrent requests. Scaling means adding more servers.
@@ -164,4 +164,4 @@ Sharding solves write scaling but introduces new problems:
 - Rebalancing data when adding shards is complex
 - Application code becomes more complex
 
-For handling heavy workloads and coordination across services that sharding or synchronous flows cannot easily handle, systems evolve to use asynchronous processing and distributed messaging. See [1_Asynchronous_Processing.md](file:///d:/Playground/Backend%20Notes/0_Foundations/1_Asynchronous_Processing.md) to continue.
+For handling heavy workloads and coordination across services that sharding or synchronous flows cannot easily handle, systems evolve to use asynchronous processing and distributed messaging. See [Asynchronous Processing](file:///d:/Playground/Backend%20Notes/0_Foundations/1_Asynchronous_Processing.md) to continue.

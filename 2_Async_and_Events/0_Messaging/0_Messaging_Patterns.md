@@ -3,11 +3,11 @@ title: "Messaging Patterns"
 part: 3
 part_title: "Async and Events"
 chapter: 1
-summary: "This document explains how asynchronous communication between services works. Messaging is not a technology..."
+summary: "Explains how asynchronous communication between services works. Messaging is not a technology..."
 ---
 # Messaging Patterns
 
-This document explains how asynchronous communication between services works. Messaging is not a technology choice—it is a fundamental architectural pattern for handling concurrent work.
+Explains how asynchronous communication between services works. Messaging is not a technology choice—it is a fundamental architectural pattern for handling concurrent work.
 
 ## Why messaging exists
 
@@ -180,4 +180,4 @@ Consumer 3 was processing but restarted: resumes from checkpoint
 - Consumers maintain offset (how far they've processed)
 - Can replay from any point
 
-To learn about delivery guarantees (at-least-once, exactly-once), message ordering, and common messaging mistakes, see [1_Message_Semantics_and_Mistakes.md](file:///d:/Playground/Backend%20Notes/2_Async_and_Events/0_Messaging/1_Message_Semantics_and_Mistakes.md).
+To learn about delivery guarantees (at-least-once, exactly-once), message ordering and common messaging mistakes, see [Message Semantics and Common Mistakes](file:///d:/Playground/Backend%20Notes/2_Async_and_Events/0_Messaging/1_Message_Semantics_and_Mistakes.md).

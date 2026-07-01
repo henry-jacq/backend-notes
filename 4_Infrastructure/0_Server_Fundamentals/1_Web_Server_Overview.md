@@ -3,19 +3,19 @@ title: "Web Server Overview"
 part: 5
 part_title: "Infrastructure"
 chapter: 2
-summary: "A web server receives client requests, processes them, and returns responses. It may serve static files, run..."
+summary: "A web server receives client requests, processes them and returns responses. It may serve static files, run..."
 ---
 # Web Server Overview
 
-A web server receives client requests, processes them, and returns responses. It may serve static files, run application logic, query databases, validate authentication, or proxy requests to other services.
+A web server receives client requests, processes them and returns responses. It may serve static files, run application logic, query databases, validate authentication, or proxy requests to other services.
 
-Backend engineers set up and maintain servers that host applications, APIs, background jobs, and databases. Good server design affects response time, security, scalability, and recovery speed.
+Backend engineers set up and maintain servers that host applications, APIs, background jobs and databases. Good server design affects response time, security, scalability and recovery speed.
 
 ## Client-Server Architecture
 
-In client-server architecture, a client requests a service and the server provides it. The client may be a browser, mobile app, IoT device, or another backend service. The server listens for requests, processes them, and returns responses.
+In client-server architecture, a client requests a service and the server provides it. The client may be a browser, mobile app, IoT device, or another backend service. The server listens for requests, processes them and returns responses.
 
-This separates responsibilities: clients handle user interaction, servers manage business logic, storage, and authentication.
+This separates responsibilities: clients handle user interaction, servers manage business logic, storage and authentication.
 
 Example request-response:
 
@@ -36,7 +36,7 @@ Client <--> Server (with DB)
 
 ### Three-Tier Architecture
 
-Separates presentation, application, and data layers.
+Separates presentation, application and data layers.
 
 ```
 Client <--> App Server <--> Database
@@ -79,15 +79,15 @@ Provided by AWS, Azure, Google Cloud, etc. Flexible, scalable, pay-as-you-go pri
 
 ### Linux
 
-Ubuntu, Debian, Rocky Linux, AlmaLinux, CentOS Stream. Popular for servers because it is stable, secure, scriptable, and open-source.
+Ubuntu, Debian, Rocky Linux, AlmaLinux, CentOS Stream. Popular for servers because it is stable, secure, scriptable and open-source.
 
 ### Windows Server
 
-Used for .NET applications, Active Directory, SQL Server, and enterprise tools. Graphical administration and PowerShell automation.
+Used for .NET applications, Active Directory, SQL Server and enterprise tools. Graphical administration and PowerShell automation.
 
 ## Server Configuration
 
-A server needs software, firewall rules, environment variables, database connections, reverse proxies, and logging.
+A server needs software, firewall rules, environment variables, database connections, reverse proxies and logging.
 
 Common components:
 
@@ -141,7 +141,7 @@ Protect against data loss and downtime with:
 
 ## Automation and CI/CD
 
-Use scripts, configuration management, containers, and CI/CD pipelines to keep environments consistent.
+Use scripts, configuration management, containers and CI/CD pipelines to keep environments consistent.
 
 Common tools:
 

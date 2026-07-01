@@ -13,13 +13,13 @@ This section covers how to make systems resilient to failures and keep them runn
 
 ### Reliability Patterns
 
-**[0_Reliability_Patterns.md](file:///d:/Playground/Backend%20Notes/3_Reliability_and_Availability/0_Reliability_Patterns.md)** — Retries & Circuit Breakers
+**[Retries & Circuit Breakers](file:///d:/Playground/Backend%20Notes/3_Reliability_and_Availability/0_Reliability_Patterns.md)**
 
 - The failure premise in distributed systems
 - Retries (handling transient failures, exponential backoff, jitter, idempotency)
-- Circuit breakers (preventing cascading failures, states, and transitions)
+- Circuit breakers (preventing cascading failures, states and transitions)
 
-**[1_Resource_Isolation_and_Fault_Tolerance.md](file:///d:/Playground/Backend%20Notes/3_Reliability_and_Availability/1_Resource_Isolation_and_Fault_Tolerance.md)** — Bulkheads & Fault Isolation
+**[Bulkheads & Fault Isolation](file:///d:/Playground/Backend%20Notes/3_Reliability_and_Availability/1_Resource_Isolation_and_Fault_Tolerance.md)**
 
 - Bulkheads (resource pools and isolation by request type or customer)
 - Combining patterns (retries + circuit breakers + bulkheads)
@@ -29,12 +29,12 @@ These patterns are "defensive programming" for distributed systems. Failures wil
 
 ### Availability and Fault Tolerance
 
-**[2_Availability_and_Replication.md](file:///d:/Playground/Backend%20Notes/3_Reliability_and_Availability/2_Availability_and_Replication.md)** — Measuring Availability & Replication
+**[Measuring Availability & Replication](file:///d:/Playground/Backend%20Notes/3_Reliability_and_Availability/2_Availability_and_Replication.md)**
 
 - Measuring availability (target uptime percentage and downtime calculations)
 - Data replication (synchronous vs asynchronous replication, trade-offs)
 
-**[3_Failover_and_Multi_Region.md](file:///d:/Playground/Backend%20Notes/3_Reliability_and_Availability/3_Failover_and_Multi_Region.md)** — Failover & Multi-Region
+**[Failover & Multi-Region](file:///d:/Playground/Backend%20Notes/3_Reliability_and_Availability/3_Failover_and_Multi_Region.md)**
 
 - Automatic failover handling and split-brain mitigation
 - Multi-region deployment challenges (latency, consistency)

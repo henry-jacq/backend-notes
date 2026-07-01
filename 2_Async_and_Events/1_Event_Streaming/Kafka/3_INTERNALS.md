@@ -527,4 +527,4 @@ Orders Topic
 Replication Factor = 2
 ```
 
-Can a single broker contain **multiple partitions of the same topic**, and can a single partition exist on **multiple brokers at the same time**? Why would Kafka want both of those to be true?
+Can a single broker contain **multiple partitions of the same topic** and can a single partition exist on **multiple brokers at the same time**? Why would Kafka want both of those to be true?

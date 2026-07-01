@@ -3,11 +3,11 @@ title: "Reliability Patterns"
 part: 4
 part_title: "Reliability and Availability"
 chapter: 1
-summary: "This document explains how to build systems that continue working when failures occur. Reliability is not about..."
+summary: "Explains how to build systems that continue working when failures occur. Reliability is not about..."
 ---
 # Reliability Patterns
 
-This document explains how to build systems that continue working when failures occur. Reliability is not about preventing failures—failures happen. It is about containing them.
+Explains how to build systems that continue working when failures occur. Reliability is not about preventing failures—failures happen. It is about containing them.
 
 ## The failure premise
 
@@ -205,4 +205,4 @@ Back to closed:
 - User sees error instead of cached response or fallback
 - Must have fallback strategy
 
-To learn about bulkheads, combining these patterns, and diagnosing reliability issues, see [1_Resource_Isolation_and_Fault_Tolerance.md](file:///d:/Playground/Backend%20Notes/3_Reliability_and_Availability/1_Resource_Isolation_and_Fault_Tolerance.md).
+To learn about bulkheads, combining these patterns and diagnosing reliability issues, see [Resource Isolation and Fault Tolerance](file:///d:/Playground/Backend%20Notes/3_Reliability_and_Availability/1_Resource_Isolation_and_Fault_Tolerance.md).

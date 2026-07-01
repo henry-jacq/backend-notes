@@ -178,7 +178,7 @@ Saga-based systems usually use eventual consistency. That means the system may b
 
 ## Summary
 
-The Saga pattern is a practical approach for handling distributed business workflows without a single global transaction. It trades strong consistency for resilience, flexibility, and service independence.
+The Saga pattern is a practical approach for handling distributed business workflows without a single global transaction. It trades strong consistency for resilience, flexibility and service independence.
 
 In short:
 

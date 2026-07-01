@@ -7,7 +7,7 @@ summary: "Performance engineering is not about making things faster. It is about
 ---
 # Performance Engineering Basics
 
-Performance engineering is not about making things faster. It is about understanding what slow means, proving where slowness lives, and choosing what to optimise.
+Performance engineering is not about making things faster. It is about understanding what slow means, proving where slowness lives and choosing what to optimise.
 
 Many developers equate performance with speed. That is imprecise. Performance engineering is about matching system behaviour to requirements under realistic conditions.
 
@@ -104,4 +104,4 @@ The database query is the bottleneck. Optimising application code saves 100ms (1
 
 Always optimise the bottleneck first.
 
-To learn about common performance bottlenecks and how to test for them under load, see [3_Common_Bottlenecks_and_Testing.md](file:///d:/Playground/Backend%20Notes/0_Foundations/3_Common_Bottlenecks_and_Testing.md).
+To learn about common performance bottlenecks and how to test for them under load, see [Common Bottlenecks and Testing](file:///d:/Playground/Backend%20Notes/0_Foundations/3_Common_Bottlenecks_and_Testing.md).

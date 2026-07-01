@@ -3,11 +3,11 @@ title: "Availability and Replication"
 part: 4
 part_title: "Reliability and Availability"
 chapter: 3
-summary: "This document explains availability metrics and data replication strategies as the foundation for building..."
+summary: "Explains availability metrics and data replication strategies as the foundation for building..."
 ---
 # Availability and Replication
 
-This document explains availability metrics and data replication strategies as the foundation for building fault-tolerant systems.
+Explains availability metrics and data replication strategies as the foundation for building fault-tolerant systems.
 
 ## The availability problem
 
@@ -102,4 +102,4 @@ Asynchronous = performance, eventual consistency.
 
 Most systems use asynchronous with monitoring (alert if lag too high).
 
-To learn about database failover mechanisms, multi-region deployments, and how to avoid split-brain issues, see [3_Failover_and_Multi_Region.md](file:///d:/Playground/Backend%20Notes/3_Reliability_and_Availability/3_Failover_and_Multi_Region.md).
+To learn about database failover mechanisms, multi-region deployments and how to avoid split-brain issues, see [Failover and Multi-Region Deployment](file:///d:/Playground/Backend%20Notes/3_Reliability_and_Availability/3_Failover_and_Multi_Region.md).

@@ -470,7 +470,7 @@ Check: viewer role allows read only -> 403 Forbidden
 
 ### ABAC (Attribute-Based Access Control)
 
-Permissions based on attributes of user, resource, and environment.
+Permissions based on attributes of user, resource and environment.
 
 ```
 Policy: "Users can edit articles they authored"
@@ -559,4 +559,4 @@ Simpler than mTLS but less secure (tokens can be stolen).
 6. **Not validating JWT audience** — token meant for Service A accepted by Service B
 7. **Transmitting tokens over HTTP** — always use HTTPS. Tokens in plain HTTP are visible to anyone on the network
 
-Authentication verifies identity. Authorisation checks permissions. But APIs also need protection against abuse, attacks, and misuse at the network level. See [7_API_Security_and_Rate_Limiting.md](file:///d:/Playground/Backend%20Notes/6_API_Design/7_API_Security_and_Rate_Limiting.md).
+Authentication verifies identity. Authorisation checks permissions. But APIs also need protection against abuse, attacks and misuse at the network level. See [API Security and Rate Limiting](file:///d:/Playground/Backend%20Notes/6_API_Design/7_API_Security_and_Rate_Limiting.md).

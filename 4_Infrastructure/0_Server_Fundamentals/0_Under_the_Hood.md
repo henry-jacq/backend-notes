@@ -11,13 +11,13 @@ summary: "No summary available"
 
 ## What is a Server?
 
-A server is a machine or process that listens for requests, processes them, and returns responses. It may serve static files, run application logic, query a database, validate authentication, or proxy requests to other services.
+A server is a machine or process that listens for requests, processes them and returns responses. It may serve static files, run application logic, query a database, validate authentication, or proxy requests to other services.
 
 Servers can be physical machines, virtual instances, or cloud-provisioned resources. They run an operating system and application software.
 
 ## Client-Server Model
 
-In client-server architecture, a client sends a request for a service or data, and the server provides it. The client may be a browser, mobile app, IoT device, or another backend service.
+In client-server architecture, a client sends a request for a service or data and the server provides it. The client may be a browser, mobile app, IoT device, or another backend service.
 
 Communication between clients and servers relies on protocols. A protocol is a set of rules that defines how messages are structured and exchanged.
 
@@ -39,7 +39,7 @@ HTTP is basically a TCP connection with a defined structure for communication be
 
 An HTTP request or response has a header and a body.
 
-- The header carries information such as who is sending it, what kind of data is being sent, and where it is going.
+- The header carries information such as who is sending it, what kind of data is being sent and where it is going.
 - The body contains the actual data, also called the payload.
 
 Example HTTP request:
@@ -67,7 +67,7 @@ Content-Type: application/json
 
 We can build our own HTTP server by opening a socket on a port and handling structured HTTP requests and responses. Once the server speaks the correct HTTP format, a browser or API client can understand it.
 
-This is the basic working model behind server technologies such as Apache, Tomcat, and Nginx.
+This is the basic working model behind server technologies such as Apache, Tomcat and Nginx.
 
 A web server's job is to:
 
@@ -119,7 +119,7 @@ Databases listen on specific ports and use their own protocols for communication
 - SQL Server: port 1433, uses TDS (Tabular Data Stream) protocol
 - Redis: port 6379, uses RESP (Redis Serialisation Protocol)
 
-Each protocol defines how queries are sent, results are returned, and connections are managed.
+Each protocol defines how queries are sent, results are returned and connections are managed.
 
 ### How Applications Connect to Databases
 
@@ -131,11 +131,11 @@ When an application needs data, it:
 4. Receives the result
 5. Closes the connection or keeps it open for reuse
 
-The application's database client library handles the protocol details. It opens a TCP socket to the database address, authenticates, sends the query in the database protocol format, and returns the result.
+The application's database client library handles the protocol details. It opens a TCP socket to the database address, authenticates, sends the query in the database protocol format and returns the result.
 
 ### Connection Pooling
 
-Opening a new database connection is expensive. Connection pooling reuses connections instead of creating new ones for each request. A pool keeps a set of open connections ready to use, and applications check out and return connections as needed.
+Opening a new database connection is expensive. Connection pooling reuses connections instead of creating new ones for each request. A pool keeps a set of open connections ready to use and applications check out and return connections as needed.
 
 This is more efficient for high-traffic applications.
 

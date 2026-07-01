@@ -3,23 +3,23 @@ title: "Async and Events: Asynchronous Processing and Messaging"
 part: 3
 part_title: "Async and Events"
 type: "part_intro"
-summary: "This section covers how to handle work asynchronously, decouple services, and process events at scale."
+summary: "This section covers how to handle work asynchronously, decouple services and process events at scale."
 ---
 # Async and Events: Asynchronous Processing and Messaging
 
-This section covers how to handle work asynchronously, decouple services, and process events at scale.
+This section covers how to handle work asynchronously, decouple services and process events at scale.
 
 ## Learning path
 
 ### 0_Messaging/
 
-**[0_Messaging_Patterns.md](file:///d:/Playground/Backend%20Notes/2_Async_and_Events/0_Messaging/0_Messaging_Patterns.md)** — Core Messaging Patterns
+**[Core Messaging Patterns](file:///d:/Playground/Backend%20Notes/2_Async_and_Events/0_Messaging/0_Messaging_Patterns.md)**
 
 - Why messaging exists (decoupling producers and consumers)
 - Message queue concepts and buffers
 - Three patterns: request-reply, publish-subscribe, event streaming
 
-**[1_Message_Semantics_and_Mistakes.md](file:///d:/Playground/Backend%20Notes/2_Async_and_Events/0_Messaging/1_Message_Semantics_and_Mistakes.md)** — Message Semantics & Failure Modes
+**[Message Semantics & Failure Modes](file:///d:/Playground/Backend%20Notes/2_Async_and_Events/0_Messaging/1_Message_Semantics_and_Mistakes.md)**
 
 - Delivery guarantees (at-most-once, at-least-once, exactly-once)
 - Ordering constraints and idempotency
@@ -37,23 +37,23 @@ Kafka is the implementation of event streaming at scale:
 - What Kafka is (distributed event log)
 - Core concepts (topics, partitions, consumer groups)
 - Why Kafka exists (multiple independent consumers, replay capability)
-- Internal mechanisms and partition replication (in **[3_INTERNALS.md](file:///d:/Playground/Backend%20Notes/2_Async_and_Events/1_Event_Streaming/Kafka/3_INTERNALS.md)**)
+- Internal mechanisms and partition replication (in **[First Mental Model: There Is No Permanent Central Brain](file:///d:/Playground/Backend%20Notes/2_Async_and_Events/1_Event_Streaming/Kafka/3_INTERNALS.md)**)
 - Kafka design choices (partitions, consumer groups, replication, retention)
 - When Kafka is necessary and common mistakes to avoid
 
 ### 2_Distributed_Transactions/
 
-**[0_Distributed_Transactions.md](file:///d:/Playground/Backend%20Notes/2_Async_and_Events/2_Distributed_Transactions/0_Distributed_Transactions.md)** — Distributed Coordination
+**[Distributed Coordination](file:///d:/Playground/Backend%20Notes/2_Async_and_Events/2_Distributed_Transactions/0_Distributed_Transactions.md)**
 
 - Why transactions across independent systems fail at scale
 - Two-Phase Commit (2PC) design and why it fails in distributed networks
 - Why 2PC works for databases but not services
 
-**[1_Saga_Pattern_Overview.md](file:///d:/Playground/Backend%20Notes/2_Async_and_Events/2_Distributed_Transactions/1_Saga_Pattern_Overview.md)** — Saga Pattern Overview
+**[Saga Pattern Overview](file:///d:/Playground/Backend%20Notes/2_Async_and_Events/2_Distributed_Transactions/1_Saga_Pattern_Overview.md)**
 
-- Shorter introduction to Saga patterns, orchestration, choreography, and compensating actions
+- Shorter introduction to Saga patterns, orchestration, choreography and compensating actions
 
-**[2_Saga_Pattern_Deep_Dive.md](file:///d:/Playground/Backend%20Notes/2_Async_and_Events/2_Distributed_Transactions/2_Saga_Pattern_Deep_Dive.md)** — Saga Pattern Details & Mistakes
+**[Saga Pattern Details & Mistakes](file:///d:/Playground/Backend%20Notes/2_Async_and_Events/2_Distributed_Transactions/2_Saga_Pattern_Deep_Dive.md)**
 
 - Choreography vs Orchestration details
 - Saga trade-offs vs 2PC

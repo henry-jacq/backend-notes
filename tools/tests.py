@@ -1,4 +1,5 @@
 import unittest
+import re
 from pathlib import Path
 from tools.config import BASE_DIR, FILES_CONFIG
 from tools.pdf_builder import parse_frontmatter
@@ -89,6 +90,68 @@ class TestBookDocuments(unittest.TestCase):
                     print(f"  Line {line_num}: {msg}")
                     
         self.assertEqual(violations_count, 0, f"Found {violations_count} spelling violations. Run spelling converter to fix.")
+
+    def test_document_reference_avoidance(self):
+        """Verify that markdown files do not refer to themselves using 'This document explains/covers'."""
+        violations_count = 0
+        for rel_path, _, _, _, _ in FILES_CONFIG:
+            filepath = BASE_DIR / rel_path
+            if not filepath.exists():
+                continue
+            
+            content = filepath.read_text(encoding="utf-8")
+            violations = []
+            in_code_block = False
+            for idx, line in enumerate(content.splitlines(), 1):
+                if line.strip().startswith("```"):
+                    in_code_block = not in_code_block
+                    continue
+                if in_code_block:
+                    continue
+                
+                # Ignore inline backticks `...`
+                clean_prose = re.sub(r'`[^`]+`', '', line)
+                if "this document" in clean_prose.lower():
+                    violations.append((idx, f"Line refers to 'this document': '{line.strip()}'"))
+            
+            if violations:
+                violations_count += len(violations)
+                print(f"\n[Self-Referential Document Violation] {rel_path}:")
+                for line_num, msg in violations:
+                    print(f"  Line {line_num}: {msg}")
+                    
+        self.assertEqual(violations_count, 0, f"Found {violations_count} self-referential references. Run --fix to resolve.")
+
+    def test_oxford_comma_avoidance(self):
+        """Verify that prose text does not use the Oxford comma (\", and\")."""
+        violations_count = 0
+        for rel_path, _, _, _, _ in FILES_CONFIG:
+            filepath = BASE_DIR / rel_path
+            if not filepath.exists():
+                continue
+            
+            content = filepath.read_text(encoding="utf-8")
+            violations = []
+            in_code_block = False
+            for idx, line in enumerate(content.splitlines(), 1):
+                if line.strip().startswith("```"):
+                    in_code_block = not in_code_block
+                    continue
+                if in_code_block:
+                    continue
+                
+                # Ignore inline backticks `...`
+                clean_prose = re.sub(r'`[^`]+`', '', line)
+                if ", and" in clean_prose or ", And" in clean_prose or ", AND" in clean_prose:
+                    violations.append((idx, f"Line contains Oxford comma ', and': '{line.strip()}'"))
+            
+            if violations:
+                violations_count += len(violations)
+                print(f"\n[Oxford Comma Violation] {rel_path}:")
+                for line_num, msg in violations:
+                    print(f"  Line {line_num}: {msg}")
+                    
+        self.assertEqual(violations_count, 0, f"Found {violations_count} Oxford comma violations. Run spelling/comma fixes to resolve.")
 
 if __name__ == "__main__":
     unittest.main()

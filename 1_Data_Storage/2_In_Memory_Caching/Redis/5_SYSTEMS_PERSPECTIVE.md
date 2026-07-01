@@ -3,11 +3,11 @@ title: "Redis: Why It Exists"
 part: 2
 part_title: "Data Storage"
 chapter: 10
-summary: "This document explains Redis not as a cache to learn, but as a solution to specific performance bottlenecks that..."
+summary: "Explains Redis not as a cache to learn, but as a solution to specific performance bottlenecks that..."
 ---
 # Redis: Why It Exists
 
-This document explains Redis not as a cache to learn, but as a solution to specific performance bottlenecks that databases cannot solve alone.
+Explains Redis not as a cache to learn, but as a solution to specific performance bottlenecks that databases cannot solve alone.
 
 ## The database performance problem that redis solves
 
@@ -199,7 +199,7 @@ key: leaderboard
 values: { user1: 1000, user2: 950, user3: 900 }
 ```
 
-Caching complex queries with Redis is easier when you can store hashes, lists, and sets directly, instead of serialising JSON to Memcached.
+Caching complex queries with Redis is easier when you can store hashes, lists and sets directly, instead of serialising JSON to Memcached.
 
 ## When Redis becomes necessary
 
@@ -237,4 +237,4 @@ Redis was built at Antirez to cache complex queries and enable real-time feature
    - Database check is too slow
    - Redis keeps counter, increments, expires after minute
 
-To learn about Redis design choices (such as its single-threaded model, eviction policies, and persistence) and common caching mistakes, see [6_REDIS_DESIGN_AND_MISTAKES.md](file:///d:/Playground/Backend%20Notes/1_Data_Storage/2_In_Memory_Caching/Redis/6_REDIS_DESIGN_AND_MISTAKES.md).
+To learn about Redis design choices (such as its single-threaded model, eviction policies and persistence) and common caching mistakes, see [Redis: Design Choices and Common Mistakes](file:///d:/Playground/Backend%20Notes/1_Data_Storage/2_In_Memory_Caching/Redis/6_REDIS_DESIGN_AND_MISTAKES.md).

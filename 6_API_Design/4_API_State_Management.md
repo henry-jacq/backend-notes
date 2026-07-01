@@ -334,7 +334,7 @@ Server 1 writes session -> Redis
 Server 2 reads session -> Redis
 ```
 
-**This is the standard approach for production systems.** Redis provides sub-millisecond lookups, replication for availability, and TTL for automatic expiry.
+**This is the standard approach for production systems.** Redis provides sub-millisecond lookups, replication for availability and TTL for automatic expiry.
 
 ## Common state management mistakes
 
@@ -345,4 +345,4 @@ Server 2 reads session -> Redis
 5. **No refresh token rotation** — reusing refresh tokens allows stolen tokens to work indefinitely
 6. **Ignoring token size** — large JWTs add latency to every request (headers have size limits in some proxies)
 
-State management determines how your API handles identity across requests. But APIs also change over time, and managing that change is equally critical. See [5_API_Versioning.md](file:///d:/Playground/Backend%20Notes/6_API_Design/5_API_Versioning.md).
+State management determines how your API handles identity across requests. But APIs also change over time and managing that change is equally critical. See [API Versioning](file:///d:/Playground/Backend%20Notes/6_API_Design/5_API_Versioning.md).

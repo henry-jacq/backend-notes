@@ -7,7 +7,7 @@ summary: "GraphQL is a query language for APIs, developed by Facebook in 2012 an
 ---
 # GraphQL
 
-GraphQL is a query language for APIs, developed by Facebook in 2012 and open-sourced in 2015. It was created to solve a specific problem: mobile clients at Facebook needed different data than web clients, and REST APIs were either returning too much data (over-fetching) or requiring too many requests (under-fetching).
+GraphQL is a query language for APIs, developed by Facebook in 2012 and open-sourced in 2015. It was created to solve a specific problem: mobile clients at Facebook needed different data than web clients and REST APIs were either returning too much data (over-fetching) or requiring too many requests (under-fetching).
 
 GraphQL is not a replacement for REST. It solves different problems and creates different ones.
 
@@ -384,4 +384,4 @@ Solutions:
 4. **Over-engineering** — using GraphQL for a simple CRUD API with one client
 5. **No error handling** — GraphQL returns 200 even for errors. Errors are in the response body — handle them properly.
 
-GraphQL solves the flexibility problem — clients get exactly the data they need. For service-to-service communication where performance and strong contracts matter more than flexibility, see [3_gRPC.md](file:///d:/Playground/Backend%20Notes/6_API_Design/3_gRPC.md).
+GraphQL solves the flexibility problem — clients get exactly the data they need. For service-to-service communication where performance and strong contracts matter more than flexibility, see [gRPC](file:///d:/Playground/Backend%20Notes/6_API_Design/3_gRPC.md).

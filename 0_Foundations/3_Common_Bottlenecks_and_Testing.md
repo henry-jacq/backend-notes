@@ -258,13 +258,13 @@ Without alerts, performance degradation goes unnoticed until users complain.
 - If a query takes 1 second but only happens once per day, does it matter?
 - How do you prove that adding cache will actually help?
 - What happens if the bottleneck is network I/O in a data centre you don't control?
-- If you optimise the database query from 700ms to 100ms, and response time improves by only 50%, what else is slow?
+- If you optimise the database query from 700ms to 100ms and response time improves by only 50%, what else is slow?
 - When is premature optimisation actually a good idea?
 - How do you differentiate between performance problem and scalability problem?
 
 ## Summary
 
-Performance engineering is about understanding systems deeply, measuring accurately, and optimising the real bottleneck.
+Performance engineering is about understanding systems deeply, measuring accurately and optimising the real bottleneck.
 
 Most performance problems are not about choosing faster technologies. They are about:
 

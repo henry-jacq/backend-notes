@@ -3,11 +3,11 @@ title: "CRUD Patterns at Scale"
 part: 2
 part_title: "Data Storage"
 chapter: 4
-summary: "This document covers CRUD scaling patterns, common performance mistakes like N+1 queries, and strategies for..."
+summary: "Covers CRUD scaling patterns, common performance mistakes like N+1 queries and strategies for..."
 ---
 # CRUD Patterns at Scale
 
-This document covers CRUD scaling patterns, common performance mistakes like N+1 queries, and strategies for diagnosing CRUD performance issues in production.
+Covers CRUD scaling patterns, common performance mistakes like N+1 queries and strategies for diagnosing CRUD performance issues in production.
 
 ## CRUD patterns at scale
 
@@ -210,4 +210,4 @@ CRUD operations are the fundamental database interactions. But they don't operat
 - Locking (contention, performance)
 - Patterns (batching, denormalization)
 
-The best engineers think about CRUD efficiency early. Add indexes before production, batch operations, and measure before optimising.
+The best engineers think about CRUD efficiency early. Add indexes before production, batch operations and measure before optimising.

@@ -317,4 +317,4 @@ gRPC (HTTP/2)| Low     | Medium     | Stateless*   | All streaming types
 
 *gRPC connections are persistent but the protocol itself is designed for stateless services.
 
-Choosing the right protocol is the first design decision. Everything else builds on it. To understand how REST uses HTTP for resource-oriented APIs, see [1_REST_API_Design.md](file:///d:/Playground/Backend%20Notes/6_API_Design/1_REST_API_Design.md).
+Choosing the right protocol is the first design decision. Everything else builds on it. To understand how REST uses HTTP for resource-oriented APIs, see [REST API Design](file:///d:/Playground/Backend%20Notes/6_API_Design/1_REST_API_Design.md).

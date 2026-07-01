@@ -3,11 +3,11 @@ title: "Distributed Transactions"
 part: 3
 part_title: "Async and Events"
 chapter: 9
-summary: "This document explains why coordinating transactions across independent systems is fundamentally difficult and what..."
+summary: "Explains why coordinating transactions across independent systems is fundamentally difficult and what..."
 ---
 # Distributed Transactions
 
-This document explains why coordinating transactions across independent systems is fundamentally difficult and what trade-offs engineers must make.
+Explains why coordinating transactions across independent systems is fundamentally difficult and what trade-offs engineers must make.
 
 ## The coordination problem
 
@@ -223,4 +223,4 @@ Across independent services:
 
 2PC is not suitable.
 
-To learn about the Saga pattern—the modern eventually-consistent alternative to distributed transactions—see [2_Saga_Pattern_Deep_Dive.md](file:///d:/Playground/Backend%20Notes/2_Async_and_Events/2_Distributed_Transactions/2_Saga_Pattern_Deep_Dive.md).
+To learn about the Saga pattern—the modern eventually-consistent alternative to distributed transactions—see [Saga Pattern Deep Dive](file:///d:/Playground/Backend%20Notes/2_Async_and_Events/2_Distributed_Transactions/2_Saga_Pattern_Deep_Dive.md).

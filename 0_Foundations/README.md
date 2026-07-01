@@ -11,28 +11,28 @@ This section establishes the mental models you need to understand why backend sy
 
 ## Learning path
 
-**[0_System_Evolution.md](file:///d:/Playground/Backend%20Notes/0_Foundations/0_System_Evolution.md)** — Core System Evolution
+**[Core System Evolution](file:///d:/Playground/Backend%20Notes/0_Foundations/0_System_Evolution.md)**
 
 - Single server limits
 - Vertical vs Horizontal scaling concepts
 - Database and caching scaling bottlenecks
 - Replication and sharding introductory concepts
 
-**[1_Asynchronous_Processing.md](file:///d:/Playground/Backend%20Notes/0_Foundations/1_Asynchronous_Processing.md)** — Event-driven and Queue Scaling
+**[Event-driven and Queue Scaling](file:///d:/Playground/Backend%20Notes/0_Foundations/1_Asynchronous_Processing.md)**
 
 - Asynchronous work queues
 - Event streaming and distributed messaging
 - Breaking points and metrics
 - Common scaling mistakes
 
-**[2_Performance_Engineering_Basics.md](file:///d:/Playground/Backend%20Notes/0_Foundations/2_Performance_Engineering_Basics.md)** — Performance Engineering Fundamentals
+**[Performance Engineering Fundamentals](file:///d:/Playground/Backend%20Notes/0_Foundations/2_Performance_Engineering_Basics.md)**
 
 - Performance vs scalability distinction
 - How to define performance requirements
 - Establishing current baselines
 - Profiling and finding the actual bottleneck
 
-**[3_Common_Bottlenecks_and_Testing.md](file:///d:/Playground/Backend%20Notes/0_Foundations/3_Common_Bottlenecks_and_Testing.md)** — Common Bottlenecks and Testing
+**[Common Bottlenecks and Testing](file:///d:/Playground/Backend%20Notes/0_Foundations/3_Common_Bottlenecks_and_Testing.md)**
 
 - Common bottlenecks (CPU, Memory, locks, Network, Disk)
 - Amdahl's Law (diminishing returns)

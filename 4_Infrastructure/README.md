@@ -82,7 +82,7 @@ This is the "operations" side of infrastructure: how to run systems in productio
 
 - HTTP protocol fundamentals underpin REST and GraphQL
 - Load balancers distribute API traffic
-- API gateways handle auth, rate limiting, and routing
+- API gateways handle auth, rate limiting and routing
 - SSL/TLS termination at gateway or load balancer
 
 ## Typical deployment layers

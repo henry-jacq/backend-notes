@@ -35,4 +35,4 @@ Redis Pub/Sub is not a durable queue. Messages are delivered only to clients tha
 
 - Subscribers receive messages only while they remain connected and subscribed.
 - Channels do not store messages. Redis forwards messages directly to active subscribers.
-- Pub/Sub is useful for real-time notifications, event fan-out, and lightweight inter-process communication.
+- Pub/Sub is useful for real-time notifications, event fan-out and lightweight inter-process communication.

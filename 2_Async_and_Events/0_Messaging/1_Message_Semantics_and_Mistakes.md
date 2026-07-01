@@ -3,11 +3,11 @@ title: "Message Semantics and Common Mistakes"
 part: 3
 part_title: "Async and Events"
 chapter: 2
-summary: "This document covers messaging semantics (delivery guarantees, message ordering), the fanout pattern, and common..."
+summary: "Covers messaging semantics (delivery guarantees, message ordering), the fanout pattern and common..."
 ---
 # Message Semantics and Common Mistakes
 
-This document covers messaging semantics (delivery guarantees, message ordering), the fanout pattern, and common messaging mistakes in production.
+Covers messaging semantics (delivery guarantees, message ordering), the fanout pattern and common messaging mistakes in production.
 
 ## Message semantics
 

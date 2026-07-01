@@ -2,7 +2,7 @@
 """
 Backend Notes: PDF Book Compiler and Validator
 
-This script acts as the main entry point to format, validate, and compile
+This script acts as the main entry point to format, validate and compile
 the repository markdown notes into a premium PDF book.
 
 Usage:
@@ -43,7 +43,7 @@ def run_compliance_checks():
         print("\n[SUCCESS] All document formatting and InE spelling checks passed!")
 
 def run_auto_fixes():
-    """Automatically fix spelling, list layout, and unicode arrows inside source files."""
+    """Automatically fix spelling, list layout and unicode arrows inside source files."""
     print("=" * 60)
     print("  Running Layout and Spelling Auto-Fixer")
     print("=" * 60)

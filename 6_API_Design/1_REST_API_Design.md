@@ -7,9 +7,9 @@ summary: "REST (Representational State Transfer) is the dominant paradigm for we
 ---
 # REST API Design
 
-REST (Representational State Transfer) is the dominant paradigm for web APIs. Most APIs you interact with are REST APIs. But most REST APIs are poorly designed — they expose database tables as endpoints, ignore HTTP semantics, and break consumers with every release.
+REST (Representational State Transfer) is the dominant paradigm for web APIs. Most APIs you interact with are REST APIs. But most REST APIs are poorly designed — they expose database tables as endpoints, ignore HTTP semantics and break consumers with every release.
 
-Good REST design treats the API as a product with clear contracts, predictable behaviour, and graceful evolution.
+Good REST design treats the API as a product with clear contracts, predictable behaviour and graceful evolution.
 
 ## What REST actually means
 
@@ -381,4 +381,4 @@ Responses include links to related actions. Client discovers the API by followin
 7. **No versioning** — breaking changes hit all consumers simultaneously
 8. **Chatty APIs** — requiring 10 requests to load one page
 
-REST is the right choice for most public APIs and simple service-to-service communication. But when clients need flexible queries or when over-fetching becomes a real problem, consider GraphQL. See [2_GraphQL.md](file:///d:/Playground/Backend%20Notes/6_API_Design/2_GraphQL.md).
+REST is the right choice for most public APIs and simple service-to-service communication. But when clients need flexible queries or when over-fetching becomes a real problem, consider GraphQL. See [GraphQL](file:///d:/Playground/Backend%20Notes/6_API_Design/2_GraphQL.md).

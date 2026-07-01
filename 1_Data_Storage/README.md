@@ -16,32 +16,32 @@ Start here if you're new to databases or need a refresher on fundamental concept
 
 ### 1_Relational_Databases/ (SQL Databases)
 
-**[0_Database_Bottlenecks_and_Replication.md](file:///d:/Playground/Backend%20Notes/1_Data_Storage/1_Relational_Databases/0_Database_Bottlenecks_and_Replication.md)** — Single Database Bottlenecks
+**[Single Database Bottlenecks](file:///d:/Playground/Backend%20Notes/1_Data_Storage/1_Relational_Databases/0_Database_Bottlenecks_and_Replication.md)**
 
 - Limits of a single database (CPU, memory, disk I/O, network, connection limits)
 - Write bottleneck symptoms and read bottlenecks
 - Replication concepts and its limits for write workloads
 
-**[1_Database_Sharding_and_Strategies.md](file:///d:/Playground/Backend%20Notes/1_Data_Storage/1_Relational_Databases/1_Database_Sharding_and_Strategies.md)** — Database Sharding
+**[Database Sharding](file:///d:/Playground/Backend%20Notes/1_Data_Storage/1_Relational_Databases/1_Database_Sharding_and_Strategies.md)**
 
 - Sharding as a read/write scaling solution
-- Hash-based, range-based, and directory-based sharding strategies
+- Hash-based, range-based and directory-based sharding strategies
 - Hot shard problem and load imbalances
 - Investigation and common scaling mistakes
 
-**[2_CRUD_Operations_and_Performance.md](file:///d:/Playground/Backend%20Notes/1_Data_Storage/1_Relational_Databases/2_CRUD_Operations_and_Performance.md)** — Core CRUD Performance
+**[Core CRUD Performance](file:///d:/Playground/Backend%20Notes/1_Data_Storage/1_Relational_Databases/2_CRUD_Operations_and_Performance.md)**
 
 - Execution costs of single vs bulk INSERTs
 - Full table scans vs index scans under SELECT
 - UPDATE/DELETE costs and database row-level locking
 
-**[3_CRUD_Patterns_at_Scale.md](file:///d:/Playground/Backend%20Notes/1_Data_Storage/1_Relational_Databases/3_CRUD_Patterns_at_Scale.md)** — CRUD at Scale
+**[CRUD at Scale](file:///d:/Playground/Backend%20Notes/1_Data_Storage/1_Relational_Databases/3_CRUD_Patterns_at_Scale.md)**
 
-- INSERT-heavy, SELECT-heavy, UPDATE-heavy, and DELETE-heavy scenarios
+- INSERT-heavy, SELECT-heavy, UPDATE-heavy and DELETE-heavy scenarios
 - Common CRUD mistakes (N+1 query problem, duplicate indexes, unbatched deletes)
 - Systematic CRUD performance diagnosis and investigation
 
-Read these in order. First understand the limits of single databases, then understand sharding, and then understand how CRUD operations interact with those limits.
+Read these in order. First understand the limits of single databases, then understand sharding and then understand how CRUD operations interact with those limits.
 
 ### 2_In_Memory_Caching/Redis/
 

@@ -7,7 +7,7 @@ summary: "As systems grow from one service to many, a critical question emerges:
 ---
 # API Gateway and Load Balancing
 
-As systems grow from one service to many, a critical question emerges: where do cross-cutting concerns live? Authentication, rate limiting, routing, logging — if every service implements these independently, you get inconsistency, duplication, and operational nightmares. API gateways and load balancers centralise these concerns.
+As systems grow from one service to many, a critical question emerges: where do cross-cutting concerns live? Authentication, rate limiting, routing, logging — if every service implements these independently, you get inconsistency, duplication and operational nightmares. API gateways and load balancers centralise these concerns.
 
 ## The problem with direct client-to-service communication
 
@@ -344,7 +344,7 @@ L7 routing example:
   Header: X-Canary: true -> canary cluster
 ```
 
-**API gateways operate at L7.** They need to inspect URLs, headers, and sometimes bodies to make routing decisions.
+**API gateways operate at L7.** They need to inspect URLs, headers and sometimes bodies to make routing decisions.
 
 ### Health checks
 
@@ -481,4 +481,4 @@ Service A Pod:
 6. **Ignoring cold starts** — new instances need warm-up time before receiving full traffic. Use gradual ramp-up
 7. **No circuit breaker** — gateway continues sending traffic to failing services, cascading the failure
 
-This concludes the API Design section. APIs are the contracts through which systems communicate. Designing them well — choosing the right protocol, structuring resources correctly, managing state, evolving versions, securing access, and centralising cross-cutting concerns — is what separates systems that scale from systems that collapse under their own complexity.
+This concludes the API Design section. APIs are the contracts through which systems communicate. Designing them well — choosing the right protocol, structuring resources correctly, managing state, evolving versions, securing access and centralising cross-cutting concerns — is what separates systems that scale from systems that collapse under their own complexity.

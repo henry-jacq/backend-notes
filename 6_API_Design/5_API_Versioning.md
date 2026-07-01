@@ -402,4 +402,4 @@ Old clients reading v2 messages ignore unknown fields. New clients reading v1 me
 5. **Versioning internal APIs like public APIs** — internal APIs can afford faster deprecation cycles
 6. **Coupling version to deployment** — version represents the contract, not the release
 
-Versioning protects the API contract over time. But the API also needs to verify who is calling it and what they're allowed to do. See [6_Authentication_and_Authorization.md](file:///d:/Playground/Backend%20Notes/6_API_Design/6_Authentication_and_Authorization.md).
+Versioning protects the API contract over time. But the API also needs to verify who is calling it and what they're allowed to do. See [Authentication and Authorisation](file:///d:/Playground/Backend%20Notes/6_API_Design/6_Authentication_and_Authorization.md).

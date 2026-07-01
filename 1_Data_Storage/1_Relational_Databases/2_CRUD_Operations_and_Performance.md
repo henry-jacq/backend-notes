@@ -3,11 +3,11 @@ title: "CRUD Operations and Performance"
 part: 2
 part_title: "Data Storage"
 chapter: 3
-summary: "This document explains Create, Read, Update, Delete (CRUD) operations—the fundamental interactions with relational..."
+summary: "Explains Create, Read, Update, Delete (CRUD) operations—the fundamental interactions with relational..."
 ---
 # CRUD Operations and Performance
 
-This document explains Create, Read, Update, Delete (CRUD) operations—the fundamental interactions with relational databases—and analyzes their performance characteristics and locking mechanisms.
+Explains Create, Read, Update, Delete (CRUD) operations—the fundamental interactions with relational databases—and analyzes their performance characteristics and locking mechanisms.
 
 ## CRUD overview
 
@@ -275,4 +275,4 @@ DELETE FROM notifications WHERE user_id = 1
 - Batch deletes over time
 - Denormalize (don't need cascade if data denormalized)
 
-To see how these operations behave in scale-heavy patterns and identify common mistakes, see [3_CRUD_Patterns_at_Scale.md](file:///d:/Playground/Backend%20Notes/1_Data_Storage/1_Relational_Databases/3_CRUD_Patterns_at_Scale.md).
+To see how these operations behave in scale-heavy patterns and identify common mistakes, see [CRUD Patterns at Scale](file:///d:/Playground/Backend%20Notes/1_Data_Storage/1_Relational_Databases/3_CRUD_Patterns_at_Scale.md).
