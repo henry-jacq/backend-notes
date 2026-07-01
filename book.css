@@ -1,0 +1,441 @@
+/* ── Page Geometry & Layout ─────────────────────────────────── */
+@page {
+    size: A4;
+    margin: 2.5cm 2cm 2.2cm 2.5cm;
+}
+
+@page cover {
+    margin: 0;
+    @top-right { content: none; }
+    @bottom-center { content: none; }
+}
+
+@page toc {
+    @top-right { content: none; }
+    @bottom-center {
+        content: counter(page, lower-roman); /* Roman numerals for table of contents */
+        font-family: "Book Antiqua", Georgia, serif;
+        font-size: 8.5pt;
+        color: #777;
+    }
+}
+
+@page part-page {
+    @top-right { content: none; }
+    @bottom-center { content: none; }
+}
+
+@page chapter-page {
+    @top-right {
+        content: "Backend Notes: Systems Engineering";
+        font-family: "Book Antiqua", Georgia, serif;
+        font-size: 8pt;
+        color: #999;
+        border-bottom: 0.5px solid #eee;
+        padding-bottom: 3px;
+    }
+
+    @bottom-center {
+        content: counter(page);
+        font-family: "Book Antiqua", Georgia, serif;
+        font-size: 8.5pt;
+        color: #777;
+        border-top: 0.5px solid #eee;
+        padding-top: 4px;
+        width: 100%;
+    }
+}
+
+@page chapter-page:first {
+    /* Hide running header on first page of each chapter */
+    @top-right {
+        content: none;
+        border-bottom: none;
+    }
+}
+
+
+
+/* ── Base Typography ────────────────────────────────────────── */
+body {
+    font-family: "Book Antiqua", Georgia, Garamond, serif;
+    font-size: 10.5pt;
+    line-height: 1.6;
+    color: #2b2b2b;
+    /* Professional off-black for reduced eye strain */
+}
+
+p {
+    margin: 0 0 10px 0;
+    text-align: justify;
+    /* Justified text is standard in professional books */
+}
+
+/* ── Cover Page (Minimalist Premium Publisher Style) ────────── */
+.cover-page {
+    page: cover;
+    page-break-after: always;
+    text-align: center;
+    padding-top: 7cm;
+    height: 100%;
+}
+
+.cover-page .book-title {
+    font-family: "Book Antiqua", Georgia, serif;
+    font-size: 34pt;
+    font-weight: bold;
+    letter-spacing: 3px;
+    color: #111122;
+    margin-bottom: 5px;
+    text-transform: uppercase;
+}
+
+.cover-page .book-subtitle {
+    font-family: "Book Antiqua", Georgia, serif;
+    font-size: 15pt;
+    font-style: italic;
+    color: #444466;
+    margin-top: 5px;
+    margin-bottom: 30px;
+}
+
+.cover-page .book-divider {
+    border: none;
+    border-top: 1.5px solid #2d1b4e;
+    width: 120px;
+    margin: 25px auto;
+}
+
+.cover-page .book-description {
+    font-size: 11pt;
+    color: #555;
+    margin: 20px auto;
+    max-width: 450px;
+    line-height: 1.6;
+    text-align: center;
+    /* keep centered for cover */
+}
+
+.cover-page .book-meta {
+    font-size: 9.5pt;
+    letter-spacing: 1px;
+    color: #888;
+    margin-top: 8cm;
+    text-transform: uppercase;
+}
+
+/* ── Table of Contents ──────────────────────────────────────── */
+.toc {
+    page: toc;
+    page-break-after: always;
+    padding-top: 1cm;
+}
+
+.toc h1 {
+    font-size: 22pt;
+    text-align: center;
+    margin-bottom: 35px;
+    color: #111;
+    border: none;
+    letter-spacing: 2px;
+}
+
+.toc-part {
+    margin-top: 24px;
+    margin-bottom: 10px;
+    font-size: 12.5pt;
+    font-weight: bold;
+    color: #2d1b4e;
+    border-bottom: 1.5px solid #ccc;
+    padding-bottom: 5px;
+}
+
+.toc-chapter {
+    margin-top: 10px;
+    margin-bottom: 4px;
+    font-size: 10.5pt;
+    font-weight: bold;
+    color: #111;
+}
+
+.toc-subtopic {
+    margin-top: 2px;
+    margin-bottom: 2px;
+    margin-left: 20px;
+    font-size: 9pt;
+    font-weight: normal;
+    color: #555;
+}
+
+.toc-chapter a, .toc-subtopic a {
+    display: block;
+    color: inherit;
+    text-decoration: none;
+}
+
+.toc-chapter a::after, .toc-subtopic a::after {
+    content: leader('. ') target-counter(attr(href, url), page);
+    float: right;
+    font-weight: normal;
+    color: #777;
+}
+
+/* ── Chapter Initial Page Counter ───────────────────────────── */
+.chapter:first-of-type {
+    counter-reset: page 1;
+}
+
+.toc-num {
+    color: #555;
+    font-weight: bold;
+    margin-right: 4px;
+}
+
+/* ── Part Divider Pages ─────────────────────────────────────── */
+.part-divider {
+    page: part-page;
+    page-break-before: always;
+    page-break-after: always;
+    text-align: center;
+    padding-top: 8.5cm;
+}
+
+.part-divider .part-number {
+    font-size: 13pt;
+    letter-spacing: 4px;
+    color: #777;
+    margin-bottom: 12px;
+    text-transform: uppercase;
+}
+
+.part-divider .part-title {
+    font-size: 28pt;
+    font-weight: bold;
+    color: #111;
+    margin-bottom: 22px;
+}
+
+.part-divider .part-rule {
+    border: none;
+    border-top: 2px solid #2d1b4e;
+    width: 80px;
+    margin: 20px auto;
+}
+
+.part-divider .part-summary {
+    font-size: 11pt;
+    color: #444;
+    font-style: italic;
+    line-height: 1.7;
+    max-width: 440px;
+    margin: 0 auto;
+    text-align: center;
+}
+
+/* ── Part Intro ─────────────────────────────────────────────── */
+.part-intro {
+    page: chapter-page;
+    page-break-before: always;
+}
+
+.part-intro-label {
+    font-size: 9pt;
+    letter-spacing: 2px;
+    color: #777;
+    margin-bottom: 12px;
+    text-transform: uppercase;
+}
+
+/* ── Chapter Styling ────────────────────────────────────────── */
+.chapter {
+    page: chapter-page;
+    page-break-before: always;
+}
+
+.chapter-header {
+    margin-bottom: 26px;
+    padding-bottom: 14px;
+    border-bottom: 2px solid #2d1b4e;
+    page-break-after: avoid;
+    break-after: avoid;
+    break-after: avoid-page;
+}
+
+.chapter-label {
+    font-size: 9pt;
+    letter-spacing: 2px;
+    color: #777;
+    margin-bottom: 6px;
+    text-transform: uppercase;
+}
+
+.chapter-title {
+    font-size: 22pt;
+    font-weight: bold;
+    color: #111;
+    margin-top: 6px;
+    margin-bottom: 8px;
+}
+
+.chapter-summary {
+    font-size: 10pt;
+    color: #555;
+    font-style: italic;
+    margin: 0;
+}
+
+/* ── Content Headings (Prevent Orphan Headings) ─────────────── */
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+    color: #111;
+    font-family: "Book Antiqua", Georgia, serif;
+    page-break-after: avoid;
+    break-after: avoid;
+    break-after: avoid-page;
+}
+
+h1 {
+    font-size: 18pt;
+    margin-top: 28px;
+    margin-bottom: 12px;
+    border-bottom: 1px solid #ccc;
+    padding-bottom: 6px;
+}
+
+h2 {
+    font-size: 14.5pt;
+    color: #2d1b4e;
+    margin-top: 24px;
+    margin-bottom: 10px;
+    border-bottom: 1px solid #ddd;
+    padding-bottom: 4px;
+}
+
+h3 {
+    font-size: 12pt;
+    color: #333;
+    margin-top: 18px;
+    margin-bottom: 8px;
+}
+
+h4 {
+    font-size: 10.5pt;
+    color: #444;
+    margin-top: 14px;
+    margin-bottom: 6px;
+}
+
+/* ── Code Blocks & Diagrams ────────────────────────────────── */
+pre {
+    background-color: #f5f5f7;
+    border: 1px solid #e1e1e8;
+    border-left: 3.5px solid #2d1b4e;
+    padding: 10px 12px;
+    font-family: Monaco, Consolas, "Courier New", Courier, monospace;
+    font-size: 8pt;
+    line-height: 1.4;
+    margin: 14px 0;
+    white-space: pre;
+    /* Keep exact whitespace for ASCII diagrams */
+    page-break-inside: avoid;
+    /* Avoid splitting a diagram across pages */
+}
+
+code {
+    font-family: Monaco, Consolas, "Courier New", Courier, monospace;
+    font-size: 8.5pt;
+    background-color: #f0f0f4;
+    padding: 2px 4px;
+    border-radius: 2px;
+}
+
+pre code {
+    background: none;
+    padding: 0;
+    font-size: 8pt;
+}
+
+/* ── Tables ─────────────────────────────────────────────────── */
+table {
+    border-collapse: collapse;
+    width: 100%;
+    margin: 16px 0;
+    font-size: 9pt;
+    page-break-inside: avoid;
+    /* Avoid splitting tables */
+}
+
+th,
+td {
+    border: 1px solid #ddd;
+    padding: 7px 10px;
+    text-align: left;
+    vertical-align: top;
+}
+
+th {
+    background-color: #f4f4f7;
+    font-weight: bold;
+    color: #2d1b4e;
+    font-size: 8.5pt;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+/* ── Blockquotes ────────────────────────────────────────────── */
+blockquote {
+    border-left: 3.5px solid #7c6aef;
+    margin: 14px 0;
+    padding: 8px 14px;
+    background-color: #f9f9fc;
+    color: #333;
+    font-style: italic;
+    page-break-inside: avoid;
+}
+
+/* ── Lists ──────────────────────────────────────────────────── */
+ul,
+ol {
+    margin: 8px 0;
+    padding-left: 24px;
+}
+
+li {
+    margin: 4px 0;
+}
+
+/* ── Horizontal Rules ───────────────────────────────────────── */
+hr {
+    border: none;
+    border-top: 1px solid #ccc;
+    margin: 24px 0;
+}
+
+/* ── Links ──────────────────────────────────────────────────── */
+a {
+    color: #2d1b4e;
+    text-decoration: none;
+}
+
+/* ── Running Headers & Footers (Book Quality metadata) ──────── */
+#global-header {
+    text-align: right;
+    font-size: 8pt;
+    color: #999;
+    font-family: "Book Antiqua", Georgia, serif;
+    border-bottom: 0.5px solid #eee;
+    padding-bottom: 3px;
+}
+
+#global-footer {
+    text-align: center;
+    font-size: 8.5pt;
+    color: #777;
+    font-family: "Book Antiqua", Georgia, serif;
+    border-top: 0.5px solid #eee;
+    padding-top: 4px;
+}

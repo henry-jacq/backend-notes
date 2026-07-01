@@ -25,9 +25,20 @@ WeasyPrint requires GTK3 and Pango for document rendering. Install these using M
 
 The compile script automatically loads these DLLs from `C:\msys64\ucrt64\bin`.
 
-### 3. Generate the PDF
-Run the generator script at the repository root:
-```bash
-python generate_pdf.py
-```
-The compiled book will be saved as `backend_notes.pdf`.
+### 3. Build & Validate the Book
+Run the central tooling script at the repository root:
+
+- **Generate the PDF Book**:
+  ```bash
+  python build_book.py
+  ```
+- **Check compliance** (spelling, formatting, and layout validation):
+  ```bash
+  python build_book.py --check
+  ```
+- **Auto-fix layout and spelling** in source files:
+  ```bash
+  python build_book.py --fix
+  ```
+
+The compiled book is saved as `backend_notes.pdf`.
