@@ -126,6 +126,8 @@ def main():
     print()
     
     try:
+        import logging
+        logging.basicConfig(level=logging.WARNING)
         generate_book_pdf(output_path, html_only=args.html_only)
     except Exception as e:
         print(f"\n[ERROR] Failed to compile book: {e}")

@@ -2,6 +2,18 @@
 
 This repository contains structured systems engineering notes compiled into a single book-style PDF.
 
+## Structure of the Book
+
+The notes are organised into seven distinct parts:
+
+- **Part I: Foundations** — Core systems engineering thinking, scaling, queues and performance engineering fundamentals.
+- **Part II: Data Storage** — Relational database limits, sharding, CRUD operations at scale and in-memory caching with Redis.
+- **Part III: Async and Events** — Messaging patterns, message semantics, Kafka event streaming and distributed transactions (Sagas).
+- **Part IV: Reliability and Availability** — Defensive patterns (retries, circuit breakers, bulkheads), replication and multi-region failover.
+- **Part V: Infrastructure** — HTTP/TCP networking, web server architectures (Nginx/Apache) and request execution flows.
+- **Part VI: API Design** — Protocols, REST, GraphQL, gRPC, state management, versioning, security and API gateways.
+- **Part VII: Operations** — Observability fundamentals (metrics, logs, traces), alerting and systematic production debugging.
+
 ## PDF Compilation Setup
 
 ### 1. Install Python Dependencies

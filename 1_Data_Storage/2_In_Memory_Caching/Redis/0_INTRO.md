@@ -2,7 +2,7 @@
 title: "Redis Fundamentals"
 part: 2
 part_title: "Data Storage"
-chapter: 5
+chapter: 6
 summary: "Covers the core architecture of Remote Dictionary Server (Redis), including its single-threaded in-memory model, supported data types, basic commands and lightweight Pub/Sub messaging."
 ---
 # Redis Fundamentals

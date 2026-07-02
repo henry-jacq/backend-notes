@@ -36,6 +36,13 @@ This section covers how to store data durably and retrieve it efficiently.
 - Common CRUD mistakes (N+1 query problem, duplicate indexes, unbatched deletes)
 - Systematic CRUD performance diagnosis and investigation
 
+**Geospatial Indexing and Proximity Search**
+
+- Challenge of multi-dimensional indexing (1D B-Tree limitations)
+- Custom spatial trees (Quadtrees, KD-trees, R-trees, R*-trees) and design choices
+- Encoded key space-filling curves (Geohash, Google S2, Uber H3)
+- Range scanning, boundary artifacts (3x3 grid trick) and multi-resolution zoom
+
 **Redis Fundamentals**
 
 - Core architecture (in-memory, single-threaded execution model)

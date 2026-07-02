@@ -128,7 +128,7 @@ def build_preface_page() -> str:
     <div class="preface-page">
         <h1>Preface & Prerequisites</h1>
         <p class="preface-lead">
-            This book is designed as a structured path for application developers transitioning into backend systems engineering. It aims to bridge the gap between writing functional code and understanding the complex, underlying system architectures that support it.
+            This book is designed as a structured path for application developers transitioning into backend systems engineering. It aims to bridge the gap between writing functional code and understanding the complex, underlying system architectures that support it. The concepts discussed are completely generic and language-agnostic, making them applicable across all modern programming languages and technology stacks.
         </p>
         <div class="preface-disclaimer">
             <h2>Target Audience & Prerequisites</h2>
@@ -329,5 +329,5 @@ def generate_book_pdf(output_path: Path, html_only: bool = False) -> None:
     # Render PDF using WeasyPrint
     import weasyprint
     print("Converting HTML to PDF with WeasyPrint...")
-    weasyprint.HTML(string=full_html, base_url=str(BASE_DIR)).write_pdf(str(output_path))
+    weasyprint.HTML(string=full_html, base_url=BASE_DIR.as_uri() + "/").write_pdf(str(output_path))
     print(f"  [OK] PDF generated: {output_path}")

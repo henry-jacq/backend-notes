@@ -22,8 +22,9 @@ FILES_CONFIG = [
     ("1_Data_Storage/1_Relational_Databases/1_Database_Sharding_and_Strategies.md", 2, "Data Storage", 2, "chapter"),
     ("1_Data_Storage/1_Relational_Databases/2_CRUD_Operations_and_Performance.md", 2, "Data Storage", 3, "chapter"),
     ("1_Data_Storage/1_Relational_Databases/3_CRUD_Patterns_at_Scale.md", 2, "Data Storage", 4, "chapter"),
-    ("1_Data_Storage/2_In_Memory_Caching/Redis/0_INTRO.md", 2, "Data Storage", 5, "chapter"),
-    ("1_Data_Storage/2_In_Memory_Caching/Redis/1_BASICS.md", 2, "Data Storage", 6, "chapter"),
+    ("1_Data_Storage/1_Relational_Databases/4_Geospatial_Indexing.md", 2, "Data Storage", 5, "chapter"),
+    ("1_Data_Storage/2_In_Memory_Caching/Redis/0_INTRO.md", 2, "Data Storage", 6, "chapter"),
+    ("1_Data_Storage/2_In_Memory_Caching/Redis/1_BASICS.md", 2, "Data Storage", 7, "chapter"),
 
     # Part III: Async and Events
     ("2_Async_and_Events/README.md", 3, "Async and Events", None, "part_intro"),

@@ -2,7 +2,7 @@
 title: "Redis at Scale"
 part: 2
 part_title: "Data Storage"
-chapter: 6
+chapter: 7
 summary: "Explains in-memory caching theory, comparing Redis against Memcached, detailing persistence and eviction policies under memory pressure and exploring common caching mistakes."
 ---
 # Redis at Scale
