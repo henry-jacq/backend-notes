@@ -21,6 +21,35 @@ In client-server architecture, a client sends a request for a service or data an
 
 Communication between clients and servers relies on protocols. A protocol is a set of rules that defines how messages are structured and exchanged.
 
+### Typical deployment layers
+
+In production, client requests rarely hit an application server directly. Instead, they traverse multiple specialized infrastructure layers:
+
+```
+User Internet
+    |
+Load Balancer
+    |
+Web Servers (Nginx, Apache)
+    |
+Application Servers (Node, Python, Java)
+    |
+Cache Layer (Redis)
+    |
+Databases (Replicated, Sharded)
+    |
+Message Brokers (Kafka, RabbitMQ)
+```
+
+Each layer serves a specific architectural role:
+
+- **Load balancer:** Distributes incoming traffic across multiple servers.
+- **Web server:** Handles incoming HTTP parsing, static file routing and SSL/TLS termination.
+- **Application server:** Executes core business logic and API routing.
+- **Cache layer:** Stores frequently accessed items in memory to reduce database query load.
+- **Database:** Persists relational or non-relational business records.
+- **Message broker:** Manages asynchronous message streams and background tasks.
+
 ## Communication Protocols
 
 Protocols define the format and behaviour of requests and responses. Different protocols serve different purposes:

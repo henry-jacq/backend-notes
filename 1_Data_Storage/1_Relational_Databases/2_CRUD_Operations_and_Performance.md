@@ -222,11 +222,9 @@ Transaction 2: update balance ($800), release lock
 Correct.
 ```
 
-**Cost of locks:**
-
-- High contention (many updates to same row): transactions wait
-- Waits cause latency spikes
-- High-frequency updates to hot rows become bottleneck
+<div class="takeaway-box">
+    <strong>Key Takeaway on Lock Contention:</strong> Database locks guarantee correctness by isolating concurrent updates, but they come at the expense of throughput. High-frequency updates to a single row (e.g. inventory counts or account balances) force transactions to serialise. This results in queueing latency, connection pool exhaustion and throughput bottlenecks.
+</div>
 
 ## Delete (DELETE)
 

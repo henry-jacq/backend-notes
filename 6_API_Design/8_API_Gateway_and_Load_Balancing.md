@@ -145,33 +145,32 @@ Gateway transforms response:
 
 This enables API versioning at the gateway level — backend services don't need to know about API versions.
 
-#### 5. Response aggregation (composition)
+#### 5. API composition pattern (response aggregation)
 
-```
-Client needs data from multiple services for one page:
+In a microservices architecture, data is distributed across independent databases. Because SQL joins across separate databases are impossible, the system must compose data at the API level. An API Composer (or Aggregator) queries multiple microservices to build a unified response.
 
-Without aggregation:
-  Client -> GET /users/123     -> user data
-  Client -> GET /orders?user=123 -> order data
-  Client -> GET /reviews?user=123 -> review data
-  = 3 round trips
+##### Implementation topologies
 
-With gateway aggregation:
-  Client -> GET /users/123/profile
-  Gateway:
-    -> GET user-service/users/123
-    -> GET order-service/orders?user=123
-    -> GET review-service/reviews?user=123
-  Gateway combines responses into one:
-  {
-    "user": { ... },
-    "recent_orders": [ ... ],
-    "reviews": [ ... ]
-  }
-  = 1 round trip for client
-```
+Where the composition logic runs changes the system's performance and coupling characteristics:
 
-**Trade-off:** Gateway becomes more complex and coupled to backend schemas. Use sparingly — for mobile clients where reducing round trips has significant impact.
+- **Client-Side Composition:** The client (e.g. web browser or mobile app) makes separate requests to each backend service and merges the data locally.
+  - **Trade-off:** High latency due to multiple network round trips over public cellular or Wi-Fi networks. Increases battery drain and data usage on mobile devices.
+- **API Gateway Composition:** The API Gateway acts as the composer. It exposes a single endpoint, fetches data from the backend services over the low-latency internal network, aggregates the JSON responses and returns them to the client.
+  - **Trade-off:** Couples the API Gateway to backend data schemas and domain logic, violating the gateway's goal of being a simple routing layer.
+- **Backend-for-Frontend (BFF) Composition:** A dedicated BFF service (e.g. mobile-BFF or web-BFF) handles the aggregation. This keeps the API Gateway stateless and ensures the composed payload is customised to the specific client's screen layout.
+- **Dedicated Aggregator Service:** A custom internal microservice acts as the composer. This is useful when the aggregation involves complex business logic or data transformation before returning it to the API Gateway.
+
+##### Execution strategies
+
+- **Parallel Fetching:** The composer fetches independent resources simultaneously using asynchronous concurrency primitives (e.g. `CompletableFuture` in Java, `Promise.all` in JavaScript or goroutines in Go). The total request latency is bounded by the slowest backend service.
+- **Sequential Fetching:** Used when subsequent queries depend on initial results (e.g. fetching the `user-service` record to retrieve a list of order IDs before querying the `order-service`). Sequential execution doubles the network latency.
+
+##### Technical challenges and breaking points
+
+- **Cascading Failures and Latency Amplification:** The composer is only as fast as the slowest dependency. If one downstream service experiences high latency, the composer's connection pool can saturate, cascading the failure upstream. You must implement strict timeouts, circuit breakers and fallback responses (e.g. returning the user profile with empty order details if the order service fails).
+- **The Microservice N+1 Query Problem:** If a composer fetches a list of 50 orders and then makes 50 individual calls to a user service to retrieve profile details for each order, it creates massive network overhead. Composers should use bulk-query endpoints (e.g. `GET /users?ids=1,2,3...`) to batch requests.
+- **Lack of Transactional Consistency:** API composition reads data across independent databases without distributed transactions. The returned aggregated payload represents eventual consistency and might contain out-of-sync data (e.g. showing a user profile that was deleted a millisecond after the orders list was retrieved).
+- **Memory Overhead:** Holding and merging large JSON payloads from multiple upstream services in the composer's memory before writing the response stream can lead to high heap usage and garbage collection pauses under high concurrency.
 
 #### 6. SSL/TLS termination
 

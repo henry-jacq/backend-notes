@@ -9,18 +9,16 @@ summary: "This section covers how to operate backend systems in production: moni
 
 This section covers how to operate backend systems in production: monitoring, debugging, incident response.
 
-## Learning path
+## Chapters
 
-### Observability and Debugging
-
-**[Observability Pillars & Alerting](file:///d:/Playground/Backend%20Notes/5_Operations/0_Observability_Fundamentals.md)**
+**Observability Pillars and Alerting**
 
 - Why observability matters (unpredictable failures in production)
 - Three pillars of observability (metrics, logs, traces)
 - Key metrics for different architectural components (app, database, cache, queue)
 - Designing actionable alerts and avoiding alert fatigue
 
-**[Debugging & Failure Patterns](file:///d:/Playground/Backend%20Notes/5_Operations/1_Systematic_Debugging_and_Failure_Patterns.md)**
+**Debugging and Failure Patterns**
 
 - Core failure patterns (slow database, memory leaks, timeouts, error spikes, cascading failures)
 - Step-by-step systematic debugging strategy
@@ -95,13 +93,3 @@ After this section, you'll know how to:
 
 This is the systematic approach that separates senior engineers from junior ones.
 
-## Next: Advanced topics
-
-After mastering operations monitoring:
-
-- **Capacity planning** — forecasting growth, resource planning
-- **Incident response** — handling production emergencies
-- **Security** — protecting systems from attacks
-- **Cost optimisation** — efficiency at scale
-
-These are advanced topics built on top of everything you've learned so far.

@@ -189,13 +189,9 @@ Every step and compensation must be idempotent (safe to retry).
 
 ### 2. Missing idempotency
 
-**Mistake:** steps not idempotent
-
-**Result:**
-
-- Retries cause duplicates (charged twice, order created twice)
-- Compensation applied multiple times
-- Data corruption
+<div class="warning-box">
+    <strong>Idempotency Warning:</strong> In distributed transactions, network failures will cause duplicate requests. If steps or compensating actions are not idempotent, retries will result in duplicate payments, double-ordered inventory and data corruption.
+</div>
 
 ### 3. No monitoring of saga state
 

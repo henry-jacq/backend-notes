@@ -78,15 +78,15 @@ def extract_untruncated_summary(body_content: str) -> str:
     summary = " ".join(paragraph_lines)
     return summary.strip()
 
-def clean_markdown_body(body: str) -> str:
-    """Remove the first # heading (it's already in the chapter header)
+def clean_markdown_body(body: str, remove_heading: bool = True) -> str:
+    """Remove the first # heading if requested (usually for chapters)
     and clean up file:// links."""
     lines = body.splitlines()
     cleaned = []
     removed_heading = False
 
     for line in lines:
-        if not removed_heading and line.strip().startswith("# "):
+        if remove_heading and not removed_heading and line.strip().startswith("# "):
             removed_heading = True
             continue
         cleaned.append(line)
@@ -135,13 +135,11 @@ def build_preface_page() -> str:
             <p>
                 This is not an introductory programming guide. To get the most out of these notes, you are expected to already have a working knowledge of:
             </p>
-            <ul>
-                <li><strong>Version Control:</strong> Git repository structures, branching, merge conflicts, pull requests and commit workflows.</li>
-                <li><strong>Operating Systems & Concurrency:</strong> CPU core execution model, processes vs threads, thread blocking and basic memory organization (stack vs heap).</li>
-                <li><strong>Networking Foundations:</strong> The general client-server model, DNS lookup concepts and the basics of making standard HTTP requests.</li>
-                <li><strong>Database Basics:</strong> Standard SQL querying, tables, schemas and primary/foreign key relationships.</li>
-                <li><strong>Core Computer Science:</strong> Standard data structures (arrays, linked lists, hash tables, stacks, queues), sorting algorithms and Big O notation.</li>
-            </ul>
+            <p><strong>Version Control:</strong> Git repository structures, branching, merge conflicts, pull requests and commit workflows.</p>
+            <p><strong>Operating Systems & Concurrency:</strong> CPU core execution model, processes vs threads, thread blocking and basic memory organization (stack vs heap).</p>
+            <p><strong>Networking Foundations:</strong> The general client-server model, DNS lookup concepts and the basics of making standard HTTP requests.</p>
+            <p><strong>Database Basics:</strong> Standard SQL querying, tables, schemas and primary/foreign key relationships.</p>
+            <p><strong>Core Computer Science:</strong> Standard data structures (arrays, linked lists, hash tables, stacks, queues), sorting algorithms and Big O notation.</p>
             <p>
                 Rather than rehashing these baseline concepts, this text focuses on high-level engineering trade-offs, scalability bottlenecks, distributed transaction patterns and production reliability.
             </p>
@@ -310,7 +308,8 @@ def generate_book_pdf(output_path: Path, html_only: bool = False) -> None:
         if full_summary:
             meta["summary"] = full_summary
 
-        cleaned_body = clean_markdown_body(body)
+        remove_heading = (doc_type != "part_intro")
+        cleaned_body = clean_markdown_body(body, remove_heading=remove_heading)
         html_content = md_to_html(cleaned_body)
 
         entries.append({

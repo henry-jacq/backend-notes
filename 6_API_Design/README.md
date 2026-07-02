@@ -3,11 +3,11 @@ title: "API Design: Contracts Between Systems"
 part: 6
 part_title: "API Design"
 type: "part_intro"
-summary: "This section covers how systems communicate through APIs. An API is the contract between a client and a server. Get..."
+summary: "This section covers how systems communicate through APIs. An API serves as the formal contract between a client and a server. A well-designed API ensures the system remains intuitive, evolvable and resilient."
 ---
 # API Design: Contracts Between Systems
 
-This section covers how systems communicate through APIs. An API is the contract between a client and a server. Get it wrong and every consumer of that API suffers. Get it right and the system is intuitive, evolvable and resilient.
+This section covers how systems communicate through APIs. An API serves as the formal contract between a client and a server. A well-designed API ensures the system remains intuitive, evolvable and resilient under changing requirements.
 
 ## Why API design matters
 
@@ -27,9 +27,9 @@ A poorly designed API:
 - Creates performance problems (over-fetching, chatty calls)
 - Becomes the bottleneck that limits the entire system
 
-## Learning path
+## Chapters
 
-**[Communication Protocols Overview](file:///d:/Playground/Backend%20Notes/6_API_Design/0_API_Communication_Protocols.md)**
+**Communication Protocols Overview**
 
 - Synchronous vs asynchronous communication
 - Request-response, streaming, pub-sub patterns
@@ -37,7 +37,7 @@ A poorly designed API:
 - WebSockets and Server-Sent Events
 - Protocol selection criteria
 
-**[RESTful API Design](file:///d:/Playground/Backend%20Notes/6_API_Design/1_REST_API_Design.md)**
+**RESTful API Design**
 
 - Resource modelling and URI design
 - HTTP methods and status codes
@@ -45,52 +45,52 @@ A poorly designed API:
 - Content negotiation and idempotency
 - REST maturity model
 
-**[GraphQL](file:///d:/Playground/Backend%20Notes/6_API_Design/2_GraphQL.md)**
+**GraphQL**
 
 - Schema-first design and type system
 - Queries, mutations, subscriptions
 - N+1 problem and DataLoader
 - When GraphQL beats REST and when it doesn't
 
-**[gRPC](file:///d:/Playground/Backend%20Notes/6_API_Design/3_gRPC.md)**
+**gRPC**
 
 - Protocol Buffers and service definitions
 - Streaming types (unary, server, client, bidirectional)
 - Code generation and strong typing
 - Performance characteristics and when to use gRPC
 
-**[Statelessness and State](file:///d:/Playground/Backend%20Notes/6_API_Design/4_API_State_Management.md)**
+**Statelessness and State**
 
 - Stateless vs stateful APIs
 - Session management strategies
 - Tokens (JWT, opaque) and cookies
 - State in distributed systems
 
-**[API Versioning](file:///d:/Playground/Backend%20Notes/6_API_Design/5_API_Versioning.md)**
+**API Versioning**
 
 - Why APIs break
 - Versioning strategies (URI, header, query param)
 - Breaking vs non-breaking changes
 - Deprecation workflows and backward compatibility
 
-**[Authentication and Authorisation](file:///d:/Playground/Backend%20Notes/6_API_Design/6_Authentication_and_Authorization.md)**
+**Authentication and Authorisation**
 
 - API keys, OAuth 2.0, JWT
 - RBAC vs ABAC
 - Service-to-service auth (mTLS)
 - Common auth mistakes
 
-**[API Security and Rate Limiting](file:///d:/Playground/Backend%20Notes/6_API_Design/7_API_Security_and_Rate_Limiting.md)**
+**API Security and Rate Limiting**
 
 - Rate limiting algorithms (token bucket, sliding window)
 - Input validation, CORS, CSRF
 - DDoS protection
 - OWASP API Top 10
 
-**[API Gateway and Load Balancing](file:///d:/Playground/Backend%20Notes/6_API_Design/8_API_Gateway_and_Load_Balancing.md)**
+**API Gateway and Load Balancing**
 
 - API gateway patterns and responsibilities
-- Backend for Frontend (BFF)
+- Backend for Frontend (BFF) and API composition
 - Load balancing algorithms (round robin, least connections, consistent hashing)
 - L4 vs L7 load balancing, health checks
 - Service mesh overview
@@ -142,9 +142,3 @@ Read these in order. Protocols come first because you must choose how systems co
 - Debugging API issues with distributed tracing
 - Monitoring API versioning and deprecation
 
-## Next sections
-
-After understanding API design:
-
-- **Operations** — monitoring, debugging and incident response for API-driven systems
-- **Foundations** — revisit system evolution with API design context

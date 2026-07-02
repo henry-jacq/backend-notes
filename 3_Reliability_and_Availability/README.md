@@ -9,32 +9,26 @@ summary: "This section covers how to make systems resilient to failures and keep
 
 This section covers how to make systems resilient to failures and keep them running despite problems.
 
-## Learning path
+## Chapters
 
-### Reliability Patterns
-
-**[Retries & Circuit Breakers](file:///d:/Playground/Backend%20Notes/3_Reliability_and_Availability/0_Reliability_Patterns.md)**
+**Retries and Circuit Breakers**
 
 - The failure premise in distributed systems
 - Retries (handling transient failures, exponential backoff, jitter, idempotency)
 - Circuit breakers (preventing cascading failures, states and transitions)
 
-**[Bulkheads & Fault Isolation](file:///d:/Playground/Backend%20Notes/3_Reliability_and_Availability/1_Resource_Isolation_and_Fault_Tolerance.md)**
+**Bulkheads and Fault Isolation**
 
 - Bulkheads (resource pools and isolation by request type or customer)
 - Combining patterns (retries + circuit breakers + bulkheads)
 - Common reliability mistakes and investigation strategy
 
-These patterns are "defensive programming" for distributed systems. Failures will happen. These patterns make systems respond gracefully.
-
-### Availability and Fault Tolerance
-
-**[Measuring Availability & Replication](file:///d:/Playground/Backend%20Notes/3_Reliability_and_Availability/2_Availability_and_Replication.md)**
+**Measuring Availability and Replication**
 
 - Measuring availability (target uptime percentage and downtime calculations)
 - Data replication (synchronous vs asynchronous replication, trade-offs)
 
-**[Failover & Multi-Region](file:///d:/Playground/Backend%20Notes/3_Reliability_and_Availability/3_Failover_and_Multi_Region.md)**
+**Failover and Multi-Region**
 
 - Automatic failover handling and split-brain mitigation
 - Multi-region deployment challenges (latency, consistency)
@@ -139,9 +133,3 @@ Together they create systems that both prevent failures and respond to them grac
 - Health checks
 - Automated recovery
 
-## Next sections
-
-After reliability and availability:
-
-- **Infrastructure** — how to operate these systems
-- **Operations** — how to monitor and debug them
