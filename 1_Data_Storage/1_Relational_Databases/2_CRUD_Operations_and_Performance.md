@@ -226,6 +226,30 @@ Correct.
     <strong>Key Takeaway on Lock Contention:</strong> Database locks guarantee correctness by isolating concurrent updates, but they come at the expense of throughput. High-frequency updates to a single row (e.g. inventory counts or account balances) force transactions to serialise. This results in queueing latency, connection pool exhaustion and throughput bottlenecks.
 </div>
 
+### Locking in booking and reservation systems
+
+In booking and reservation systems (such as airline tickets, hotel rooms or concert seats), concurrency controls focus on preventing overbooking, handling payment timeouts and managing high-demand spikes. 
+
+These architectures employ specific locking terms and concurrency patterns across different layers:
+
+#### Conceptual / Application-Level Terms
+
+*   **Soft Lock (Temporary Reservation):** A short-lived, application-level lock applied when a user clicks "Proceed to Checkout." It temporarily removes the seat or room from available inventory for a defined window (typically 5 to 10 minutes). If the payment completes, it becomes a permanent booking; if it times out, the lock expires and the inventory is released back to the pool.
+*   **Hard Lock (Committed Booking):** The final, permanent status change in the database after payment verification. The data row is officially marked as booked, preventing future modifications by other users.
+
+#### Database Concurrency Control Terms
+
+Booking systems handle high-volume write conflicts using two primary database paradigms:
+
+*   **Pessimistic Locking (`SELECT ... FOR UPDATE`):** The system assumes conflicts will happen. When a user initiates a booking, the database immediately places a lock on that specific row. Other transactions attempting to read or modify the exact same row are blocked until the first transaction completes or aborts.
+*   **Optimistic Locking (Versioning):** The system assumes conflicts are rare. It allows multiple users to view and attempt to book the exact same inventory simultaneously. The database tracks a version number or timestamp on the row. At checkout, the query checks if the version has changed. The first transaction to commit updates the version and succeeds, while slower transactions fail with a conflict error.
+
+#### Locking Scope and Side Effects
+
+*   **Row-Level Locking:** Restricting locks strictly to the specific seat or room being booked rather than the entire flight or hotel table. This allows thousands of other users to book different seats concurrently.
+*   **Race Condition:** The scheduling hazard a booking system tries to prevent. It occurs when two parallel requests check availability, both see "1 seat left" and both attempt to process a payment, leading to overbooking.
+*   **Lock Contention:** A performance bottleneck that occurs during high-demand events (such as a major ticket release). When thousands of transactions try to lock the exact same inventory rows simultaneously, the database slows to a crawl waiting for locks to release.
+
 ## Delete (DELETE)
 
 Deleting removes records.
