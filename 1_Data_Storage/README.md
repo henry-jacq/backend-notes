@@ -36,14 +36,18 @@ This section covers how to store data durably and retrieve it efficiently.
 - Common CRUD mistakes (N+1 query problem, duplicate indexes, unbatched deletes)
 - Systematic CRUD performance diagnosis and investigation
 
-**In-Memory Caching (Redis)**
+**Redis Fundamentals**
 
-- Why Redis exists (database bottleneck solution)
-- How Redis works (data structures, commands)
-- When Redis helps (cache hit rate matters)
-- When Redis hurts (memory limitations, stale data)
-- Redis design trade-offs (single-threading, eviction, persistence, Pub/Sub)
-- Common caching mistakes
+- Core architecture (in-memory, single-threaded execution model)
+- Supported data types (Strings, Hashes, Lists, Sets, Sorted Sets) and core commands
+- Key expirations and lightweight Pub/Sub messaging
+
+**Redis at Scale**
+
+- Caching theory (read bottlenecks and cache hit rate metrics)
+- Memory limits and key eviction policies (LRU, LFU)
+- Disk persistence trade-offs (RDB snapshots vs AOF logs)
+- Caching anti-patterns and common design mistakes
 
 ## How these connect
 

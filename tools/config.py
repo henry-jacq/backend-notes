@@ -24,11 +24,6 @@ FILES_CONFIG = [
     ("1_Data_Storage/1_Relational_Databases/3_CRUD_Patterns_at_Scale.md", 2, "Data Storage", 4, "chapter"),
     ("1_Data_Storage/2_In_Memory_Caching/Redis/0_INTRO.md", 2, "Data Storage", 5, "chapter"),
     ("1_Data_Storage/2_In_Memory_Caching/Redis/1_BASICS.md", 2, "Data Storage", 6, "chapter"),
-    ("1_Data_Storage/2_In_Memory_Caching/Redis/2_DATA_TYPES.md", 2, "Data Storage", 7, "chapter"),
-    ("1_Data_Storage/2_In_Memory_Caching/Redis/3_COMMANDS.md", 2, "Data Storage", 8, "chapter"),
-    ("1_Data_Storage/2_In_Memory_Caching/Redis/4_PUBSUB.md", 2, "Data Storage", 9, "chapter"),
-    ("1_Data_Storage/2_In_Memory_Caching/Redis/5_SYSTEMS_PERSPECTIVE.md", 2, "Data Storage", 10, "chapter"),
-    ("1_Data_Storage/2_In_Memory_Caching/Redis/6_REDIS_DESIGN_AND_MISTAKES.md", 2, "Data Storage", 11, "chapter"),
 
     # Part III: Async and Events
     ("2_Async_and_Events/README.md", 3, "Async and Events", None, "part_intro"),
