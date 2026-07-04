@@ -35,7 +35,7 @@ Covers CRUD scaling patterns, common performance mistakes like N+1 queries and s
 **Challenges:**
 
 - Indexes help but add disk space
-- Query optimisation matters
+- Query optimization matters
 - Cache hits critical
 
 **Solutions:**
@@ -198,7 +198,7 @@ while True:
 - Why would batching 1000 inserts be faster than 1000 individual inserts?
 - What happens if you update a row that 100 other transactions are trying to read?
 - Why would you use soft deletes instead of hard deletes?
-- If SELECT is your bottleneck, what should you optimise first: indexes or caching?
+- If SELECT is your bottleneck, what should you optimize first: indexes or caching?
 - What's the difference between full table scan and index scan?
 
 ## Summary
@@ -206,8 +206,8 @@ while True:
 CRUD operations are the fundamental database interactions. But they don't operate in isolation. Scaling CRUD requires understanding:
 
 - Indexes (what they solve, what they cost)
-- Queries (optimisation, joins)
+- Queries (optimization, joins)
 - Locking (contention, performance)
 - Patterns (batching, denormalization)
 
-The best engineers think about CRUD efficiency early. Add indexes before production, batch operations and measure before optimising.
+The best engineers think about CRUD efficiency early. Add indexes before production, batch operations and measure before optimizing.

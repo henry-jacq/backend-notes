@@ -52,7 +52,7 @@ This works for notification systems and lightweight event distribution. It break
 - High memory usage (broker holds messages in queue)
 
 **Why it breaks:**
-RabbitMQ is optimised for message delivery, not message storage. It deletes messages after delivery. At high volumes, this creates bottlenecks.
+RabbitMQ is optimized for message delivery, not message storage. It deletes messages after delivery. At high volumes, this creates bottlenecks.
 
 ### Traditional databases as message storage
 
@@ -74,7 +74,7 @@ RabbitMQ is optimised for message delivery, not message storage. It deletes mess
 - Network overhead high (every event transmitted from database to consumer)
 
 **Why it breaks:**
-Databases are not optimised for streaming append-only workloads. Indexing, locking and query optimisation create overhead.
+Databases are not optimized for streaming append-only workloads. Indexing, locking and query optimization create overhead.
 
 ## Kafka's design decision: immutable log
 
@@ -104,7 +104,7 @@ All read the same log independently.
 - Events are never deleted (until retention policy expires)
 - Multiple consumers can read the same events independently
 - Consumers track their position (offset)
-- Append-only write pattern is optimised (sequential disk I/O, not random)
+- Append-only write pattern is optimized (sequential disk I/O, not random)
 - No in-memory queuing, no message loss
 - Horizontal scaling by splitting into partitions (each partition on different broker)
 

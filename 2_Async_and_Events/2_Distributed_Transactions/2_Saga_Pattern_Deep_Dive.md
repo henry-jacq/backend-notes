@@ -76,7 +76,7 @@ Orchestrator:
 
 **Pros:**
 
-- Workflow centralised
+- Workflow centralized
 - Easy to understand
 - Easier to debug
 

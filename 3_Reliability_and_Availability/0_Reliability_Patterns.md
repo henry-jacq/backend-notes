@@ -110,7 +110,7 @@ Retries succeed.
 
 - Max 3 retries (diminishing returns)
 - Max total time (don't wait forever)
-- Jitter (add randomness to prevent synchronised storms)
+- Jitter (add randomness to prevent synchronized storms)
 
 **Idempotency requirement:**
 Retries only safe if operation is idempotent (retrying has no additional effect).

@@ -7,9 +7,9 @@ summary: "Performance engineering is not about making things faster. It is about
 ---
 # Performance Engineering Basics
 
-Performance engineering is not about making things faster. It is about understanding what slow means, proving where slowness lives and choosing what to optimise.
+Performance engineering is not about making things faster. It is about understanding what slow means, proving where slowness lives and choosing what to optimize.
 
-Many developers equate performance with speed. That is imprecise. Performance engineering is about matching system behaviour to requirements under realistic conditions.
+Many developers equate performance with speed. That is imprecise. Performance engineering is about matching system behavior to requirements under realistic conditions.
 
 ## Performance versus scalability
 
@@ -17,7 +17,7 @@ They are different problems.
 
 **Scalability:** can the system handle more load? Add more servers, distribute work, handle growth.
 
-**Performance:** does it meet latency requirements at the current load? Optimise queries, reduce allocations, cache hot data.
+**Performance:** does it meet latency requirements at the current load? Optimize queries, reduce allocations, cache hot data.
 
 A scalable system that is slow is still slow. A fast system that doesn't scale still breaks at peak load.
 
@@ -25,9 +25,9 @@ Performance work should start only after understanding what "slow" means in your
 
 ## Defining performance requirements
 
-Before optimising, establish what acceptable performance is.
+Before optimizing, establish what acceptable performance is.
 
-Without this, optimisation is guesswork.
+Without this, optimization is guesswork.
 
 **Questions to answer:**
 
@@ -49,16 +49,16 @@ API endpoint: /api/products/{id}
 - Traffic: 10,000 requests/second
 ```
 
-Without these numbers, optimisation is meaningless. One developer might target 100ms, another 10ms. The effort differs by 100x.
+Without these numbers, optimization is meaningless. One developer might target 100ms, another 10ms. The effort differs by 100x.
 
 ## Why the baseline matters
 
-Before optimising anything, measure the current system.
+Before optimizing anything, measure the current system.
 
 **Why:**
 
-- Optimisation without baseline is guesswork
-- Changes might not matter (optimise the wrong thing)
+- Optimization without baseline is guesswork
+- Changes might not matter (optimize the wrong thing)
 - Regressions might go unnoticed
 - You cannot prove improvement
 
@@ -78,7 +78,7 @@ Measure under realistic load, not synthetic traffic.
 
 A bottleneck is the component that limits overall performance.
 
-If CPU is at 100% but memory is 30%, CPU is the bottleneck. Optimising memory helps nothing.
+If CPU is at 100% but memory is 30%, CPU is the bottleneck. Optimizing memory helps nothing.
 
 **Tools to identify bottlenecks:**
 
@@ -100,8 +100,8 @@ Trace breakdown:
 - Network overhead: 150ms
 ```
 
-The database query is the bottleneck. Optimising application code saves 100ms (10% improvement). Optimising the query saves 700ms (70% improvement).
+The database query is the bottleneck. Optimizing application code saves 100ms (10% improvement). Optimizing the query saves 700ms (70% improvement).
 
-Always optimise the bottleneck first.
+Always optimize the bottleneck first.
 
 To learn about common performance bottlenecks and how to test for them under load, see [Common Bottlenecks and Testing](file:///d:/Playground/Backend%20Notes/0_Foundations/3_Common_Bottlenecks_and_Testing.md).

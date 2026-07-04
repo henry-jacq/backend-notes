@@ -77,7 +77,7 @@ Producer (client)
 
 **Benefits:**
 
-- Producer and consumer not synchronised
+- Producer and consumer not synchronized
 - Consumers can process at their own pace
 - Multiple consumers can process same message type
 - Messages persist (if queue crashes, messages not lost)

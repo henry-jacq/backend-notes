@@ -8,7 +8,7 @@ summary: "Introduces the Model Context Protocol (MCP), contrasting it with tradi
 # Model Context Protocol (MCP)
 
 > [WARNING]
-> **Protocol Stage Disclaimer:** The Model Context Protocol (MCP) is currently in its early development stages and has not yet been officially standardised across the broader web and networking bodies. It represents an emerging standard for AI-to-software semantic integration.
+> **Protocol Stage Disclaimer:** The Model Context Protocol (MCP) is currently in its early development stages and has not yet been officially standardized across the broader web and networking bodies. It represents an emerging standard for AI-to-software semantic integration.
 
 Historically, software communication was designed strictly for machine-to-machine interactions using structured, predefined contracts like REST, gRPC or GraphQL. However, the rise of Large Language Models (LLMs) and autonomous AI agents has introduced a new client type: software that must reason, discover and interact with its environment dynamically.
 
@@ -131,7 +131,7 @@ Giving an AI agent direct access to systems introduces significant security risk
 
 To mitigate these risks, developers must implement **guardrails** at the MCP server level:
 
--   **ReadOnly Scopes:** Enforce strict write privileges, permitting LLM tools to modify resources only when explicitly authorised.
+-   **ReadOnly Scopes:** Enforce strict write privileges, permitting LLM tools to modify resources only when explicitly authorized.
 -   **Transaction Auditing:** Require a human-in-the-loop validation layer for critical actions (such as dropping databases, modifying production states or running massive migrations).
 -   **Resource Quotas:** Bind timeouts, memory limits and execution budgets to every tool call, preventing runaway agent actions from exhausting hardware resources.
 

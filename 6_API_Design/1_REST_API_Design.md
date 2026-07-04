@@ -9,7 +9,7 @@ summary: "REST (Representational State Transfer) is the dominant paradigm for we
 
 REST (Representational State Transfer) is the dominant paradigm for web APIs. Most APIs you interact with are REST APIs. But most REST APIs are poorly designed — they expose database tables as endpoints, ignore HTTP semantics and break consumers with every release.
 
-Good REST design treats the API as a product with clear contracts, predictable behaviour and graceful evolution.
+Good REST design treats the API as a product with clear contracts, predictable behavior and graceful evolution.
 
 ## What REST actually means
 
@@ -24,7 +24,7 @@ REST is an architectural style, not a specification. It was defined by Roy Field
 
 Most "REST" APIs only follow the first two constraints. That's fine for most use cases.
 
-## Resource modelling
+## Resource modeling
 
 The core concept of REST: everything is a resource. A resource is a noun, not a verb.
 
@@ -159,7 +159,7 @@ Use status codes correctly. They tell the client what happened without parsing t
 **Common mistakes:**
 
 - Returning `200` with an error in the body (client thinks it succeeded)
-- Using `404` for authorisation failures (leaks resource existence)
+- Using `404` for authorization failures (leaks resource existence)
 - Returning `500` for all errors (client can't distinguish retryable vs non-retryable)
 
 ## URI design principles
@@ -296,7 +296,7 @@ Most modern APIs only support JSON. That's fine. But set `Content-Type` correctl
 
 ## Error response format
 
-Standardise error responses across the entire API.
+Standardize error responses across the entire API.
 
 ```json
 {

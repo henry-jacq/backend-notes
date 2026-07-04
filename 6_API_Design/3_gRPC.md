@@ -7,9 +7,9 @@ summary: "gRPC is a high-performance RPC (Remote Procedure Call) framework devel
 ---
 # gRPC
 
-gRPC is a high-performance RPC (Remote Procedure Call) framework developed by Google. It uses Protocol Buffers for serialisation and HTTP/2 for transport. Where REST is resource-oriented ("give me this thing"), gRPC is action-oriented ("do this operation").
+gRPC is a high-performance RPC (Remote Procedure Call) framework developed by Google. It uses Protocol Buffers for serialization and HTTP/2 for transport. Where REST is resource-oriented ("give me this thing"), gRPC is action-oriented ("do this operation").
 
-gRPC exists because REST has overhead that matters at scale: text-based serialisation, no built-in streaming and loose contracts. When services call each other thousands of times per second, that overhead becomes measurable.
+gRPC exists because REST has overhead that matters at scale: text-based serialization, no built-in streaming and loose contracts. When services call each other thousands of times per second, that overhead becomes measurable.
 
 ## Why gRPC exists
 
@@ -32,7 +32,7 @@ REST response:
 
 **Overhead:**
 
-- JSON parsing: ~10-100x slower than binary serialisation
+- JSON parsing: ~10-100x slower than binary serialization
 - Text headers: repeated on every request
 - No streaming: long-running operations need polling
 - Loose contract: JSON has no schema enforcement at transport level
@@ -57,11 +57,11 @@ message OrderResponse {
 }
 ```
 
-The binary payload is typically 5-10x smaller than JSON. Serialisation is 10-100x faster. The contract is enforced at compile time.
+The binary payload is typically 5-10x smaller than JSON. Serialization is 10-100x faster. The contract is enforced at compile time.
 
 ## Protocol Buffers (protobuf)
 
-Protocol Buffers are gRPC's serialisation format. You define message structures in `.proto` files and a compiler generates code for your language.
+Protocol Buffers are gRPC's serialization format. You define message structures in `.proto` files and a compiler generates code for your language.
 
 ### Message definition
 
@@ -266,7 +266,7 @@ protoc compiler
 
 **What gets generated:**
 
-- Message classes with serialisation/deserialisation
+- Message classes with serialization/deserialization
 - Client stubs (call remote methods as if local)
 - Server interfaces (implement methods, framework handles transport)
 
@@ -280,10 +280,10 @@ print(user.name)  # "Alice"
 
 The generated client handles:
 
-- Serialisation (object -> protobuf binary)
+- Serialization (object -> protobuf binary)
 - HTTP/2 framing
 - Connection management
-- Deserialisation (protobuf binary -> object)
+- Deserialization (protobuf binary -> object)
 
 The developer writes business logic. gRPC handles the plumbing.
 

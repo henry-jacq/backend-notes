@@ -289,7 +289,7 @@ Sharding adds immense complexity. Use only when necessary.
 - Transactions fail
 - Operational complexity not justified
 
-**Better:** optimise single database first, shard only when necessary.
+**Better:** optimize single database first, shard only when necessary.
 
 ### 3. No query analysis
 

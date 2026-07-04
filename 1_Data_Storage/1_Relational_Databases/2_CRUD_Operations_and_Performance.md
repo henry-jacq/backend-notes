@@ -57,7 +57,7 @@ INSERT INTO users (id, name, email) VALUES
 **Better than 3 separate INSERT statements:**
 
 - Network round trips: 3 vs 1
-- Index updates: batch optimised
+- Index updates: batch optimized
 
 ### Batch insert performance
 
@@ -149,7 +149,7 @@ WHERE users.region = 'us-west'
 - If join unoptimized: nested loop 1M * 100M = 100 trillion checks
 - Each check: disk I/O
 
-**Solution:** indexes on join columns, query planner optimisation.
+**Solution:** indexes on join columns, query planner optimization.
 
 ## Update (UPDATE)
 
@@ -223,7 +223,7 @@ Correct.
 ```
 
 <div class="takeaway-box">
-    <strong>Key Takeaway on Lock Contention:</strong> Database locks guarantee correctness by isolating concurrent updates, but they come at the expense of throughput. High-frequency updates to a single row (e.g. inventory counts or account balances) force transactions to serialise. This results in queueing latency, connection pool exhaustion and throughput bottlenecks.
+    <strong>Key Takeaway on Lock Contention:</strong> Database locks guarantee correctness by isolating concurrent updates, but they come at the expense of throughput. High-frequency updates to a single row (e.g. inventory counts or account balances) force transactions to serialize. This results in queueing latency, connection pool exhaustion and throughput bottlenecks.
 </div>
 
 ### Locking in booking and reservation systems

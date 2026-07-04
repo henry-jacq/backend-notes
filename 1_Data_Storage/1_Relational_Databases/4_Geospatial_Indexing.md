@@ -49,8 +49,8 @@ Quadtree Space Partitioning:
 -   **KD-tree (1975):** A binary search tree that alternates axis splits (e.g. splitting on latitude at level 1, then longitude at level 2). While excellent for in-memory nearest-neighbour searches, both Quadtrees and KD-trees suffer from poor disk performance because following pointers across nodes forces random disk I/O.
 
 ### R-Trees and R*-Trees
--   **R-Tree (1984):** Groups spatial objects (points, lines or polygons) into nested **Minimum Bounding Rectangles (MBRs)**. It is a balanced tree structure specifically optimised for disk page layouts, allowing predictable disk read performance.
--   **R*-Tree (1990):** Implements smarter insertion algorithms to minimise MBR overlap. This structure powers spatial indexing extensions in mature databases, such as PostGIS (PostgreSQL), SpatiaLite (SQLite) and Oracle Spatial.
+-   **R-Tree (1984):** Groups spatial objects (points, lines or polygons) into nested **Minimum Bounding Rectangles (MBRs)**. It is a balanced tree structure specifically optimized for disk page layouts, allowing predictable disk read performance.
+-   **R*-Tree (1990):** Implements smarter insertion algorithms to minimize MBR overlap. This structure powers spatial indexing extensions in mature databases, such as PostGIS (PostgreSQL), SpatiaLite (SQLite) and Oracle Spatial.
 
 <div class="takeaway-box">
     <strong>Key Takeaway on Spatial Trees:</strong> Spatial trees are ideal for complex geometries. They natively index and query exact containment or intersection of lines (e.g. roads) and polygons (e.g. delivery zones). However, write performance is moderate to low due to complex rebalancing heuristics during updates, making them less suitable for highly dynamic point data.
@@ -60,7 +60,7 @@ Quadtree Space Partitioning:
 
 ## 2. Encoded Keys (Space-Filling Curves)
 
-Encoded key approaches project 2D geographic coordinates into a single, sortable 1D integer or string key. This allows systems to leverage existing, highly optimised B-tree indexes without requiring custom database engines or spatial extensions.
+Encoded key approaches project 2D geographic coordinates into a single, sortable 1D integer or string key. This allows systems to leverage existing, highly optimized B-tree indexes without requiring custom database engines or spatial extensions.
 
 ### The Space-Filling Curve (Z-Order)
 To flatten 2D coordinates into a 1D sequence while preserving spatial proximity, Geohashing interleaves the bits of latitude and longitude. The resulting binary path forms a Z-order space-filling curve (Morton curve):
@@ -88,7 +88,7 @@ In modern high-throughput architectures (e.g. tracking moving vehicles, live del
 | Indexing Method | Geometric Primitive | Properties | Common Implementations |
 | :--- | :--- | :--- | :--- |
 | **Geohash (2008)** | Square grid | Divides the globe into hierarchical grids represented by base-32 strings. Prefix matching implies spatial proximity. | Redis GEO commands (stored as sorted set zset integers) |
-| **S2 (2011)** | Spherical projection | Projects the globe onto the six faces of a cube, subdividing them using a Hilbert curve. Highly optimised for spherical geometry. | MongoDB `2dsphere` indexes |
+| **S2 (2011)** | Spherical projection | Projects the globe onto the six faces of a cube, subdividing them using a Hilbert curve. Highly optimized for spherical geometry. | MongoDB `2dsphere` indexes |
 | **H3 (2008)** | Hexagonal tiling | Uses hierarchical hexagons. Hexagons are ideal for proximity search because every neighbour cell is equidistant (six equidistant neighbours). | Uber dispatching and dynamic surge pricing |
 
 ### Key Architectural Implementations

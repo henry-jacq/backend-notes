@@ -152,7 +152,7 @@ Single connection:
 - **Binary framing** — binary protocol, more efficient parsing
 - **Header compression (HPACK)** — reduces repeated header overhead
 - **Server push** — server can send resources before client requests them
-- **Stream prioritisation** — client can prioritise important requests
+- **Stream prioritization** — client can prioritize important requests
 
 **Why it matters for APIs:**
 

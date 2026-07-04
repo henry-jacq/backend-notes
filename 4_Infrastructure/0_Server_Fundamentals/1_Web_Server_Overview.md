@@ -114,7 +114,7 @@ Practices:
 
 ## Performance Tuning
 
-Optimisation should be guided by metrics, not guesses.
+Optimization should be guided by metrics, not guesses.
 
 Monitor:
 
@@ -128,7 +128,7 @@ Strategies:
 
 - Load Balancing: distribute requests across servers
 - Caching: store frequently requested data
-- Database Indexing: optimise queries
+- Database Indexing: optimize queries
 - Resource Monitoring: use tools like Prometheus, Grafana, or htop
 
 ## Backup and Disaster Recovery

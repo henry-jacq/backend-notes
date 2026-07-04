@@ -36,7 +36,7 @@ This section establishes the mental models you need to understand why backend sy
 
 - Common bottlenecks (CPU, Memory, locks, Network, Disk)
 - Amdahl's Law (diminishing returns)
-- Caching decisions and premature optimisation traps
+- Caching decisions and premature optimization traps
 - Types of performance testing (Load, Stress, Soak, Spike) and monitoring
 
 Read these in order. They build a systematic thinking framework for building and operating production systems.

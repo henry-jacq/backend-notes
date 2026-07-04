@@ -23,11 +23,11 @@ While container primitives (such as Linux namespaces and cgroups) existed in the
 
 - **A standard image format:** Packaging the application and its dependencies into a single immutable artifact.
 - **Developer-friendly CLI tooling:** Making it trivial to build, run and distribute containers with commands like `docker build` and `docker run`.
-- **A centralised registry system:** Making it easy to share images via Docker Hub.
+- **A centralized registry system:** Making it easy to share images via Docker Hub.
 
-As a result of this developer experience optimisation, Docker achieved massive industry adoption and defined the modern standards for container runtimes.
+As a result of this developer experience optimization, Docker achieved massive industry adoption and defined the modern standards for container runtimes.
 
-Originally, Docker leveraged LinuX Containers (LXC) as its execution driver, but later transitioned to its own custom runtime library (`libcontainer`) to manage kernel namespaces directly. This interface was subsequently standardised as the Open Container Initiative (OCI) specification, ensuring cross-runtime interoperability. Additionally, because containers require a Linux host kernel, Docker on macOS or Windows hosts executes containers inside a lightweight Linux virtual machine running in the background.
+Originally, Docker leveraged LinuX Containers (LXC) as its execution driver, but later transitioned to its own custom runtime library (`libcontainer`) to manage kernel namespaces directly. This interface was subsequently standardized as the Open Container Initiative (OCI) specification, ensuring cross-runtime interoperability. Additionally, because containers require a Linux host kernel, Docker on macOS or Windows hosts executes containers inside a lightweight Linux virtual machine running in the background.
 
 
 

@@ -52,7 +52,7 @@ Each layer serves a specific architectural role:
 
 ## Communication Protocols
 
-Protocols define the format and behaviour of requests and responses. Different protocols serve different purposes:
+Protocols define the format and behavior of requests and responses. Different protocols serve different purposes:
 
 - HTTP/HTTPS: web traffic and APIs
 - FTP/SFTP: file transfer
@@ -124,7 +124,7 @@ A database can be located:
 
 - On the same machine as the application
 - On a different machine in the same network
-- On a separate server in a data centre
+- On a separate server in a data center
 - In a cloud service (AWS RDS, Azure Database, etc.)
 
 The database is accessed by its address, which is usually a hostname or IP address and a port number.
@@ -146,7 +146,7 @@ Databases listen on specific ports and use their own protocols for communication
 - MySQL: port 3306, uses MySQL protocol
 - MongoDB: port 27017, uses MongoDB protocol
 - SQL Server: port 1433, uses TDS (Tabular Data Stream) protocol
-- Redis: port 6379, uses RESP (Redis Serialisation Protocol)
+- Redis: port 6379, uses RESP (Redis Serialization Protocol)
 
 Each protocol defines how queries are sent, results are returned and connections are managed.
 

@@ -72,8 +72,8 @@ class TestBookDocuments(unittest.TestCase):
                     
         self.assertEqual(violations_count, 0, f"Found {violations_count} list spacing violations. Run list layout fixer to fix.")
 
-    def test_indian_english_spelling_compliance(self):
-        """Verify that prose text follows Indian English spelling (avoiding US variants optimize, behavior, center, etc.)."""
+    def test_american_english_spelling_compliance(self):
+        """Verify that prose text follows American English spelling (avoiding British/Indian variants optimise, behaviour, center, etc.)."""
         violations_count = 0
         for rel_path, _, _, _, _ in FILES_CONFIG:
             filepath = BASE_DIR / rel_path
@@ -85,7 +85,7 @@ class TestBookDocuments(unittest.TestCase):
             
             if violations:
                 violations_count += len(violations)
-                print(f"\n[Spelling Violation (American English)] {rel_path}:")
+                print(f"\n[Spelling Violation (British/Indian English)] {rel_path}:")
                 for line_num, msg in violations:
                     print(f"  Line {line_num}: {msg}")
                     

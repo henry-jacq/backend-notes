@@ -79,7 +79,7 @@ GET /v2/users/123
 **Advantages:**
 
 - Obvious and explicit
-- Easy to test (change URL, see different behaviour)
+- Easy to test (change URL, see different behavior)
 - Easy to route (load balancer, API gateway)
 - Cache-friendly (different URL = different cache entry)
 
@@ -397,9 +397,9 @@ Old clients reading v2 messages ignore unknown fields. New clients reading v1 me
 
 1. **No versioning from day one** — adding versioning later requires migrating all consumers simultaneously
 2. **Too many versions** — maintaining 5+ active versions is unsustainable
-3. **Silent breaking changes** — changing behaviour without bumping version
+3. **Silent breaking changes** — changing behavior without bumping version
 4. **No deprecation period** — removing versions without warning
 5. **Versioning internal APIs like public APIs** — internal APIs can afford faster deprecation cycles
 6. **Coupling version to deployment** — version represents the contract, not the release
 
-Versioning protects the API contract over time. But the API also needs to verify who is calling it and what they're allowed to do. See [Authentication and Authorisation](file:///d:/Playground/Backend%20Notes/6_API_Design/6_Authentication_and_Authorization.md).
+Versioning protects the API contract over time. But the API also needs to verify who is calling it and what they're allowed to do. See [Authentication and Authorization](file:///d:/Playground/Backend%20Notes/6_API_Design/6_Authentication_and_Authorization.md).

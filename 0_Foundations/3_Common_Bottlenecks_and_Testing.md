@@ -99,13 +99,13 @@ Fix:
 Symptoms:
 
 - Network bandwidth near limit
-- Requests that cross data centres are slow
+- Requests that cross data centers are slow
 - Latency correlated with request size
 
 Causes:
 
 - Large response sizes
-- Inefficient serialisation (JSON vs binary)
+- Inefficient serialization (JSON vs binary)
 - Chatty protocols (many round trips for one logical operation)
 
 Investigation:
@@ -118,7 +118,7 @@ Fix:
 
 - Compress responses
 - Filter unnecessary data
-- Use binary serialisation
+- Use binary serialization
 - Batch operations
 
 ### Disk I/O
@@ -150,17 +150,17 @@ Fix:
 
 ## Amdahl's Law and diminishing returns
 
-Amdahl's Law describes why optimising one component stops helping at some point.
+Amdahl's Law describes why optimizing one component stops helping at some point.
 
 If a system spends 70% of time in component A and 30% in component B:
 
-- Optimising A by 50% saves 35% overall
-- Optimising A by 99% saves 69.3% overall (approaching limit)
-- Optimising B saves almost nothing initially
+- Optimizing A by 50% saves 35% overall
+- Optimizing A by 99% saves 69.3% overall (approaching limit)
+- Optimizing B saves almost nothing initially
 
-Once you optimise the bottleneck, a different component becomes the bottleneck.
+Once you optimize the bottleneck, a different component becomes the bottleneck.
 
-This is why profiling before optimisation matters. Without profiling, developers often optimise the wrong thing and see no improvement.
+This is why profiling before optimization matters. Without profiling, developers often optimize the wrong thing and see no improvement.
 
 ## Caching decisions
 
@@ -186,9 +186,9 @@ Caching hurts when:
 
 Many developers add caching reactively ("it's slow, add cache!"). Better approach: measure whether queries are repeated. If yes, cache helps. If no, cache adds complexity without benefit.
 
-## Premature optimisation trap
+## Premature optimization trap
 
-The most common performance mistake: optimising before understanding requirements.
+The most common performance mistake: optimizing before understanding requirements.
 
 Examples:
 
@@ -199,12 +199,12 @@ Examples:
 
 All these add complexity.
 
-**When to optimise:**
+**When to optimize:**
 
 1. Requirements are clear (response time target exists)
 2. Current system doesn't meet them (measured)
 3. Bottleneck is identified (profiled)
-4. Simple optimisations tried first (indexes, caching, code)
+4. Simple optimizations tried first (indexes, caching, code)
 5. Impact is measured (before/after comparison)
 
 ## Performance testing
@@ -257,14 +257,14 @@ Without alerts, performance degradation goes unnoticed until users complain.
 - What metric is most important: p50, p95, or p99 latency?
 - If a query takes 1 second but only happens once per day, does it matter?
 - How do you prove that adding cache will actually help?
-- What happens if the bottleneck is network I/O in a data centre you don't control?
-- If you optimise the database query from 700ms to 100ms and response time improves by only 50%, what else is slow?
-- When is premature optimisation actually a good idea?
+- What happens if the bottleneck is network I/O in a data center you don't control?
+- If you optimize the database query from 700ms to 100ms and response time improves by only 50%, what else is slow?
+- When is premature optimization actually a good idea?
 - How do you differentiate between performance problem and scalability problem?
 
 ## Summary
 
-Performance engineering is about understanding systems deeply, measuring accurately and optimising the real bottleneck.
+Performance engineering is about understanding systems deeply, measuring accurately and optimizing the real bottleneck.
 
 Most performance problems are not about choosing faster technologies. They are about:
 

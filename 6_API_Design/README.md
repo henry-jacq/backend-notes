@@ -17,7 +17,7 @@ A well-designed API:
 
 - Is predictable (consumers know what to expect)
 - Is evolvable (changes don't break existing consumers)
-- Is secure (authentication, authorisation, rate limiting)
+- Is secure (authentication, authorization, rate limiting)
 - Matches the communication pattern (request-response, streaming, pub-sub)
 
 A poorly designed API:
@@ -39,7 +39,7 @@ A poorly designed API:
 
 **RESTful API Design**
 
-- Resource modelling and URI design
+- Resource modeling and URI design
 - HTTP methods and status codes
 - Pagination, filtering, sorting
 - Content negotiation and idempotency
@@ -73,7 +73,7 @@ A poorly designed API:
 - Breaking vs non-breaking changes
 - Deprecation workflows and backward compatibility
 
-**Authentication and Authorisation**
+**Authentication and Authorization**
 
 - API keys, OAuth 2.0, JWT
 - RBAC vs ABAC
@@ -100,9 +100,9 @@ Read these in order. Protocols come first because you must choose how systems co
 ## Key concepts
 
 - Protocol selection (matching communication pattern to protocol)
-- Resource modelling (designing intuitive, consistent APIs)
+- Resource modeling (designing intuitive, consistent APIs)
 - Contract stability (versioning, backward compatibility)
-- Security layers (authentication, authorisation, rate limiting)
+- Security layers (authentication, authorization, rate limiting)
 - Performance trade-offs (over-fetching, under-fetching, streaming)
 
 ## Connection to other sections

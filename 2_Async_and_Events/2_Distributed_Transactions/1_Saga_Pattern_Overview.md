@@ -158,7 +158,7 @@ Retries help with transient failures, but they should be controlled to avoid dup
 
 ### 3. Timeouts and deadlines
 
-Long-running workflows need clear timeout rules and recovery behaviour.
+Long-running workflows need clear timeout rules and recovery behavior.
 
 ### 4. Monitoring
 

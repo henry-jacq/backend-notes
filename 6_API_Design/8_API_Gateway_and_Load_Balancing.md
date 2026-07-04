@@ -7,7 +7,7 @@ summary: "As systems grow from one service to many, a critical question emerges:
 ---
 # API Gateway and Load Balancing
 
-As systems grow from one service to many, a critical question emerges: where do cross-cutting concerns live? Authentication, rate limiting, routing, logging — if every service implements these independently, you get inconsistency, duplication and operational nightmares. API gateways and load balancers centralise these concerns.
+As systems grow from one service to many, a critical question emerges: where do cross-cutting concerns live? Authentication, rate limiting, routing, logging — if every service implements these independently, you get inconsistency, duplication and operational nightmares. API gateways and load balancers centralize these concerns.
 
 ## The problem with direct client-to-service communication
 
@@ -205,7 +205,7 @@ Mobile client -> Mobile BFF gateway -> services
 Partner API   -> Partner gateway    -> services
 ```
 
-Each client type gets its own gateway optimised for its needs.
+Each client type gets its own gateway optimized for its needs.
 
 **Why BFF exists:**
 
@@ -214,7 +214,7 @@ Each client type gets its own gateway optimised for its needs.
 - Partners need different rate limits and versioning
 - Different teams can own different BFFs
 
-**Trade-off:** More gateways to maintain. But each is simpler and optimised.
+**Trade-off:** More gateways to maintain. But each is simpler and optimized.
 
 ### Popular API gateways
 
@@ -317,7 +317,7 @@ Request X routes to the next server clockwise on the ring.
 Adding/removing a server only affects adjacent requests.
 ```
 
-Minimises redistribution when servers are added or removed. Used by distributed caches and databases.
+Minimizes redistribution when servers are added or removed. Used by distributed caches and databases.
 
 ### L4 vs L7 load balancing
 
@@ -480,4 +480,4 @@ Service A Pod:
 6. **Ignoring cold starts** — new instances need warm-up time before receiving full traffic. Use gradual ramp-up
 7. **No circuit breaker** — gateway continues sending traffic to failing services, cascading the failure
 
-This concludes the API Design section. APIs are the contracts through which systems communicate. Designing them well — choosing the right protocol, structuring resources correctly, managing state, evolving versions, securing access and centralising cross-cutting concerns — is what separates systems that scale from systems that collapse under their own complexity.
+This concludes the API Design section. APIs are the contracts through which systems communicate. Designing them well — choosing the right protocol, structuring resources correctly, managing state, evolving versions, securing access and centralizing cross-cutting concerns — is what separates systems that scale from systems that collapse under their own complexity.

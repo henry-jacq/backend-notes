@@ -447,4 +447,4 @@ Layer 3: Application
 7. **Hardcoded secrets in code** — API keys, database passwords in source control
 8. **No request size limits** — 1GB JSON payload crashes the server
 
-Rate limiting protects availability. Authentication protects identity. But in a microservices architecture, these concerns multiply across every service. API gateways and load balancers centralise these cross-cutting concerns. See [API Gateway and Load Balancing](file:///d:/Playground/Backend%20Notes/6_API_Design/8_API_Gateway_and_Load_Balancing.md).
+Rate limiting protects availability. Authentication protects identity. But in a microservices architecture, these concerns multiply across every service. API gateways and load balancers centralize these cross-cutting concerns. See [API Gateway and Load Balancing](file:///d:/Playground/Backend%20Notes/6_API_Design/8_API_Gateway_and_Load_Balancing.md).

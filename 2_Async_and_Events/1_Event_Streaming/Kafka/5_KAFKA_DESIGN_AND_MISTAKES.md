@@ -262,7 +262,7 @@ Data not lost.
 
 ### 4. Synchronous processing in consumer
 
-**Mistake:** consumer processes events one at a time, serialised
+**Mistake:** consumer processes events one at a time, serialized
 
 **Result:**
 

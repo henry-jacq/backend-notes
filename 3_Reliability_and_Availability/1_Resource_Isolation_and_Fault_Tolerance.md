@@ -53,7 +53,7 @@ Light queries continue working.
 3. **Resources by customer**
    - Customer A's requests
    - Customer B's requests
-   - One customer's bad behaviour doesn't affect other
+   - One customer's bad behavior doesn't affect other
 
 **Trade-off:**
 
@@ -218,7 +218,7 @@ Check:
 - What would happen if every service had a circuit breaker to every other service?
 - How would you know if bulkheads are helping or just wasting resources?
 - If a service is down, should you retry forever or give up?
-- Why is jitter better than synchronised retries?
+- Why is jitter better than synchronized retries?
 - At what error rate should a circuit breaker open?
 - What should happen when circuit breaker opens?
 

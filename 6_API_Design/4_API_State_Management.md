@@ -262,7 +262,7 @@ Subsequent requests (automatic):
 - CORS complications for cross-domain APIs
 - Cookie size limits (~4KB)
 
-### Authorisation header
+### Authorization header
 
 ```
 Authorization: Bearer eyJhbG...
@@ -283,8 +283,8 @@ Authorization: Bearer eyJhbG...
 **Recommendation:**
 
 - Browser-only apps -> cookies with `HttpOnly`, `Secure`, `SameSite`
-- APIs consumed by multiple clients -> Authorisation header
-- Service-to-service -> mTLS or Authorisation header
+- APIs consumed by multiple clients -> Authorization header
+- Service-to-service -> mTLS or Authorization header
 
 ## State in distributed systems
 

@@ -1,104 +1,105 @@
 import re
 
 # Banned American spellings mapped to their Indian English (InE) equivalents
-BANNED_US_SPELLINGS = {
-    r'\boptimize\b': 'optimise',
-    r'\boptimizes\b': 'optimises',
-    r'\boptimized\b': 'optimised',
-    r'\boptimizing\b': 'optimising',
-    r'\boptimizer\b': 'optimiser',
-    r'\boptimizers\b': 'optimisers',
-    r'\boptimization\b': 'optimisation',
-    r'\boptimizations\b': 'optimisations',
+# Banned British/Indian spellings mapped to their American English equivalents
+BANNED_GB_SPELLINGS = {
+    r'\boptimise\b': 'optimize',
+    r'\boptimises\b': 'optimizes',
+    r'\boptimised\b': 'optimized',
+    r'\boptimising\b': 'optimizing',
+    r'\boptimiser\b': 'optimizer',
+    r'\boptimisers\b': 'optimizers',
+    r'\boptimisation\b': 'optimization',
+    r'\boptimisations\b': 'optimizations',
     
-    r'\bminimize\b': 'minimise',
-    r'\bminimizes\b': 'minimises',
-    r'\bminimized\b': 'minimised',
-    r'\bminimizing\b': 'minimising',
-    r'\bminimization\b': 'minimisation',
+    r'\bminimise\b': 'minimize',
+    r'\bminimises\b': 'minimizes',
+    r'\bminimised\b': 'minimized',
+    r'\bminimising\b': 'minimizing',
+    r'\bminimisation\b': 'minimization',
     
-    r'\bmaximize\b': 'maximise',
-    r'\bmaximizes\b': 'maximises',
-    r'\bmaximized\b': 'maximised',
-    r'\bmaximizing\b': 'maximising',
-    r'\bmaximization\b': 'maximisation',
+    r'\bmaximise\b': 'maximize',
+    r'\bmaximises\b': 'maximizes',
+    r'\bmaximized\b': 'maximized',
+    r'\bmaximizing\b': 'maximizing',
+    r'\bmaximisation\b': 'maximization',
     
-    r'\bcentralize\b': 'centralise',
-    r'\bcentralizes\b': 'centralises',
-    r'\bcentralized\b': 'centralised',
-    r'\bcentralizing\b': 'centralising',
-    r'\bcentralization\b': 'centralisation',
+    r'\bcentralise\b': 'centralize',
+    r'\bcentralizes\b': 'centralizes',
+    r'\bcentralised\b': 'centralized',
+    r'\bcentralising\b': 'centralizing',
+    r'\bcentralisation\b': 'centralization',
     
-    r'\bsynchronize\b': 'synchronise',
-    r'\bsynchronizes\b': 'synchronises',
-    r'\bsynchronized\b': 'synchronised',
-    r'\bsynchronizing\b': 'synchronising',
-    r'\bsynchronization\b': 'synchronisation',
+    r'\bsynchronise\b': 'synchronize',
+    r'\bsynchronises\b': 'synchronizes',
+    r'\bsynchronised\b': 'synchronized',
+    r'\bsynchronising\b': 'synchronizing',
+    r'\bsynchronisation\b': 'synchronization',
     
-    r'\brealize\b': 'realise',
-    r'\brealizes\b': 'realises',
-    r'\brealized\b': 'realised',
-    r'\brealizing\b': 'realising',
-    r'\brealization\b': 'realisation',
+    r'\brealise\b': 'realize',
+    r'\brealises\b': 'realizes',
+    r'\brealised\b': 'realized',
+    r'\brealising\b': 'realizing',
+    r'\brealisation\b': 'realization',
 
-    r'\bserialize\b': 'serialise',
-    r'\bserializes\b': 'serialises',
-    r'\bserialized\b': 'serialised',
-    r'\bserializing\b': 'serialising',
-    r'\bserialization\b': 'serialisation',
+    r'\bserialise\b': 'serialize',
+    r'\bserialises\b': 'serializes',
+    r'\bserialised\b': 'serialized',
+    r'\bserialising\b': 'serializing',
+    r'\bserialisation\b': 'serialization',
 
-    r'\bdeserialize\b': 'deserialise',
-    r'\bdeserializes\b': 'deserialises',
-    r'\bdeserialized\b': 'deserialised',
-    r'\bdeserializing\b': 'deserialising',
-    r'\bdeserialization\b': 'deserialisation',
+    r'\bdeserialise\b': 'deserialize',
+    r'\bdeserialises\b': 'deserializes',
+    r'\bdeserialized\b': 'deserialized',
+    r'\bdeserialising\b': 'deserializing',
+    r'\bdeserialisation\b': 'deserialization',
     
-    r'\bauthorize\b': 'authorise',
-    r'\bauthorizes\b': 'authorises',
-    r'\bauthorized\b': 'authorised',
-    r'\bauthorizing\b': 'authorising',
-    r'\bauthorization\b': 'authorisation',
+    r'\bauthorise\b': 'authorize',
+    r'\bauthorises\b': 'authorizes',
+    r'\bauthorised\b': 'authorized',
+    r'\bauthorising\b': 'authorizing',
+    r'\bauthorisation\b': 'authorization',
     
-    r'\bprioritize\b': 'prioritise',
-    r'\bprioritizes\b': 'prioritises',
-    r'\bprioritized\b': 'prioritised',
-    r'\bprioritizing\b': 'prioritising',
-    r'\bprioritization\b': 'prioritisation',
+    r'\bprioritise\b': 'prioritize',
+    r'\bprioritises\b': 'prioritizes',
+    r'\bprioritised\b': 'prioritized',
+    r'\bprioritising\b': 'prioritizing',
+    r'\bprioritisation\b': 'prioritization',
     
-    r'\bnormalize\b': 'normalise',
-    r'\bnormalizes\b': 'normalises',
-    r'\bnormalized\b': 'normalised',
-    r'\bnormalizing\b': 'normalising',
-    r'\bnormalization\b': 'normalisation',
+    r'\bnormalise\b': 'normalize',
+    r'\bnormalises\b': 'normalizes',
+    r'\bnormalised\b': 'normalized',
+    r'\bnormalising\b': 'normalizing',
+    r'\bnormalisation\b': 'normalization',
     
-    r'\bstandardize\b': 'standardise',
-    r'\bstandardizes\b': 'standardises',
-    r'\bstandardized\b': 'standardised',
-    r'\bstandardizing\b': 'standardising',
-    r'\bstandardization\b': 'standardisation',
+    r'\bstandardise\b': 'standardize',
+    r'\bstandardizes\b': 'standardizes',
+    r'\bstandardised\b': 'standardized',
+    r'\bstandardising\b': 'standardizing',
+    r'\bstandardisation\b': 'standardization',
 
-    r'\bbehavior\b': 'behaviour',
-    r'\bbehaviors\b': 'behaviours',
-    r'\bcolor\b': 'colour',
-    r'\bcolors\b': 'colours',
-    r'\bfavor\b': 'favour',
-    r'\bfavors\b': 'favours',
+    r'\bbehaviour\b': 'behavior',
+    r'\bbehaviours\b': 'behaviors',
+    r'\bcolour\b': 'color',
+    r'\bcolours\b': 'colors',
+    r'\bfavour\b': 'favor',
+    r'\bfavours\b': 'favors',
     
-    r'\bdata center\b': 'data centre',
-    r'\bdata centers\b': 'data centres',
-    r'\bdatacenter\b': 'datacentre',
-    r'\bdatacenters\b': 'datacentres',
+    r'\bdata centre\b': 'data center',
+    r'\bdata centres\b': 'data centers',
+    r'\bdatacentre\b': 'datacenter',
+    r'\bdatacentres\b': 'datacenters',
     
-    r'\bmodeled\b': 'modelled',
-    r'\bmodeling\b': 'modelling',
-    r'\blabeled\b': 'labelled',
-    r'\blabeling\b': 'labelling',
-    r'\bcanceled\b': 'cancelled',
-    r'\bcanceling\b': 'cancelling',
+    r'\bmodelled\b': 'modeled',
+    r'\bmodelling\b': 'modeling',
+    r'\blabelled\b': 'labeled',
+    r'\blabelling\b': 'labeling',
+    r'\bcancelled\b': 'canceled',
+    r'\bcancelling\b': 'canceling',
 }
 
 def clean_line_prose(line: str) -> str:
-    """Convert American spellings in a single line of prose to InE, preserving capitalization,
+    """Convert British spellings in a single line of prose to US, preserving capitalization,
     and strip redundant 'This document explains/covers' phrasing."""
     
     # 1. Clean 'This document explains' and similar prefixes
@@ -159,8 +160,8 @@ def clean_line_prose(line: str) -> str:
     line = line.replace(", And", " And")
     line = line.replace(", AND", " AND")
 
-    # 3. Convert American spellings
-    for pattern, replacement in BANNED_US_SPELLINGS.items():
+    # 3. Convert British spellings
+    for pattern, replacement in BANNED_GB_SPELLINGS.items():
         def repl_func(match):
             word = match.group(0)
             if word.isupper():
@@ -173,7 +174,7 @@ def clean_line_prose(line: str) -> str:
     return line
 
 def convert_content(content: str) -> str:
-    """Convert an entire markdown file to InE spelling, preserving code elements."""
+    """Convert an entire markdown file to US spelling, preserving code elements."""
     lines = content.splitlines()
     new_lines = []
     in_code_block = False
@@ -209,13 +210,13 @@ def convert_content(content: str) -> str:
     return "\n".join(new_lines) + "\n"
 
 def check_line_prose(line: str) -> list[str]:
-    """Check a single line of prose for banned American spellings.
+    """Check a single line of prose for banned British/Indian spellings.
     Returns a list of warnings if violations are found."""
     violations = []
-    for pattern, in_e in BANNED_US_SPELLINGS.items():
+    for pattern, us_e in BANNED_GB_SPELLINGS.items():
         matches = re.findall(pattern, line, flags=re.IGNORECASE)
         for match in matches:
-            violations.append(f"Found American spelling '{match}' (expected Indian English '{in_e}')")
+            violations.append(f"Found British spelling '{match}' (expected American English '{us_e}')")
     return violations
 
 def check_content(content: str) -> list[tuple[int, str]]:

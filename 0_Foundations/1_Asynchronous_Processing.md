@@ -154,15 +154,15 @@ Understanding when to scale requires knowing what to measure:
 
 ## Common scaling mistakes
 
-**Premature optimisation:**
+**Premature optimization:**
 Adding caching, sharding, or async processing before the system actually needs it. Code becomes complex. Problems that don't exist yet are now real problems to debug.
 
 **Scaling horizontally too early:**
 Load balancing adds complexity. Before scaling horizontally, try:
 
-1. Optimise database queries (indexes)
+1. Optimize database queries (indexes)
 2. Add caching
-3. Optimise application code (remove inefficiencies)
+3. Optimize application code (remove inefficiencies)
 4. Upgrade server hardware
 
 **Ignoring the database:**
@@ -203,4 +203,4 @@ Scaling is not about using cool technologies. It is about:
 5. Monitoring what breaks next
 6. Repeating as the system evolves
 
-The best engineers know when to scale and when to optimise. They can look at metrics and see where the next bottleneck will emerge before it becomes critical.
+The best engineers know when to scale and when to optimize. They can look at metrics and see where the next bottleneck will emerge before it becomes critical.

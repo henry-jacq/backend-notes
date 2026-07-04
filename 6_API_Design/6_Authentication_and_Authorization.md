@@ -1,15 +1,15 @@
 ---
-title: "Authentication and Authorisation"
+title: "Authentication and Authorization"
 part: 6
 part_title: "API Design"
 chapter: 7
 summary: "Every production API must answer two questions: **who is calling?** (authentication) and **what are they allowed to..."
 ---
-# Authentication and Authorisation
+# Authentication and Authorization
 
-Every production API must answer two questions: **who is calling?** (authentication) and **what are they allowed to do?** (authorisation). These are different concerns with different mechanisms. Conflating them is one of the most common API security mistakes.
+Every production API must answer two questions: **who is calling?** (authentication) and **what are they allowed to do?** (authorization). These are different concerns with different mechanisms. Conflating them is one of the most common API security mistakes.
 
-## Authentication vs authorisation
+## Authentication vs authorization
 
 ```
 Authentication (authn):
@@ -32,7 +32,7 @@ Authentication: Token belongs to user 123 (identity verified)
 Authorization: Does user 123 have permission to delete user 456? (permission checked)
 ```
 
-Authentication happens first. Authorisation depends on authentication.
+Authentication happens first. Authorization depends on authentication.
 
 ## API keys
 
@@ -74,7 +74,7 @@ Request:
 
 ## OAuth 2.0
 
-OAuth 2.0 is the standard for **delegated authorisation**. It allows a user to grant a third-party application limited access to their resources without sharing their password.
+OAuth 2.0 is the standard for **delegated authorization**. It allows a user to grant a third-party application limited access to their resources without sharing their password.
 
 ### The problem OAuth solves
 
@@ -101,7 +101,7 @@ Authorization Server -> Issues tokens after user consent (Google, GitHub, etc.)
 Resource Server -> The API that holds the user's data
 ```
 
-### Authorisation Code flow (most secure, server-side apps)
+### Authorization Code flow (most secure, server-side apps)
 
 This is the recommended flow for web applications with a backend server.
 
@@ -146,9 +146,9 @@ Step 6: Client uses access token to call API
 ```
 
 **Why the code exchange exists (Step 4):**
-The authorisation code is exchanged server-to-server. The access token never passes through the browser. This prevents token theft via browser history, referrer headers, or JavaScript.
+The authorization code is exchanged server-to-server. The access token never passes through the browser. This prevents token theft via browser history, referrer headers, or JavaScript.
 
-### Authorisation Code flow with PKCE (public clients)
+### Authorization Code flow with PKCE (public clients)
 
 PKCE (Proof Key for Code Exchange) secures the flow for clients that can't keep a secret (mobile apps, SPAs).
 
@@ -172,7 +172,7 @@ Step 5: Server verifies SHA256(code_verifier) == code_challenge
 ```
 
 **Why PKCE matters:**
-Without PKCE, an attacker who intercepts the authorisation code (via malicious app on same device) can exchange it for tokens. With PKCE, they also need the code_verifier, which never left the original client.
+Without PKCE, an attacker who intercepts the authorization code (via malicious app on same device) can exchange it for tokens. With PKCE, they also need the code_verifier, which never left the original client.
 
 ### Client Credentials flow (service-to-service)
 
@@ -559,4 +559,4 @@ Simpler than mTLS but less secure (tokens can be stolen).
 6. **Not validating JWT audience** — token meant for Service A accepted by Service B
 7. **Transmitting tokens over HTTP** — always use HTTPS. Tokens in plain HTTP are visible to anyone on the network
 
-Authentication verifies identity. Authorisation checks permissions. But APIs also need protection against abuse, attacks and misuse at the network level. See [API Security and Rate Limiting](file:///d:/Playground/Backend%20Notes/6_API_Design/7_API_Security_and_Rate_Limiting.md).
+Authentication verifies identity. Authorization checks permissions. But APIs also need protection against abuse, attacks and misuse at the network level. See [API Security and Rate Limiting](file:///d:/Playground/Backend%20Notes/6_API_Design/7_API_Security_and_Rate_Limiting.md).

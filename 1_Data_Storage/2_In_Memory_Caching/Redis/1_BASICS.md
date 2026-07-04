@@ -7,12 +7,12 @@ summary: "Explains in-memory caching theory, comparing Redis against Memcached, 
 ---
 # Redis at Scale
 
-Adding an in-memory cache is a common response to database read bottlenecks. However, running a cache tier in production introduces new architectural concerns: eventual consistency, memory limits, eviction behaviours and persistence trade-offs.
+Adding an in-memory cache is a common response to database read bottlenecks. However, running a cache tier in production introduces new architectural concerns: eventual consistency, memory limits, eviction behaviors and persistence trade-offs.
 
 ## In-Memory Caching Theory
 
 ### The Read Bottleneck
-Traditional relational databases are optimised for durability and consistent query plans. They read indexes and records from disk, which introduces random I/O latency (~10–20ms per query). 
+Traditional relational databases are optimized for durability and consistent query plans. They read indexes and records from disk, which introduces random I/O latency (~10–20ms per query). 
 
 When the same read query is executed thousands of times per second (e.g. fetching a popular product page or configuration setting), the database spends redundant CPU and I/O cycles recalculating the exact same result. serving these repeated reads from RAM (latency <1ms) drops database load dramatically.
 
