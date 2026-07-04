@@ -2,6 +2,8 @@
 
 This repository contains structured systems engineering notes compiled into a single book-style PDF.
 
+While these notes are AI-assisted, the content is clean, highly structured and designed around a natural learning flow: addressing **why** a technology exists, **what** it does, **how** it operates under the hood and **what if** it encounters failure states. This logic-driven structure makes complex systems concepts intuitive to grasp and ideal for technical interview preparation.
+
 ## Structure of the Book
 
 The notes are organised into seven distinct parts:
@@ -54,3 +56,4 @@ Run the central tooling script at the repository root:
   ```
 
 The compiled book is saved as `backend_notes.pdf`.
+
