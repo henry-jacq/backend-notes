@@ -30,6 +30,20 @@ This section covers the physical and virtual infrastructure that runs backend sy
 - Automation and CI/CD
 - Monitoring and alerting
 
+**Docker Fundamentals**
+
+- VM vs Container architecture and overhead differences
+- Docker CLI, Daemon and registry roles
+- Image layers and read-only immutability
+- Container writable layers and storage efficiency
+
+**Docker Under the Hood**
+
+- Linux namespaces (PID, Mount, Network) and process isolation
+- Control groups (cgroups) resource limits and OOM-killer policies
+- OverlayFS layers (LowerDir, UpperDir, MergedDir) and copy-on-write costs
+- OCI runtimes (containerd, runc) and virtual networking bridge routes
+
 ## Key concepts
 
 - HTTP protocol structure
