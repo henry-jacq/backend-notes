@@ -65,6 +65,7 @@ FILES_CONFIG = [
     ("6_API_Design/6_Authentication_and_Authorization.md", 6, "API Design", 7, "chapter"),
     ("6_API_Design/7_API_Security_and_Rate_Limiting.md", 6, "API Design", 8, "chapter"),
     ("6_API_Design/8_API_Gateway_and_Load_Balancing.md", 6, "API Design", 9, "chapter"),
+    ("6_API_Design/9_Model_Context_Protocol.md", 6, "API Design", 10, "chapter"),
 
     # Part VII: Operations
     ("5_Operations/README.md", 7, "Operations", None, "part_intro"),
