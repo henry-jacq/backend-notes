@@ -6,7 +6,7 @@ While these notes are AI-assisted, the content is clean, highly structured and d
 
 ## Structure of the Book
 
-The notes are organised into seven distinct parts:
+The notes are organized into seven distinct parts:
 
 - **Part I: Foundations** — Core systems engineering thinking, scaling, queues and performance engineering fundamentals.
 - **Part II: Data Storage** — Relational database limits, sharding, CRUD operations at scale and in-memory caching with Redis.
