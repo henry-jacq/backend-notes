@@ -70,7 +70,8 @@ FILES_CONFIG = [
     # Part VII: Operations
     ("5_Operations/README.md", 7, "Operations", None, "part_intro"),
     ("5_Operations/0_Observability_Fundamentals.md", 7, "Operations", 1, "chapter"),
-    ("5_Operations/1_Systematic_Debugging_and_Failure_Patterns.md", 7, "Operations", 2, "chapter"),
+    ("5_Operations/1_Log_Management_and_Rotation.md", 7, "Operations", 2, "chapter"),
+    ("5_Operations/2_Systematic_Debugging_and_Failure_Patterns.md", 7, "Operations", 3, "chapter"),
 ]
 
 PART_NUMBERS_ROMAN = {

@@ -2,7 +2,7 @@
 title: "Systematic Debugging and Failure Patterns"
 part: 7
 part_title: "Operations"
-chapter: 2
+chapter: 3
 summary: "Covers common failure patterns in production environments, step-by-step troubleshooting workflows and..."
 ---
 # Systematic Debugging and Failure Patterns
