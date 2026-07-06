@@ -1,42 +1,224 @@
 ---
-title: "Authentication and Authorization"
+title: "API Authentication and Authorization"
 part: 6
 part_title: "API Design"
 chapter: 7
 summary: "Every production API must answer two questions: **who is calling?** (authentication) and **what are they allowed to..."
 ---
-# Authentication and Authorization
+# API Authentication and Authorization
 
 Every production API must answer two questions: **who is calling?** (authentication) and **what are they allowed to do?** (authorization). These are different concerns with different mechanisms. Conflating them is one of the most common API security mistakes.
 
 ## Authentication vs authorization
 
+-   **Authentication (AuthN)** verifies identity by asking *"Who are you?"*. It checks credentials (like passwords, tokens or certificates) to confirm the client is who they claim to be, outputting a verified identity.
+-   **Authorization (AuthZ)** verifies permissions by asking *"What are you allowed to do?"*. It checks the verified identity against permission policies to allow or deny specific actions (like reading or deleting a resource).
+
+Authentication must always happen first; authorization depends on a verified identity.
+
+
+## Stateful vs Stateless Authentication
+
+When designing an API authentication system, developers must choose between maintaining session state on the server or delegating authentication state entirely to the client.
+
+### Stateful Authentication (Session-Based)
+Session-based authentication stores the user's login state centrally on the server (e.g. in a database or Redis cache) and transmits a unique session ID cookie to the client. Every subsequent request requires the server to query its storage to validate the session and retrieve the user's identity.
+
+-   **High-Security Use Cases (e.g. Online Banking):** Stateful sessions allow immediate revocation. If a bank portal detects suspicious activity or a user logs out, the server can instantly delete the session from its cache to block access. In contrast, stateless tokens are stored on the client and validated locally, meaning they cannot be revoked on demand until they naturally expire.
+
+Why Session-Based Auth Fails to Scale:
+
+-   **Multi-Server Complexity:** In distributed systems or microservices, subsequent requests from a single client may route to different servers. This requires a centralized cache (like Redis) so that if a user's subsequent request hits a different server, it can still access their session.
+-   **Memory Overhead:** The server must allocate memory for every single active session, which can become prohibitively expensive as your user base grows.
+
+### Stateless Authentication (Token-Based)
+Stateless authentication delegates state tracking entirely to the client. Instead of storing session records on the server, the server issues a digitally signed, cryptographically verifiable token (such as a JWT) to the client upon successful login.
+
+How Stateless Auth Works:
+
+1.  **Issue:** The user authenticates with their credentials. The server creates a token containing user information (payload), signs it using a secret key or private key and returns it to the client.
+2.  **Request:** The client stores the token (e.g. in secure storage or a Secure cookie) and transmits it in the `Authorization: Bearer <token>` header on every request.
+3.  **Verify:** Because the token is self-contained and carries a cryptographic signature, any server in the network can verify its authenticity and read the payload claims using the key without performing a database trip or session lookup.
+
+
+## Architectural Comparison: Stateful Sessions vs Stateless Tokens
+
+-   **Statelessness:** Since the token contains all necessary user data, the server doesn't need to store session records. Any server in your network can verify the token using the secret key without making a database trip.
+-   **Horizontal Scalability:** Because no server-side session state exists, you can spin up as many backend servers as needed without coordinating session sharing.
+-   **Microservices-Friendly:** Microservices can independently verify the signature of a JWT without constantly querying a central authentication service.
+-   **Vulnerability to Hijacking:** Stateful sessions transmit a long-lived session cookie that is vulnerable to hijacking attacks (such as session fixation, XSS or cookie sniffing). To defend stateful systems, developers must implement client fingerprinting validation (e.g. hashing the client's User-Agent or IP address during login and validating the incoming request hash on every call). By contrast, stateless tokens carry short-lived access periods and rotate refresh tokens to automatically bound hijacking exposure windows.
+
+*Note:* While JWTs are excellent for scaling, they have one major drawback—they cannot be easily invalidated before they expire. Because of this, developers often use Access Token and Refresh Token Strategies or maintain a blacklist to revoke compromised tokens.
+
+Ultimately, no pattern is always secure by default. Security is an ongoing engineering process where developers must proactively plan, analyze threat profiles and design active defenses to keep resources safe.
+
+## JSON Web Token in depth
+
+JSON Web Token (JWT) is a compact and secure method for transmitting information between parties as a JSON object. It is commonly used for authentication and authorization in web applications, allowing users to access protected resources without repeatedly providing credentials.
+
+Key features include:
+
+-   **Stateless Authentication:** Stores user information in a token, reducing the need for server-side session storage.
+-   **Secure Data Exchange:** Uses digital signatures to verify that the token has not been altered.
+-   **Compact Format:** Consists of three parts—Header, Payload and Signature—encoded into a single string.
+-   **Widely Supported:** Works across different programming languages and platforms.
+
+### JWT Structure
+A JWT mainly consists of 3 components, separated by dots (`Header.Payload.Signature`):
+
+#### 1. Header
+The header contains metadata about the token, including the signing algorithm and token type.
+
+```json
+{
+  "alg": "HS256",
+  "typ": "JWT"
+}
 ```
-Authentication (authn):
-  "Who are you?"
-  -> Verify identity
-  -> Input: credentials (password, token, certificate)
-  -> Output: identity (user ID, service name)
 
-Authorization (authz):
-  "What can you do?"
-  -> Verify permissions
-  -> Input: identity + requested action
-  -> Output: allow or deny
+where,
+
+-   `alg`: The algorithm used for signing (e.g. HS256 or RS256).
+-   `typ`: Token type, always "JWT".
+
+Example base64url-encoded header:
+```
+eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9
 ```
 
-**Example:**
+#### 2. Payload
+The payload contains the information about the user, also known as claims and some additional information including the timestamp at which it was issued and the expiry time of the token.
+
+```json
+{
+  "userId": 123,
+  "role": "admin",
+  "exp": 1672531199
+}
 ```
-Request: DELETE /users/456
-Authentication: Token belongs to user 123 (identity verified)
-Authorization: Does user 123 have permission to delete user 456? (permission checked)
+
+Common claim types:
+
+-   `iss` (Issuer): Identifies who issued the token.
+-   `sub` (Subject): Represents the user or entity the token is about.
+-   `aud` (Audience): Specifies the intended recipient.
+-   `exp` (Expiration): Defines when the token expires.
+-   `iat` (Issued At): Timestamp when the token was created.
+-   `nbf` (Not Before): Specifies when the token becomes valid.
+
+Example base64url-encoded payload:
+```
+eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNzA4MzQ1MTIzLCJleHAiOjE3MDgzNTUxMjN9
 ```
 
-Authentication happens first. Authorization depends on authentication.
+#### 3. Signature
+The signature ensures token integrity and is generated using the header, payload and a secret key:
 
-## API keys
+```
+HMACSHA256(
+  base64UrlEncode(header) + "." + base64UrlEncode(payload),
+  secret
+)
+```
 
-The simplest authentication mechanism. A long, random string identifies the caller.
+Example base64url-encoded signature:
+```
+SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c
+```
+
+#### Final JWT Token
+After all these steps, the final JWT token is generated by joining the Header, Payload and Signature via a dot:
+
+```
+eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNzA4MzQ1MTIzLCJleHAiOjE3MDgzNTUxMjN9.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c
+```
+
+### Security Considerations
+When working with JWTs, keep these best practices in mind to ensure safe and reliable authentication:
+
+-   **Use HTTPS:** Prevent man-in-the-middle attacks by transmitting JWTs over HTTPS, which sends the token in encrypted form instead of plain text.
+-   **Set Expiration Time:** Prevent long-lived tokens that can be exploited. Set a fixed time after which the token will automatically be invalidated.
+-   **Use Secure Storage:** Store JWTs securely. For example, use HttpOnly cookies instead of local storage.
+-   **Verify Signature:** Always validate the token's signature before trusting its content.
+
+### Common Issues During Development
+-   **JWT Rejected:** The server could not verify the token. This can happen if the token has expired, the signature is invalid or the claims do not match the expected details.
+-   **Token Does Not Support Required Scope:** The token does not include the permissions needed for the action. For example, it may allow only reading data, but the app requires write access.
+-   **JWT Decode Failed:** The token is not in the correct format or not properly encoded, so the client cannot read it.
+
+## Refresh tokens
+
+Refresh tokens solve the conflict between security (short-lived tokens) and usability (don't make users re-authenticate constantly).
+
+### How refresh tokens work
+
+```
+Login:
+  -> Access token (JWT, 15 min expiry)
+  -> Refresh token (opaque, 30 day expiry, stored server-side)
+
+Normal API calls:
+  Authorization: Bearer <access_token>
+  -> Server validates JWT (no database lookup)
+
+Access token expires:
+  POST /auth/token/refresh
+  Body: { "refresh_token": "rt_abc123..." }
+
+  Server:
+
+    1. Look up refresh token in database
+    2. Verify not revoked or expired
+    3. Issue new access token
+    4. (Optionally) issue new refresh token (rotation)
+
+  Response:
+  {
+    "access_token": "new_jwt...",
+    "refresh_token": "rt_def456...",   // rotated
+    "expires_in": 900
+  }
+```
+
+### Refresh token rotation
+
+```
+Without rotation:
+  Refresh token: rt_abc123
+  Used at time 1 -> new access token (refresh token unchanged)
+  Used at time 2 -> new access token (same refresh token)
+  If stolen, attacker can use it indefinitely until expiry
+
+With rotation:
+  Refresh token: rt_abc123
+  Used at time 1 -> new access token + new refresh token rt_def456
+  Old rt_abc123 is invalidated
+
+  If attacker stole rt_abc123 and tries to use it:
+  -> Server detects reuse of invalidated token
+  -> Revokes entire token family (all refresh tokens for this user)
+  -> User must re-authenticate
+```
+
+**Refresh token rotation detects theft.** When a revoked refresh token is used, it means either the legitimate user or an attacker is using a stale token. Revoking the entire family forces re-authentication, which is the safe choice.
+
+### Refresh token storage
+
+Refresh tokens are long-lived and highly sensitive, requiring strict server and client security standards:
+
+-   **Server-Side Storage:** Store refresh tokens in a database or Redis cache using their cryptographic hash (e.g. SHA-256) as the lookup key to protect them from direct database leakage.
+-   **Browser Storage:** Store tokens in the browser using `HttpOnly` and `Secure` cookies to prevent client-side Javascript from accessing them via cross-site scripting (XSS) attacks.
+-   **Mobile App Storage:** Use platform-provided secure containers (such as iOS Keychain or Android Keystore) rather than unencrypted database or preference files.
+-   **Server-to-Server Storage:** Keep keys secured in environment variables or cloud secrets managers (like HashiCorp Vault or AWS Secrets Manager).
+-   **Forbidden Storage Areas:** Never store tokens in browser localStorage, sessionStorage, plain text files or URL query parameters due to XSS and log-sniffing exposures.
+-   **BFF Proxy Defense:** For browser applications, use a Backend-for-Frontend (BFF) proxy layer to manage tokens on the server side entirely, sending only session cookies to the client.
+
+*Note on Protocols:* Modern token-based authentication relies on OAuth 2.0. The older OAuth 1.0 protocol is deprecated and unusable for modern APIs because it requires complex cryptographic signature calculations on every request and lacks built-in support for bearer token lifecycles.
+
+
+## API Keys
+
+API keys are the simplest authentication mechanism, represented by a long, cryptographically random string that identifies the calling application.
 
 ```
 Request:
@@ -44,33 +226,22 @@ Request:
   X-API-Key: sk_live_abc123def456ghi789
 ```
 
-**How API keys work:**
-```
-1. Developer registers -> server generates API key
-2. Developer includes key in requests
-3. Server looks up key -> finds associated account
-4. Server checks key permissions -> allows or denies
-```
+### Why API Keys are Used
+API keys establish programmatic identity between two systems. For example, to integrate Stripe payments or SendGrid email services into a custom application, a developer generates an API key in that service's portal. Copied into their own application's backend configuration, this key acts as a delegated credential, allowing their application to query data from the third-party API on the user's behalf without sharing passwords. This allows automated background tasks to query data continuously without manual browser login prompts.
 
-**When API keys work:**
+### Lifecycle and Verification Flow
+1.  **Generation & Transit:** The API provider generates a random, high-entropy key (e.g. `sk_live_...`), which the client transmits in HTTP headers (like `X-API-Key`).
+2.  **AuthN & AuthZ:** The API server hashes the incoming key, looks it up in a database cache to identify the developer account and validates that the key has appropriate access scopes before allowing the request.
 
-- Server-to-server communication
-- Public APIs with usage tracking (rate limiting per key)
-- Low-security scenarios (read-only public data)
+### Usability and Limitations
+-   **Where They Work:** Programmatic server-to-server calls and public tracking endpoints (to enforce rate limits, billing tiers or call quotas).
+-   **Where They Fail:** User-facing identity tracking (keys identify systems, not individuals), client-side applications (SPA/mobile binaries where keys can be extracted) and fine-grained access authorization.
 
-**When API keys don't work:**
-
-- User-facing authentication (API keys identify applications, not users)
-- High-security scenarios (keys are long-lived, hard to rotate)
-- Delegated access (user grants limited access to a third party)
-
-**API key security:**
-
-- Never embed in client-side code (visible in browser)
-- Transmit only over HTTPS
-- Store hashed on server side (like passwords)
-- Support rotation (issue new key, deprecate old one)
-- Scope keys (read-only vs read-write, per-resource)
+### Security Best Practices
+-   **Server-Side Isolation:** Keep keys in environment variables; never compile them into browser or client-side application code.
+-   **Secure Storage & Transit:** Transmit keys strictly over HTTPS and store them hashed (using SHA-256) server-side to prevent database compromise leaks.
+-   **Scopes and Rotation:** Restrict keys to read-only scopes or specific white-listed IP addresses and support dual-key windows for rotation without downtime.
+-   **Rate Limiting Integration:** Couple API keys with active rate limit pools to prevent resource exhaustion from a single compromised caller.
 
 ## OAuth 2.0
 
@@ -78,19 +249,19 @@ OAuth 2.0 is the standard for **delegated authorization**. It allows a user to g
 
 ### The problem OAuth solves
 
-```
-Without OAuth:
-  User gives their Google password to a third-party app
-  App can access everything (email, drive, contacts, payments)
-  User can't revoke access without changing password
-  Password shared with multiple apps = single breach compromises all
+**Without OAuth:**
 
-With OAuth:
-  User authorizes specific permissions (read email only)
-  App gets a token, not the password
-  User revokes token without changing password
-  Token has limited scope and lifetime
-```
+-   A user gives their Google password directly to a third-party application.
+-   The application gains full, unrestricted access to the user's entire account (including email, drive, contacts and payments).
+-   The user cannot revoke access to a single app without changing their master password.
+-   If any third-party application is compromised, the shared password is leaked, compromising all other services using it.
+
+**With OAuth:**
+
+-   The user authorizes specific, limited permissions (such as read-only access to email).
+-   The application receives a scoped token instead of the user's password.
+-   The user can revoke the token at any time without changing their password.
+-   Tokens have a limited lifecycle and scope, bounding exposure if a single application is breached.
 
 ### OAuth 2.0 roles
 
@@ -217,197 +388,52 @@ Problems:
 Status: DEPRECATED. Use Authorization Code + PKCE instead.
 ```
 
-## JWT (JSON Web Token) in depth
+## Single Sign-On (SSO) and OpenID Connect (OIDC)
 
-JWT is the most common token format for API authentication. It carries claims (identity and permissions) in a self-contained, verifiable format.
+Developers frequently confuse Single Sign-On (SSO), OAuth 2.0 and OpenID Connect (OIDC) because modern systems often combine them to build identity solutions.
 
-### JWT structure
+| Feature | Single Sign-On (SSO) | OAuth 2.0 | OpenID Connect (OIDC) |
+| :--- | :--- | :--- | :--- |
+| **Purpose** | Single login credential set across multiple distinct applications | Delegation framework for third-party API resource access | Identity and authentication protocol extension layer |
+| **Primary Focus** | User experience and centralized authentication | API authorization and secure resource scopes | Identity verification and profile metadata sharing |
+| **User Flow** | Signs in once to access email, HR tools and internal chat | Grants permission to an application without password sharing | Receives an identity token during authentication handshake |
+| **Example** | Corporate workforce sign-in via Microsoft Entra ID | Third-party photo app accessing files in Google Drive | "Sign in with Google" button verifying user email |
 
-```
-eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.
-eyJzdWIiOiIxMjMiLCJuYW1lIjoiQWxpY2UiLCJyb2xlIjoiYWRtaW4iLCJpYXQiOjE3MDAwMDAwMDAsImV4cCI6MTcwMDAwMzYwMH0.
-signature_bytes_here
+### What is Single Sign-On (SSO)?
+SSO is a centralized user authentication experience enabling a person to log in once and gain access to multiple applications without re-authenticating. SSO is commonly implemented using protocols such as:
 
-Three parts, base64url-encoded, separated by dots:
-  Header.Payload.Signature
-```
+-   **SAML 2.0 (Security Assertion Markup Language):** XML-based standard used to pass identity and authorization data between an Identity Provider (IdP) and a Service Provider (SP).
+-   **OpenID Connect (OIDC):** A JSON/REST-friendly authentication layer built directly on top of OAuth 2.0.
+-   **Kerberos:** A ticket-based network authentication protocol used primarily in traditional Windows enterprise environments.
 
-**Header:**
-```json
-{
-  "alg": "RS256",     // signing algorithm
-  "typ": "JWT",       // token type
-  "kid": "key-id-1"   // key identifier (for key rotation)
-}
-```
-
-**Payload (claims):**
-```json
-{
-  "sub": "123",              // subject (user ID)
-  "name": "Alice",           // custom claim
-  "role": "admin",           // custom claim
-  "iat": 1700000000,         // issued at (Unix timestamp)
-  "exp": 1700003600,         // expiration (1 hour later)
-  "iss": "https://auth.example.com",  // issuer
-  "aud": "https://api.example.com",   // audience
-  "scope": "read:users write:users"   // permissions
-}
-```
-
-**Registered claims:**
-```
-sub  -> Subject (who the token is about)
-iss  -> Issuer (who created the token)
-aud  -> Audience (who the token is for)
-exp  -> Expiration time
-iat  -> Issued at
-nbf  -> Not before (token not valid before this time)
-jti  -> JWT ID (unique identifier for this token)
-```
-
-### Signing algorithms
-
-**Symmetric (HMAC):**
-```
-HMAC-SHA256: Same secret to sign and verify
-
-Sign:   HMAC(header + payload, shared_secret) -> signature
-Verify: HMAC(header + payload, shared_secret) == signature?
-
-Problem: Every service that verifies needs the secret.
-         If any service is compromised, attacker can forge tokens.
-```
-
-**Asymmetric (RSA/ECDSA):**
-```
-RS256: Private key signs, public key verifies
-
-Sign:   RSA_SIGN(header + payload, private_key) -> signature
-Verify: RSA_VERIFY(header + payload, public_key, signature) -> valid?
-
-Advantage: Only auth server has private key.
-           Any service can verify with public key.
-           Compromised service cannot forge tokens.
-```
-
-**Use asymmetric signing in production.** Symmetric is acceptable only when one service both signs and verifies.
-
-### JWT validation checklist
+### What is OpenID Connect (OIDC)?
+OpenID Connect is an identity and authentication protocol built as a layer on top of OAuth 2.0. It standardizes how applications verify a user's identity and obtain profile details, making it the industry standard for modern web, mobile and enterprise logins.
 
 ```
-Every service must validate:
-
-1. Signature valid?     -> verify(token, public_key)
-2. Not expired?         -> exp > current_time
-3. Not used too early?  -> nbf <= current_time (if present)
-4. Correct issuer?      -> iss == expected_issuer
-5. Correct audience?    -> aud == this_service
-6. Required claims?     -> sub, scope present
-7. Sufficient scope?    -> token scope covers requested action
+OIDC Layered Model
++-------------------------------------------------------+
+|  OIDC Authentication Layer (ID Token / Claims)        |
++-------------------------------------------------------+
+|  OAuth 2.0 Authorization Base (Access/Refresh Tokens) |
++-------------------------------------------------------+
 ```
 
-**Never skip validation steps.** A common mistake is verifying the signature but ignoring expiration or audience.
+Unlike plain OAuth 2.0, which only issues an Access Token for API authorization, OIDC introduces an **ID Token** to verify the user's identity.
 
-### JWT security pitfalls
+A standard OIDC handshake flow proceeds as follows:
 
-```
-1. alg: "none" attack
-   Attacker sends JWT with algorithm "none" (no signature)
-   Vulnerable server accepts it without verification
-   Fix: Always validate algorithm matches expected value
+1.  **Request:** The user clicks "Sign in with Google/Okta". The client redirects the user to the Identity Provider (IdP).
+2.  **Authenticate:** The IdP authenticates the user and obtains consent.
+3.  **Callback:** The IdP redirects back to the client, delivering an authorization code.
+4.  **Exchange:** The client exchanges the code at the IdP token endpoint to receive an **ID Token** alongside standard Access and Refresh Tokens.
 
-2. Key confusion attack
-   Server expects RS256 (asymmetric)
-   Attacker sends HS256 JWT signed with the public key
-   Server uses public key as HMAC secret -> signature matches
-   Fix: Enforce expected algorithm, never accept "alg" from token
+### Core Components of OIDC
+-   **ID Token:** A signed JSON Web Token (JWT) containing identity claims about the authenticated user (e.g. issuer, subject ID, name, email and locale).
+-   **UserInfo Endpoint:** A protected API endpoint where clients can present the Access Token to retrieve additional profile claims.
+-   **OIDC Discovery:** Provides a standardized configuration endpoint (typically available at `/.well-known/openid-configuration`) where clients can dynamically learn the IdP's endpoints, supported scopes, public signing keys (JWKS) and security features.
+-   **Standard Claims:** Defines standardized profile claims—such as `sub` (subject ID), `name`, `email`, `picture` and `locale`—to ensure consistent user representations across different identity providers.
 
-3. No expiration
-   Token valid forever -> stolen token = permanent access
-   Fix: Always set exp, keep access tokens short-lived (15-60 min)
-
-4. Sensitive data in payload
-   JWT payload is base64-encoded, NOT encrypted
-   Anyone can decode it: base64decode(payload) -> readable JSON
-   Fix: Never put passwords, credit cards, or secrets in JWT
-```
-
-## Refresh tokens
-
-Refresh tokens solve the conflict between security (short-lived tokens) and usability (don't make users re-authenticate constantly).
-
-### How refresh tokens work
-
-```
-Login:
-  -> Access token (JWT, 15 min expiry)
-  -> Refresh token (opaque, 30 day expiry, stored server-side)
-
-Normal API calls:
-  Authorization: Bearer <access_token>
-  -> Server validates JWT (no database lookup)
-
-Access token expires:
-  POST /auth/token/refresh
-  Body: { "refresh_token": "rt_abc123..." }
-
-  Server:
-
-    1. Look up refresh token in database
-    2. Verify not revoked or expired
-    3. Issue new access token
-    4. (Optionally) issue new refresh token (rotation)
-
-  Response:
-  {
-    "access_token": "new_jwt...",
-    "refresh_token": "rt_def456...",   // rotated
-    "expires_in": 900
-  }
-```
-
-### Refresh token rotation
-
-```
-Without rotation:
-  Refresh token: rt_abc123
-  Used at time 1 -> new access token (refresh token unchanged)
-  Used at time 2 -> new access token (same refresh token)
-  If stolen, attacker can use it indefinitely until expiry
-
-With rotation:
-  Refresh token: rt_abc123
-  Used at time 1 -> new access token + new refresh token rt_def456
-  Old rt_abc123 is invalidated
-
-  If attacker stole rt_abc123 and tries to use it:
-  -> Server detects reuse of invalidated token
-  -> Revokes entire token family (all refresh tokens for this user)
-  -> User must re-authenticate
-```
-
-**Refresh token rotation detects theft.** When a revoked refresh token is used, it means either the legitimate user or an attacker is using a stale token. Revoking the entire family forces re-authentication, which is the safe choice.
-
-### Refresh token storage
-
-```
-Server-side (database/Redis):
-  Key: hash(refresh_token)
-  Value: { user_id, created_at, expires_at, family_id, revoked }
-
-Client-side:
-  Browser: HttpOnly, Secure cookie (not localStorage)
-  Mobile: Secure storage (Keychain on iOS, Keystore on Android)
-  Server: Environment variable or secrets manager
-
-NEVER store refresh tokens in:
-
-  - localStorage (accessible to XSS)
-  - sessionStorage (lost on tab close)
-  - URL parameters (visible in logs)
-  - Plain text files
-```
+---
 
 ## Scopes and permissions
 
@@ -434,11 +460,19 @@ Check: "delete:users" in token.scope? -> No -> 403 Forbidden
 - Allow scope combination (`read:users write:users`)
 - Document all available scopes
 
-## RBAC vs ABAC
+## Access Control and Identity Management (IAM)
 
-### RBAC (Role-Based Access Control)
+An authorization system determines what resources an authenticated user or application can access and what actions they are permitted to perform. It enforces security boundaries—such as allowing managers to approve budgets while restricting regular employees—ensuring the principle of least privilege.
 
-Permissions assigned to roles, roles assigned to users.
+In cloud environments, Identity and Access Management (IAM) authorization systems determine what authenticated users can do. They enforce security policies by granting or denying permissions to specific data, applications and tools based on access control models like Role-Based Access Control (RBAC) or Attribute-Based Access Control (ABAC).
+
+### Common IAM Frameworks and Standards
+-   **OAuth 2.0:** The industry-standard protocol that allows apps to securely access resources on behalf of a user without sharing credentials.
+-   **SAML 2.0:** Commonly used to pass identity and authorization data between an identity provider and a service provider.
+-   **JWT (JSON Web Tokens):** An open standard used to securely transmit compact and self-contained authorization claims between parties.
+
+### Role-Based Access Control (RBAC)
+Permissions are assigned to logical roles and roles are assigned to users:
 
 ```
 Roles:
@@ -456,24 +490,14 @@ Request from Bob: PUT /articles/123
 Check: viewer role allows read only -> 403 Forbidden
 ```
 
-**When RBAC works:**
+-   **When RBAC works:** Small numbers of well-defined roles, organizations where job titles map to strict permissions and scenarios where permission rules are not context-dependent.
+-   **When RBAC fails:** Fine-grained requirements (e.g. "Alice can edit only articles she authored") or dynamic variables (e.g. "users can access data only in their region").
 
-- Small number of well-defined roles
-- Permissions are role-based, not context-dependent
-- Organization structure maps to roles
-
-**When RBAC doesn't work:**
-
-- "Alice can edit articles she authored but not others"
-- "Users can access data in their region only"
-- Complex, attribute-dependent rules
-
-### ABAC (Attribute-Based Access Control)
-
-Permissions based on attributes of user, resource and environment.
+### Attribute-Based Access Control (ABAC)
+Permissions are evaluated dynamically using a policy engine that parses attributes of the user, the resource and the environment:
 
 ```
-Policy: "Users can edit articles they authored"
+Policy: "Users can edit articles they authored during business hours from the internal network"
 
 Attributes:
   User: { id: 123, role: editor, department: engineering }
@@ -481,18 +505,21 @@ Attributes:
   Environment: { time: business_hours, ip: internal_network }
 
 Evaluation:
-  user.id == resource.author_id? -> Yes
-  user.role == "editor"? -> Yes
+  user.id == resource.author_id (True)
+  environment.time == business_hours (True)
+  environment.ip == internal_network (True)
   -> Allow
 ```
 
-**When ABAC works:**
+-   **When ABAC works:** Fine-grained, context-dependent permissions, multi-tenant architectures and compliance-heavy environments (data residency or time-based access control).
+-   **Trade-off:** ABAC is extremely powerful but introduces higher processing overhead and configuration complexity than RBAC.
 
-- Fine-grained, context-dependent permissions
-- Multi-tenant systems (tenant isolation)
-- Regulatory requirements (data residency, time-based access)
+### Popular Platforms
+To implement IAM solutions in your ecosystem, explore major enterprise offerings and tools:
 
-**Trade-off:** ABAC is more powerful but more complex to implement and debug than RBAC.
+-   **Cloud-Native IAM:** Enterprise cloud providers offer built-in IAM solutions (such as AWS IAM or Microsoft Entra ID) to enforce security boundaries across infrastructure resources and organizational databases.
+-   **Workforce and Customer Identity:** Identity-as-a-Service (IDaaS) platforms (such as Okta or Auth0) manage user registration, Single Sign-On integrations and token exchange handshakes.
+-   **Decoupled Policy Engines:** Modern architectures decouple authorization logic from application code using platforms like **Cerbos**, which manages access rules through declarative, version-controlled policies.
 
 ## Service-to-service authentication
 

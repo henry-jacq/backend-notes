@@ -73,7 +73,7 @@ BANNED_GB_SPELLINGS = {
     r'\bnormalisation\b': 'normalization',
     
     r'\bstandardise\b': 'standardize',
-    r'\bstandardizes\b': 'standardizes',
+    r'\bstandardises\b': 'standardizes',
     r'\bstandardised\b': 'standardized',
     r'\bstandardising\b': 'standardizing',
     r'\bstandardisation\b': 'standardization',
