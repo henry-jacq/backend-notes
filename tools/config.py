@@ -72,9 +72,15 @@ FILES_CONFIG = [
     ("5_Operations/0_Observability_Fundamentals.md", 7, "Operations", 1, "chapter"),
     ("5_Operations/1_Log_Management_and_Rotation.md", 7, "Operations", 2, "chapter"),
     ("5_Operations/2_Systematic_Debugging_and_Failure_Patterns.md", 7, "Operations", 3, "chapter"),
+
+    # Part VIII: System Design Case Studies
+    ("7_Case_Studies/README.md", 8, "System Design Case Studies", None, "part_intro"),
+    ("7_Case_Studies/0_Asynchronous_Task_Queue.md", 8, "System Design Case Studies", 1, "chapter"),
+    ("7_Case_Studies/1_UPI_Payment_System.md", 8, "System Design Case Studies", 2, "chapter"),
+    ("7_Case_Studies/2_Distributed_Message_Queue.md", 8, "System Design Case Studies", 3, "chapter"),
 ]
 
 PART_NUMBERS_ROMAN = {
     1: "I", 2: "II", 3: "III", 4: "IV",
-    5: "V", 6: "VI", 7: "VII",
+    5: "V", 6: "VI", 7: "VII", 8: "VIII",
 }
