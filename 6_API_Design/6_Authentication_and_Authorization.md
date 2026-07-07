@@ -241,11 +241,15 @@ API keys establish programmatic identity between two systems. For example, to in
 -   **Server-Side Isolation:** Keep keys in environment variables; never compile them into browser or client-side application code.
 -   **Secure Storage & Transit:** Transmit keys strictly over HTTPS and store them hashed (using SHA-256) server-side to prevent database compromise leaks.
 -   **Scopes and Rotation:** Restrict keys to read-only scopes or specific white-listed IP addresses and support dual-key windows for rotation without downtime.
--   **Rate Limiting Integration:** Couple API keys with active rate limit pools to prevent resource exhaustion from a single compromised caller.
 
 ## OAuth 2.0
 
-OAuth 2.0 is the standard for **delegated authorization**. It allows a user to grant a third-party application limited access to their resources without sharing their password.
+OAuth 2.0 is the industry-standard framework for **delegated authorization**. It allows a third-party application to obtain limited access to a service on behalf of a resource owner by coordinating user consent, or by allowing the application to act on its own behalf.
+
+Key concepts of this standard include:
+
+-   **Token-Based Delegation:** Instead of passing credentials (such as passwords) to the third-party app, the client application is issued a limited-use access token.
+-   **Separation of Authorization:** The system decouples credential validation (handled by the authorization server) from data hosting (handled by the resource server), allowing independent security scaling.
 
 ### The problem OAuth solves
 
@@ -263,16 +267,17 @@ OAuth 2.0 is the standard for **delegated authorization**. It allows a user to g
 -   The user can revoke the token at any time without changing their password.
 -   Tokens have a limited lifecycle and scope, bounding exposure if a single application is breached.
 
-### OAuth 2.0 roles
+### OAuth 2.0 Roles
 
-```
-Resource Owner  -> The user who owns the data
-Client          -> The application requesting access
-Authorization Server -> Issues tokens after user consent (Google, GitHub, etc.)
-Resource Server -> The API that holds the user's data
-```
+The framework defines core roles that interact to orchestrate secure token delegation:
 
-### Authorization Code flow (most secure, server-side apps)
+-   **Resource Owner:** The user who owns the account data and has the authority to grant access to it.
+-   **Client:** The third-party application requesting access to the resource owner's account (e.g. a calendar app).
+-   **Authorization Server:** The system that authenticates the resource owner, obtains their consent and issues access tokens (e.g. Google or GitHub auth servers).
+-   **Resource Server:** The API hosting the protected user data, which validates incoming access tokens and serves the requested resources.
+-   **User Agent:** The intermediary client interface (such as a web browser) used by the resource owner to interact with the client application and handle authorization server redirects.
+
+### Authorization Code Flow (most secure, server-side apps)
 
 This is the recommended flow for web applications with a backend server.
 
@@ -407,7 +412,7 @@ SSO is a centralized user authentication experience enabling a person to log in 
 -   **Kerberos:** A ticket-based network authentication protocol used primarily in traditional Windows enterprise environments.
 
 ### What is OpenID Connect (OIDC)?
-OpenID Connect is an identity and authentication protocol built as a layer on top of OAuth 2.0. It standardizes how applications verify a user's identity and obtain profile details, making it the industry standard for modern web, mobile and enterprise logins.
+OpenID Connect (OIDC) is an identity and authentication protocol built directly as an extension layer on top of OAuth 2.0. While OAuth 2.0 was designed solely for delegated authorization, OIDC standardizes user authentication and profile metadata delivery, making it the industry standard for single sign-on (SSO), mobile logins and social auth integrations.
 
 ```
 OIDC Layered Model
@@ -418,7 +423,11 @@ OIDC Layered Model
 +-------------------------------------------------------+
 ```
 
-Unlike plain OAuth 2.0, which only issues an Access Token for API authorization, OIDC introduces an **ID Token** to verify the user's identity.
+Unlike plain OAuth 2.0, which only issues an Access Token for API access, OIDC introduces an **ID Token** (a JWT signed by the provider) to verify the user's identity.
+
+Key benefits extending this standard include:
+
+-   **Federated Identity Interoperability:** Because OIDC standardizes discovery endpoints and token signatures, any compliant application can integrate with any compliant Identity Provider (IdP) (like Google, Microsoft, Okta or Auth0) using the same code, avoiding vendor lock-in.
 
 A standard OIDC handshake flow proceeds as follows:
 
@@ -430,10 +439,9 @@ A standard OIDC handshake flow proceeds as follows:
 ### Core Components of OIDC
 -   **ID Token:** A signed JSON Web Token (JWT) containing identity claims about the authenticated user (e.g. issuer, subject ID, name, email and locale).
 -   **UserInfo Endpoint:** A protected API endpoint where clients can present the Access Token to retrieve additional profile claims.
--   **OIDC Discovery:** Provides a standardized configuration endpoint (typically available at `/.well-known/openid-configuration`) where clients can dynamically learn the IdP's endpoints, supported scopes, public signing keys (JWKS) and security features.
 -   **Standard Claims:** Defines standardized profile claims—such as `sub` (subject ID), `name`, `email`, `picture` and `locale`—to ensure consistent user representations across different identity providers.
 
----
+
 
 ## Scopes and permissions
 
