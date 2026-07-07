@@ -105,6 +105,18 @@ Read these in order. Protocols come first because you must choose how systems co
 - Security layers (authentication, authorization, rate limiting)
 - Performance trade-offs (over-fetching, under-fetching, streaming)
 
+## The API Lifecycle
+
+Designing an API is not a single event but a structured lifecycle that spans multiple stages:
+
+-   **Requirement Gathering:** Identifying business use cases, data domains, client consumers (web, mobile, IoT) and performance/security SLA boundaries.
+-   **Design & Contract Specification:** Creating the formal interface definition (such as OpenAPI/Swagger, GraphQL Schema or Protocol Buffers) before writing code, enabling parallel front-end and back-end development.
+-   **Development & Testing:** Implementing the API endpoints, enforcing validation rules, building mock servers and running automated functional, integration and load tests.
+-   **Deployment & Release:** Releasing the API endpoints into staging and production, implementing rate limits, setting up API gateways and using canary or blue-green releases.
+-   **Maintenance & Observability:** Monitoring traffic patterns, capturing performance metrics (latency, errors, volume) and logging exceptions while maintaining backward compatibility.
+-   **Deprecation:** Marking specific API endpoints, fields or versions as deprecated, providing headers (like `Sunset` or `Warning`) and communicating deprecation timelines to consumers.
+-   **Retirement:** Gracefully shutting down old endpoints or versions after all client traffic has migrated off them, avoiding downstream client breaks.
+
 ## Connection to other sections
 
 **API Design + Foundations:**
@@ -141,4 +153,3 @@ Read these in order. Protocols come first because you must choose how systems co
 - API metrics (latency, error rate, throughput)
 - Debugging API issues with distributed tracing
 - Monitoring API versioning and deprecation
-

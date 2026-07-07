@@ -16,6 +16,12 @@ Every production API must answer two questions: **who is calling?** (authenticat
 
 Authentication must always happen first; authorization depends on a verified identity.
 
+## Common Authentication Methods
+
+Before implementing session or token-based architectures, it is important to understand the traditional authentication standards:
+
+-   **Basic Authentication:** Transmits credentials as a Base64-encoded string (e.g. `username:password`) in the `Authorization` header. It is stateless and simple, but highly insecure because the string can be easily decoded; thus, it must always be used over encrypted HTTPS channels.
+-   **Digest Authentication:** A challenge-response protocol where the server sends a unique nonce and the client replies with an MD5 hash of the username, password, nonce and request URI. This avoids sending passwords in plain text, making it more secure than Basic Auth, but it is considered legacy and outdated in modern web/API environments.
 
 ## Stateful vs Stateless Authentication
 
@@ -478,6 +484,20 @@ In cloud environments, Identity and Access Management (IAM) authorization system
 -   **OAuth 2.0:** The industry-standard protocol that allows apps to securely access resources on behalf of a user without sharing credentials.
 -   **SAML 2.0:** Commonly used to pass identity and authorization data between an identity provider and a service provider.
 -   **JWT (JSON Web Tokens):** An open standard used to securely transmit compact and self-contained authorization claims between parties.
+
+### Access Control Lists (ACL)
+Permissions are assigned directly to individual users on a per-resource basis. This is a highly granular, object-level model:
+
+```
+Resource: document_123.docx
+Access List:
+  user_alice   -> read, write
+  user_bob     -> read only
+  user_charlie -> deny all
+```
+
+-   **When ACL works:** Perfect for user-shared document collaboration systems (like Google Drive or Dropbox) where access is decided by resource owners for specific files.
+-   **Trade-off:** Hard to manage at scale. If an organization has millions of resources and users, querying and auditing ACLs on every request can cause database bottlenecks.
 
 ### Role-Based Access Control (RBAC)
 Permissions are assigned to logical roles and roles are assigned to users:

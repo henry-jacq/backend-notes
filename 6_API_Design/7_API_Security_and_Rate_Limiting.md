@@ -342,6 +342,31 @@ Attack:
 
 **For APIs:** If you use `Authorization: Bearer` tokens (not cookies), CSRF is not a concern. CSRF exploits automatic cookie sending.
 
+## Cross-Site Scripting (XSS) Protection
+
+XSS occurs when an application includes untrusted data in a web page without proper validation or escaping, allowing malicious scripts to execute in the client browser. While APIs primarily serve JSON payloads rather than HTML, they can still act as vectors for XSS if they store malicious scripts and serve them back to web applications.
+
+### XSS Prevention Strategies
+-   **Input Sanitization:** Parse and sanitize all incoming client strings (using libraries like DOMPurify or specialized backend sanitizers) to strip HTML tags, script elements and JavaScript event handlers before storing them.
+-   **Context-Aware Output Encoding:** When displaying database strings in UI clients, ensure the client framework automatically encodes values (such as converting `<` to `&lt;`) before rendering them to the DOM.
+-   **Content Security Policy (CSP):** Enforce strict CSP headers (e.g. `default-src 'self'`) on host pages to restrict where scripts can be loaded from and block inline script executions.
+
+## Network Security: Firewalls and VPNs
+
+Securing APIs requires protecting the network boundaries to prevent malicious access before requests even reach application servers.
+
+### Web Application Firewalls (WAF)
+A Web Application Firewall (WAF) acts as a reverse proxy, inspecting and filtering incoming HTTP/HTTPS traffic at Layer 7.
+
+-   **Traffic Filtering:** Providers like Cloudflare WAF, AWS WAF or Akamai block known vulnerability exploits (such as SQL injection patterns or path traversal) and volumetric bots.
+-   **Rule Customization:** Security teams can write custom geo-blocking, IP reputation lists or regex patterns to drop suspicious requests immediately.
+
+### Virtual Private Networks (VPN)
+For private or internal enterprise APIs, public internet exposure is a major security risk.
+
+-   **Access Restriction:** By hosting APIs on private subnets and routing client traffic through a Virtual Private Network (VPN) or enterprise secure tunnel (like AWS Client VPN or Tailscale), companies ensure only authorized workforce users can discover and call internal API endpoints.
+-   **Zero Trust Access:** Modern architectures combine VPN access with microsegmentation and identity verification on every service handshake.
+
 ## Security headers
 
 ```
