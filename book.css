@@ -567,3 +567,31 @@ img {
     margin: 20px auto;
     page-break-inside: avoid;
 }
+
+/* ── Tables ────────────────────────────────────────────────── */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 20px 0;
+    font-size: 8.5pt;
+    line-height: 1.4;
+    page-break-inside: avoid;
+}
+
+th, td {
+    border: 1px solid #ddd;
+    padding: 8px 10px;
+    text-align: left;
+    vertical-align: top;
+}
+
+th {
+    background-color: #f7f6f9;
+    font-weight: bold;
+    color: #2d1b4e;
+    border-bottom: 2px solid #2d1b4e;
+}
+
+tr:nth-child(even) {
+    background-color: #fcfcfd;
+}

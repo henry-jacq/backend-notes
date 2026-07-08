@@ -187,6 +187,26 @@ Replaces TCP with QUIC (UDP-based).
 - Not yet universal for API-to-API communication
 - Most backend services still use HTTP/2
 
+## Polling Patterns
+
+When real-time updates are required but persistent push protocols are unavailable, clients fall back to polling models using standard HTTP request-response.
+
+### Short Polling
+Short polling is a client-driven pull mechanism where requests are repeatedly sent at fixed intervals.
+
+-   **Traffic Flow:** Client -> HTTP GET -> Server. The server immediately responds with either new data or an empty payload.
+-   **How it works:** A browser timer triggers an AJAX request at a fixed frequency (e.g. every 5 seconds). The server queries the database or cache and immediately sends a response.
+-   **When to use:** Non-critical background syncs or administrative dashboards where immediate latency is not required and traffic volumes are low.
+-   **Limitations:** High resource waste. If data only updates once an hour, the client sends thousands of unnecessary requests, generating high database CPU utilization and network overhead.
+
+### Long Polling
+Long polling is a hybrid pull-push mechanism where the server delays its response until new data is available.
+
+-   **Traffic Flow:** Client -> HTTP GET -> Server (Holds connection open) -> (Data arrives) -> Server responds -> Client receives and immediately restarts loop.
+-   **How it works:** The client initiates an HTTP request. If no updates exist, the server halts the response thread (or uses asynchronous request processing) and keeps the connection open. Once the backend records an update or the request reaches a timeout (e.g. 30 seconds), the server returns the response. The client immediately opens a new long-poll request.
+-   **When to use:** Simple notification feeds or chat triggers when WebSocket infrastructure cannot be deployed.
+-   **Limitations:** Connection exhaustion. Keeping thousands of requests open consumes web server worker threads or file descriptors, requiring asynchronous event loops (like Node.js or Netty) to scale.
+
 ## WebSockets
 
 A full-duplex communication protocol over a single TCP connection.
@@ -259,62 +279,59 @@ Client <--event: update--- Server
 - Binary data (SSE is text-based)
 - High-frequency updates where HTTP overhead matters
 
-**SSE vs WebSockets:**
+## Webhooks
 
-```
-Feature          | SSE                  | WebSocket
-Direction        | Server -> Client      | Bidirectional
-Protocol         | HTTP                 | WebSocket (upgraded HTTP)
-Reconnection     | Automatic            | Manual
-Binary data      | No (text only)       | Yes
-Complexity       | Simple               | Complex
-Infrastructure   | Standard HTTP        | Requires WebSocket support
-```
+Webhooks are event-driven HTTP POST callbacks triggered by server-to-server updates.
 
-## Protocol selection guide
+```text
+Webhook Event Flow
 
-**Use HTTP/1.1 + REST when:**
-
-- Building standard CRUD APIs
-- Simplicity and compatibility matter most
-- Request volumes are moderate
-
-**Use HTTP/2 + REST or gRPC when:**
-
-- Many concurrent requests to the same server
-- Low latency matters
-- Service-to-service communication
-
-**Use WebSockets when:**
-
-- Bidirectional real-time communication is required
-- Low latency in both directions is critical
-- Both client and server initiate messages
-
-**Use SSE when:**
-
-- Server needs to push updates to clients
-- Standard HTTP infrastructure must be used
-- Simplicity is preferred over WebSocket complexity
-
-**Use message brokers (Kafka, RabbitMQ) when:**
-
-- Asynchronous, decoupled communication
-- Multiple consumers need the same events
-- Durability and replay matter
-
-## Key trade-offs summary
-
-```
-Protocol     | Latency | Complexity | Statefulness | Direction
-HTTP/1.1     | Medium  | Low        | Stateless    | Request-response
-HTTP/2       | Low     | Medium     | Stateless    | Multiplexed req-resp
-HTTP/3       | Lowest  | High       | Stateless    | Multiplexed req-resp
-WebSocket    | Low     | High       | Stateful     | Bidirectional
-SSE          | Medium  | Low        | Stateful     | Server -> Client
-gRPC (HTTP/2)| Low     | Medium     | Stateless*   | All streaming types
+  [Provider Server] --- HTTP POST (JSON Payload) ---> [Consumer Server]
+          ^                                                   |
+    Event Triggered                                    Processes payload &
+    (e.g., payment.paid)                               returns 200 OK
 ```
 
-*gRPC connections are persistent but the protocol itself is designed for stateless services.
+-   **How it works:**
+    1.  The consumer registers a public URL (webhook endpoint) in the provider's system dashboard.
+    2.  An event occurs in the provider's platform (e.g. a payment successfully completes).
+    3.  The provider's background job queue triggers an HTTP POST request containing the event payload to the consumer's registered URL.
+    4.  The consumer processes the payload and returns a `200 OK` response to acknowledge receipt.
+-   **When to use:** Integrating third-party APIs (e.g. Stripe payment notifications, GitHub commit hooks or Twilio SMS status updates).
+-   **Security Defenses:** Since webhook endpoints are publicly accessible, attackers can spoof requests. Providers generate cryptographic signatures using a shared secret and attach them in headers (e.g. `X-Signature`). Consumers must compute the HMAC hash of the raw request body and compare it with the header signature before processing.
 
-Choosing the right protocol is the first design decision. Everything else builds on it. To understand how REST uses HTTP for resource-oriented APIs, see [REST API Design](file:///d:/Playground/Backend%20Notes/6_API_Design/1_REST_API_Design.md).
+
+## Real-Time Protocol Comparison
+
+| Mechanism | Direction | Protocol Base | Connection Type | Resource Usage |
+| :--- | :--- | :--- | :--- | :--- |
+| **Short Polling** | Client to Server | HTTP | Short-lived | High (polling) |
+| **Long Polling** | Client to Server | HTTP | Long-lived | Medium |
+| **SSE** | Server to Client | HTTP | Persistent | Low |
+| **WebSocket** | Bidirectional | WebSocket (HTTP Upgrade) | Persistent | Low |
+| **Webhooks** | Server to Server | HTTP (POST Request) | Short-lived | Lowest (event-driven) |
+
+## Protocol Selection Guide
+
+-   **Use HTTP/1.1 + REST when:** Building standard CRUD APIs where request volumes are moderate and compatibility is the primary concern.
+-   **Use HTTP/2 + REST or gRPC when:** Low-latency service-to-service communication requires multiple concurrent requests multiplexed over a single connection.
+-   **Use Short Polling when:** Implementing basic, non-critical background updates where latency is not a concern and traffic volume is low.
+-   **Use Long Polling when:** The client needs real-time event alerts but WebSockets or SSE are blocked by corporate firewall proxies or infra limitations.
+-   **Use WebSockets when:** Bidirectional, low-latency, real-time message streams are required (e.g. chat systems, collaborative whiteboards or online multiplayer games).
+-   **Use SSE when:** The server must push events or data streams (like news feeds, stock tickers or progress indicators) directly to clients over standard HTTP channels.
+-   **Use Webhooks when:** Designing server-to-server integrations where a provider system must notify an external consumer system asynchronously about event states.
+-   **Use Message Brokers (Kafka, RabbitMQ) when:** Decoupling internal backend microservices with asynchronous, high-throughput message publishing, replayability and durability guarantees.
+
+## Key Trade-Offs Summary
+
+| Mechanism | Latency | Complexity | Statefulness | Best Use Case |
+| :--- | :--- | :--- | :--- | :--- |
+| **Short Polling** | High | Low | Stateless | Low-frequency data pulls |
+| **Long Polling** | Medium | Medium | Stateful* | Simple notifications (no WebSocket support) |
+| **WebSocket** | Lowest | High | Stateful | Bidirectional chat, games, collaborative boards |
+| **SSE** | Low | Low | Stateful | Real-time dashboard feeds, ticker updates |
+| **Webhooks** | Low | Medium | Stateless | Server-to-server event integrations |
+
+*Long polling requests are stateless on HTTP, but the server must manage socket handles or thread reservations during the hang window.
+
+Choosing the right protocol is the first design decision. Everything else builds on it.
