@@ -126,7 +126,7 @@ def build_preface_page() -> str:
     """Generate a preface page outlining prerequisites and target audience."""
     return """
     <div class="preface-page">
-        <h1>Preface & Prerequisites</h1>
+        <h1>Preface</h1>
         <p class="preface-lead">
             This book is designed as a structured path for application developers transitioning into backend systems engineering. It aims to bridge the gap between writing functional code and understanding the complex, underlying system architectures that support it. The concepts discussed are completely generic and language-agnostic, making them applicable across all modern programming languages and technology stacks.
         </p>

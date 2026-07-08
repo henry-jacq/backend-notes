@@ -30,6 +30,13 @@ This section covers the physical and virtual infrastructure that runs backend sy
 - Automation and CI/CD
 - Monitoring and alerting
 
+**Load Balancing**
+
+- Traffic distribution algorithms (Round Robin, Least Connection, Consistent Hashing).
+- Active health checks vs passive monitoring.
+- Resilience clustering models (Active-Passive Virtual IPs vs Active-Active DNS).
+- Production patterns (TLS offloading, connection draining).
+
 **Docker Fundamentals**
 
 - VM vs Container architecture and overhead differences
@@ -55,4 +62,3 @@ This section covers the physical and virtual infrastructure that runs backend sy
 - SSL/TLS encryption
 - DNS resolution
 - Network latency
-

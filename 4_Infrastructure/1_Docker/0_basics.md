@@ -2,7 +2,7 @@
 title: "Docker Fundamentals"
 part: 5
 part_title: "Infrastructure"
-chapter: 3
+chapter: 4
 summary: "Introduces the concept of containerisation, comparing containers with virtual machines and explores the Docker platform architecture, layered image designs and basic networking principles."
 ---
 # Docker Fundamentals

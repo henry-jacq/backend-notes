@@ -85,20 +85,47 @@ Ubuntu, Debian, Rocky Linux, AlmaLinux, CentOS Stream. Popular for servers becau
 
 Used for .NET applications, Active Directory, SQL Server and enterprise tools. Graphical administration and PowerShell automation.
 
-## Server Configuration
+## Web Server Software
 
-A server needs software, firewall rules, environment variables, database connections, reverse proxies and logging.
+Choosing the right web server software depends on the application stack, concurrency requirements and deployment scale. The three most common engines are Nginx, Apache and Tomcat.
 
-Common components:
+### Nginx
+Nginx is a lightweight, high-performance web server and reverse proxy.
 
-- Web Server Software: Nginx, Apache, Caddy, IIS
-- Databases: PostgreSQL, MySQL, MongoDB, SQL Server
-- Caching: Redis, Memcached
-- Runtimes: Node.js, Python, Ruby, Java, Go, .NET
+-   **Event-Driven Concurrency:** Unlike traditional servers that allocate a thread or process per connection, Nginx utilizes an asynchronous, non-blocking event loop (using kernel interfaces like `epoll` on Linux). This allows a single master worker process to handle tens of thousands of concurrent connections with minimal memory usage.
+-   **Common Use Cases:** Ideal for serving static assets, terminating SSL/TLS certificates, load balancing and serving as a reverse proxy for upstream application runtimes (such as Node.js or Go).
 
-Example setup: Ubuntu + Nginx (reverse proxy) + Node.js (app) + MongoDB (database)
+### Apache HTTP Server
+The Apache HTTP Server is a modular, process-based web server.
 
-Nginx forwards requests from port 80 to Node.js on port 3000.
+-   **Multi-Processing Modules (MPMs):** Apache routes traffic using MPMs, either spawning a separate process per connection (pre-fork MPM) or running multiple threads per process (worker/event MPM). Because each process/thread holds its own memory context, Apache has a higher memory footprint under high concurrency than Nginx.
+-   **Extensibility:** Apache supports dynamic configuration files (`.htaccess`) on a per-directory basis, making it highly flexible for shared hosting environments and traditional server-side rendering runtimes (like PHP).
+
+### Apache Tomcat
+Apache Tomcat is a Java Servlet container and application server.
+
+-   **Java Application Server:** Unlike Nginx or Apache, which serve general HTTP assets, Tomcat is designed to compile and execute Java Servlets, JavaServer Pages (JSP) and Java Enterprise applications. It implements a Java Virtual Machine (JVM) thread pool to run application logic.
+-   **Production Deployment:** While Tomcat can act as a standalone HTTP server, it is commonly placed behind a reverse proxy (such as Nginx) which handles static file delivery, SSL handshakes and DDoS filtering, passing only dynamic requests to Tomcat.
+
+
+
+## Proxy Architectures
+
+A proxy is an intermediary server that routes traffic between client devices and target web servers. Proxies are classified into two categories based on which side of the network connection they represent:
+
+### Forward Proxy (Client-Side)
+A forward proxy acts on behalf of client machines to access external internet resources.
+
+-   **Traffic Flow:** Client -> Forward Proxy -> Internet.
+-   **Mechanics:** Clients configure their browser to route requests through the proxy. The destination server sees the request originating from the proxy's IP address, hiding the client's internal identity.
+-   **Common Use Cases:** Enforcing corporate content filters, caching external search queries locally and routing traffic around geographic network blocks.
+
+### Reverse Proxy (Server-Side)
+A reverse proxy acts on behalf of back-end application servers to manage incoming client requests.
+
+-   **Traffic Flow:** Client -> Reverse Proxy -> Internal App Servers.
+-   **Mechanics:** Clients query the reverse proxy directly (it exposes the public domain DNS). The proxy inspects the request, terminates SSL, routes it to private back-end servers (e.g. Node.js or Tomcat running on localhost) and passes responses back to the client.
+-   **Common Use Cases:** SSL/TLS decryption offloading, load balancing traffic across multiple app instances, protecting private networks from direct internet exposure and caching dynamic responses at the edge.
 
 ## Security
 
