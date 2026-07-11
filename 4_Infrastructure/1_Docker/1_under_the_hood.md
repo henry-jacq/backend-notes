@@ -2,7 +2,7 @@
 title: "Docker Under the Hood"
 part: 5
 part_title: "Infrastructure"
-chapter: 5
+chapter: 6
 summary: "Explores the low-level Linux kernel features powering containerisation, including namespaces, control groups (cgroups), OverlayFS layers, container runtime components (containerd, runc) and virtual networking."
 ---
 # Docker Under the Hood

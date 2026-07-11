@@ -52,8 +52,9 @@ FILES_CONFIG = [
     ("4_Infrastructure/0_Server_Fundamentals/0_Under_the_Hood.md", 5, "Infrastructure", 1, "chapter"),
     ("4_Infrastructure/0_Server_Fundamentals/1_Web_Server_Overview.md", 5, "Infrastructure", 2, "chapter"),
     ("4_Infrastructure/0_Server_Fundamentals/2_Load_Balancing.md", 5, "Infrastructure", 3, "chapter"),
-    ("4_Infrastructure/1_Docker/0_basics.md", 5, "Infrastructure", 4, "chapter"),
-    ("4_Infrastructure/1_Docker/1_under_the_hood.md", 5, "Infrastructure", 5, "chapter"),
+    ("4_Infrastructure/0_Server_Fundamentals/3_Content_Delivery_Networks.md", 5, "Infrastructure", 4, "chapter"),
+    ("4_Infrastructure/1_Docker/0_basics.md", 5, "Infrastructure", 5, "chapter"),
+    ("4_Infrastructure/1_Docker/1_under_the_hood.md", 5, "Infrastructure", 6, "chapter"),
 
     # Part VI: API Design
     ("6_API_Design/README.md", 6, "API Design", None, "part_intro"),

@@ -37,6 +37,13 @@ This section covers the physical and virtual infrastructure that runs backend sy
 - Resilience clustering models (Active-Passive Virtual IPs vs Active-Active DNS).
 - Production patterns (TLS offloading, connection draining).
 
+**Content Delivery Networks**
+
+-   Points of Presence (PoPs) and Geo-routing mechanics (Geo-DNS vs. Anycast).
+-   Caching pull/push models and HTTP Cache-Control header control.
+-   Cache invalidation techniques (TTL, purge APIs and version busting).
+-   Edge acceleration (SSL termination, warm TCP pools) and edge firewalls.
+
 **Docker Fundamentals**
 
 - VM vs Container architecture and overhead differences
