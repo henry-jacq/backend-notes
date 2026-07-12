@@ -153,5 +153,27 @@ class TestBookDocuments(unittest.TestCase):
                     
         self.assertEqual(violations_count, 0, f"Found {violations_count} Oxford comma violations. Run spelling/comma fixes to resolve.")
 
+    def test_latex_math_avoidance(self):
+        """Verify that markdown files contain no LaTeX double dollar math blocks (which fail PDF rendering)."""
+        violations_count = 0
+        for rel_path, _, _, _, _ in FILES_CONFIG:
+            filepath = BASE_DIR / rel_path
+            if not filepath.exists():
+                continue
+            
+            content = filepath.read_text(encoding="utf-8")
+            violations = []
+            for idx, line in enumerate(content.splitlines(), 1):
+                if "$$" in line:
+                    violations.append((idx, f"Line contains LaTeX math block '$$': '{line.strip()}'"))
+            
+            if violations:
+                violations_count += len(violations)
+                print(f"\n[LaTeX Math Block Violation] {rel_path}:")
+                for line_num, msg in violations:
+                    print(f"  Line {line_num}: {msg}")
+                    
+        self.assertEqual(violations_count, 0, f"Found {violations_count} LaTeX math violations. Replace with plain-text or HTML equivalents.")
+
 if __name__ == "__main__":
     unittest.main()
